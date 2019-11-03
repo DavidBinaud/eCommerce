@@ -5,6 +5,13 @@
 	class ControllerProduit{
 		protected static $object = 'produit';
 
+		public static function error(){
+			$view='error'; $pagetitle='ErreurProduit'; $errorType = 'Erreur Générale';
+			require (File::build_path(array("view","view.php")));
+		}
+
+
+
 		public static function readAll(){
 			$tab_t = ModelProduit::selectAll(); 
 
@@ -14,10 +21,22 @@
 
 
 
-
-		public static function error(){
-			$view='error'; $pagetitle='ErreurProduit';
-			require (File::build_path(array("view","view.php")));
+		public static function read(){
+			if(isset($_GET['id'])){
+				$p = ModelProduit::select($_GET['id']);
+				if($p == false){
+					
+					$view='error'; $pagetitle='ErreurProduit'; $errorType = "Read d'un Produit: id fourni non existant";
+					require (File::build_path(array("view","view.php")));
+				}else
+				{
+					$view='detail'; $pagetitle='Detail Produit';
+					require (File::build_path(array("view","view.php")));
+				}
+			}else{
+				$view='error'; $pagetitle='ErreurProduit'; $errorType = "Read d'un Produit: Pas d'id fourni";
+				require (File::build_path(array("view","view.php")));
+			}
 		}
 
 	}
