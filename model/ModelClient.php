@@ -12,6 +12,7 @@
     private $adresse;
     private $dateDeNaissance;
     protected static $object = 'client';
+    protected static $primary='id';
               
     //getter générique
     public function get($nom_attribut){

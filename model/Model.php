@@ -52,6 +52,35 @@
     }
 
 
+
+
+
+     public static function select($primary_value) {
+	    	$table_name = "eCom_" . static::$object;
+			$class_name = "Model" . ucfirst(static::$object);
+			$primary_key = static::$primary;
+
+		    $sql = "SELECT * from {$table_name} WHERE {$primary_key}=:searched_value";
+		    // Préparation de la requête
+		    $req_prep = Model::$pdo->prepare($sql);
+
+		    $values = array(
+		        "searched_value" => $primary_value,
+		    );
+
+		    // On donne les valeurs et on exécute la requête   
+		    $req_prep->execute($values);
+
+		    // On récupère les résultats comme précédemment
+		    $req_prep->setFetchMode(PDO::FETCH_CLASS, $class_name);
+		    $tab = $req_prep->fetchAll();
+		    // Attention, si il n'y a pas de résultats, on renvoie false
+		    if (empty($tab))
+		        return false;
+		    return $tab[0];
+	    }
+
+
 	}
 	Model::Init();
 ?>

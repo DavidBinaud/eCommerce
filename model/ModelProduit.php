@@ -10,6 +10,7 @@
     private $prix;
     private $nationalite;
     protected static $object = 'produit';
+    protected static $primary='id';
               
     //getter générique
     public function get($nom_attribut){

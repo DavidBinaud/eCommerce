@@ -10,6 +10,7 @@
     private $dateDeCommande;
     private $idClient;
     protected static $object = 'commande';
+    protected static $primary='id';
               
     //getter générique
     public function get($nom_attribut){
