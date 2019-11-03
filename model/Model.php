@@ -81,6 +81,25 @@
 	    }
 
 
+
+	    public static function delete($primary){
+	    	$table_name = 'eCom_' . static::$object;
+			$primary_key = static::$primary;
+
+
+			$sql = "DELETE FROM $table_name WHERE $primary_key=:primary";
+
+      		$req_prep = Model::$pdo->prepare($sql);
+
+      		$values = array(
+          		"primary" => $primary
+      		);
+      
+      
+        	$req_prep->execute($values);
+	    }
+
+
 	}
 	Model::Init();
 ?>
