@@ -1,3 +1,3 @@
 <?php
-	echo "NEIN ! Mauvaise action !";
+	echo "NEIN ! Mauvaise action Produit! $errorType";
 ?>
