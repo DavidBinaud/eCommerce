@@ -4,6 +4,7 @@
 	class Model {
 
 		public static $pdo;
+		private static $prefixe = 'eCom_';
 
 
 		public static function Init(){
@@ -41,7 +42,7 @@
 		$class_name = "Model" . ucfirst($object_name);
 
 		
-		$table_name = "eCom_" . static::$object;
+		$table_name = self::$prefixe . static::$object;
 
 
      	$rep = self::$pdo->query("SELECT * FROM {$table_name}");
@@ -56,7 +57,7 @@
 
 
      public static function select($primary_value) {
-	    	$table_name = "eCom_" . static::$object;
+	    	$table_name = self::$prefixe . static::$object;
 			$class_name = "Model" . ucfirst(static::$object);
 			$primary_key = static::$primary;
 
@@ -83,7 +84,7 @@
 
 
 	    public static function delete($primary){
-	    	$table_name = 'eCom_' . static::$object;
+	    	$table_name = self::$prefixe . static::$object;
 			$primary_key = static::$primary;
 
 
@@ -100,6 +101,57 @@
 	    }
 
 
+
+	      public static function save($objectParam){
+	     	$table_name = self::$prefixe . static::$object;
+			$setOrder = '';
+			$setTags = '';
+
+			$values = $objectParam->get_object_vars();
+			foreach ($values as $champ => $valeur){
+				$setOrder = $setOrder . $champ .  ",";
+				$setTags = $setTags . ":" . $champ . ",";
+			}
+
+			$setOrder = rtrim($setOrder,",");
+			$setTags = rtrim($setTags,",");
+			var_dump($setOrder);
+			var_dump($setTags);
+      		$sql = "INSERT INTO $table_name ($setOrder) VALUES ($setTags)";
+		
+		    $req_prep = Model::$pdo->prepare($sql);
+	
+	      	
+	      	
+	      	try{
+	      	  $req_prep->execute($values);
+ 			}catch(PDOException $e) {
+	      	    if($e->getCode() == 23000){
+	      	    	return false;
+	      	    }
+		    }
+      		return true;
+    	}
+
+
+
+
+    	public static function update($data){
+	     	$table_name = self::$prefixe . static::$object;
+			$primary_key = static::$primary;
+			$set = '';
+			foreach ($data as $champ => $valeur){
+				$set = $set . $champ . "=:" . $champ . ",";
+			}
+			$set = rtrim($set,",");
+
+	     	$sql = "UPDATE $table_name SET $set WHERE $primary_key=:$primary_key";
+
+        	$req_prep = Model::$pdo->prepare($sql);
+      
+      
+        	$req_prep->execute($data);
+	     }
 	}
 	Model::Init();
 ?>

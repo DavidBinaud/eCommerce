@@ -38,6 +38,11 @@
         $this->nationalite = $data['nationalite'];
       }
     }
+
+
+    public function get_object_vars() {
+        return get_object_vars($this);
+    }
  }
 
 ?>
