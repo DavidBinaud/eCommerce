@@ -8,7 +8,9 @@
 	$cdateDeNaissance = htmlspecialchars($c->get("dateDeNaissance"));
 
 	
-	echo "<p> Client d'id $cid, de nom $cnom de prénom $cprenom née le $cdateDeNaissance vit à $cville à l'adresse $cadresse </p>";
+	echo "<p> Client d'id $cid, de nom $cnom de prénom $cprenom née le $cdateDeNaissance vit à $cville à l'adresse $cadresse 
+	(<a href=index.php?action=update&controller=client&id=$cidURL>MAJ</a>)
+	</p>";
 
 
 ?>

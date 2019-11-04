@@ -61,6 +61,43 @@
 		}
 
 
+
+		public static function create(){
+    		$cId = "\"\"";
+    		$cNom = "\"\"";
+    		$cPrenom = "\"\"";
+    		$cVille = "\"\"";
+    		$cPays = "\"\"";
+    		$cAdresse = "\"\"";
+    		$cDateDeNaissance = "\"\"";
+    		$cAction = "create";
+		
+			$view='update'; $pagetitle='Creation Client';
+			require (File::build_path(array("view","view.php")));
+		}
+
+
+
+
+		public static function created(){
+			if (isset($_GET['id']) && isset($_GET['nom']) && isset($_GET['prenom']) && isset($_GET['ville']) && isset($_GET['pays']) && isset($_GET['adresse']) && isset($_GET['dateDeNaissance'])){
+
+				$c = new ModelClient($_GET);
+				if(ModelClient::save($c) == false){
+					$view='error'; $pagetitle='Erreur de Création'; $errorType = 'Created Client: id fourni déjà existant';
+					require (File::build_path(array("view","view.php")));
+				}else{
+					$tab_c = ModelClient::selectAll();
+					$view='created'; $pagetitle='Création Reussie';
+					require (File::build_path(array("view","view.php")));
+				}
+			}else{
+				$view='error'; $pagetitle='ErreurClient'; $errorType = "Create d'un Client: Problème de paramètres";
+				require (File::build_path(array("view","view.php")));
+			}
+		}
+
+
 	}
 
 
