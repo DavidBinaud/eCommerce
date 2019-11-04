@@ -46,7 +46,7 @@
 
 
 
-     public function get_img_path() {
+    public function get_img_path() {
             $sql = "SELECT imgproduit FROM eCom_imgproduit WHERE idProduit=:searched_id";
             // Préparation de la requête
             $req_prep = Model::$pdo->prepare($sql);

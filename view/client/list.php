@@ -8,7 +8,9 @@
 
 		echo "<p> Client d'id 
 		<a href=index.php?action=read&controller=client&id=$cidURL>{$cid}</a> 
-		de nom $cnom et prenom $cprenom</p>";
+		de nom $cnom et prenom $cprenom
+		(<a href=index.php?controller=client&action=delete&id=$cidURL>Supprimer</a>)
+		</p>";
 	}
 
 	echo "<a href=index.php?action=create&controller=client>Creer un Client</a>";
