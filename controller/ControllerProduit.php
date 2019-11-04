@@ -28,8 +28,9 @@
 					
 					$view='error'; $pagetitle='ErreurProduit'; $errorType = "Read d'un Produit: id fourni non existant";
 					require (File::build_path(array("view","view.php")));
-				}else
-				{
+				}
+				else{	
+					$path = $p->get_img_path();
 					$view='detail'; $pagetitle='Detail Produit';
 					require (File::build_path(array("view","view.php")));
 				}

@@ -43,6 +43,29 @@
     public function get_object_vars() {
         return get_object_vars($this);
     }
+
+
+
+     public function get_img_path() {
+            $sql = "SELECT imgproduit FROM eCom_imgproduit WHERE idProduit=:searched_id";
+            // Préparation de la requête
+            $req_prep = Model::$pdo->prepare($sql);
+
+            $values = array(
+                "searched_id" => $this->id,
+            );
+
+            // On donne les valeurs et on exécute la requête   
+            $req_prep->execute($values);
+
+            // On récupère les résultats comme précédemment
+            $req_prep->setFetchMode(PDO::FETCH_NUM);
+            $tab = $req_prep->fetch();
+            // Attention, si il n'y a pas de résultats, on renvoie false
+            if (empty($tab))
+                return false;
+            return $tab[0];
+    }
  }
 
 ?>
