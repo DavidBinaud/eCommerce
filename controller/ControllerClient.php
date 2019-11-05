@@ -98,6 +98,73 @@
 		}
 
 
+
+		public static function update(){
+			if (isset($_GET['id'])){
+				$c = ModelClient::select($_GET['id']);
+
+				if($c == false){
+					$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'update Client: id fourni non existant';
+					require (File::build_path(array("view","view.php")));
+				}
+				else{
+
+    				$cId = htmlspecialchars($c->get("id"));
+					$cNom = htmlspecialchars($c->get("nom"));
+					$cPrenom = htmlspecialchars($c->get("prenom"));
+					$cVille = htmlspecialchars($c->get("ville"));
+					$cPays = htmlspecialchars($c->get("pays"));
+					$cAdresse = htmlspecialchars($c->get("adresse"));
+					$cDateDeNaissance = htmlspecialchars($c->get("dateDeNaissance"));
+    				$cAction = "update";
+
+					$view='update'; $pagetitle='Mise A Jour';
+					require (File::build_path(array("view","view.php")));
+				}
+			}
+			else{
+				$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'update Client: Problème de paramètres';
+					require (File::build_path(array("view","view.php")));
+			}
+		}
+
+
+
+		public static function updated(){
+			if (isset($_GET['id']) && isset($_GET['nom']) && isset($_GET['prenom']) && isset($_GET['ville']) && isset($_GET['pays']) && isset($_GET['adresse']) && isset($_GET['dateDeNaissance'])){
+				
+				$c = ModelClient::select($_GET['id']);
+				if($c == false){
+					$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'update Client: id fourni non existant';
+					require (File::build_path(array("view","view.php")));
+				}
+				else{
+					$data = array(
+						"id" => $_GET['id'],
+						"nom" => $_GET['nom'],
+						"prenom" => $_GET['prenom'],
+						"ville" => $_GET['ville'],
+						"pays" => $_GET['pays'],
+						"adresse" => $_GET['adresse'],
+						"dateDeNaissance" => $_GET['dateDeNaissance']
+					);
+	
+					ModelClient::update($data);
+	
+						$tab_c = ModelClient::selectAll();
+						$view='updated'; $pagetitle='Mise A Jour';
+					require (File::build_path(array("view","view.php")));
+				}
+			}
+			else{
+				$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'updated Client: Problème de paramètres';
+				require (File::build_path(array("view","view.php")));
+			}
+			
+		}
+	
+
+
 	}
 
 
