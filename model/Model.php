@@ -71,7 +71,7 @@
 
 		    // On donne les valeurs et on exécute la requête   
 		    $req_prep->execute($values);
-
+		    
 		    // On récupère les résultats comme précédemment
 		    $req_prep->setFetchMode(PDO::FETCH_CLASS, $class_name);
 		    $tab = $req_prep->fetchAll();
@@ -115,11 +115,9 @@
 
 			$setOrder = rtrim($setOrder,",");
 			$setTags = rtrim($setTags,",");
-			var_dump($setOrder);
-			var_dump($setTags);
+
       		$sql = "INSERT INTO $table_name ($setOrder) VALUES ($setTags)";
-		
-		    $req_prep = Model::$pdo->prepare($sql);
+      		$req_prep = Model::$pdo->prepare($sql);
 	
 	      	
 	      	
@@ -131,6 +129,7 @@
 	      	    }
 		    }
       		return true;
+      		
     	}
 
 
