@@ -7,11 +7,16 @@
 
 
 	//Verifie qu'une action est passée dans l'url ; Si aucune action on fait l'action de base readALL
-	if(isset($_GET['action']) && isset($_GET['controller'])){
-		$action = $_GET['action'];
-		$controller = $_GET['controller'];
-		$controller_class = 'Controller' . ucfirst($controller);
+	if(isset($_GET['action']) && isset($_GET['controller']) || isset($_POST['action']) && isset($_POST['controller'])){
+		if(isset($_GET['action']) && isset($_GET['controller'])){
+			$action = $_GET['action'];
+			$controller = $_GET['controller'];
+		}else{
+			$action = $_POST['action'];
+			$controller = $_POST['controller'];
+		}
 
+		$controller_class = 'Controller' . ucfirst($controller);
 
 		if(class_exists($controller_class)){
 			//on vérifie que la classe existe
