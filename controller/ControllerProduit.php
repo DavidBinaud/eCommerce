@@ -1,6 +1,7 @@
 <?php
 
 	require_once (File::build_path(array("model","ModelProduit.php")));
+	require_once (File::build_path(array("model","ModelProduitImage.php")));
 
 	class ControllerProduit{
 		protected static $object = 'produit';
@@ -29,8 +30,13 @@
 					$view='error'; $pagetitle='ErreurProduit'; $errorType = "Read d'un Produit: id fourni non existant";
 					require (File::build_path(array("view","view.php")));
 				}
-				else{	
-					$path = $p->get_img_path();
+				else{
+					$pic = ModelProduitImage::select($_GET['id']);
+					if($pic != false){
+						$path = $pic->get('pathImgProduit');
+					}else{
+						$path=false;
+					}
 					$view='detail'; $pagetitle='Detail Produit';
 					require (File::build_path(array("view","view.php")));
 				}
@@ -81,7 +87,6 @@
 			if (isset($_GET['id']) && isset($_GET['nom']) && isset($_GET['description']) && isset($_GET['prix']) && isset($_GET['nationalite'])){
 
 				$p = new ModelProduit($_GET);
-				var_dump($p);
 				if(ModelProduit::save($p) == false){
 					$view='error'; $pagetitle='Erreur de Création'; $errorType = 'Created Produit: id fourni déjà existant';
 					require (File::build_path(array("view","view.php")));
@@ -146,9 +151,103 @@
 			}
 			else{
 				$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'updated Produit: Problème de paramètres';
+				require (File::build_path(array("view","view.php")));
+			}
+		}
+
+
+		public static function imgupload(){
+			if (isset($_GET['id'])){
+				$p = ModelProduit::select($_GET['id']);
+
+				if($p == false){
+					$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'imgupload Produit: id fourni non existant';
+					require (File::build_path(array("view","view.php")));
+				}
+				else{
+					$pId = htmlspecialchars($p->get('id'));
+					$view='imgupload'; $pagetitle='Upload Img Produit';
+					require (File::build_path(array("view","view.php")));
+				}
+
+			}else{
+				$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'imgupload Produit: Problème de paramètres';
 					require (File::build_path(array("view","view.php")));
 			}
 		}
+
+
+
+		public static function imguploaded(){
+			if (isset($_POST['id'])){
+				$p = ModelProduit::select($_POST['id']);
+				if($p == false){
+					$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'imguploaded Produit: id fourni non existant';
+					require (File::build_path(array("view","view.php")));
+				}
+				else{
+					if (!empty($_FILES['nom-du-fichier']) && is_uploaded_file($_FILES['nom-du-fichier']['tmp_name'])) {
+						$name = $_FILES['nom-du-fichier']['name'];
+						$pic_path =  File::build_path(array("src",$name));
+						if (!move_uploaded_file($_FILES['nom-du-fichier']['tmp_name'], $pic_path)) {
+						  	$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'imguploaded Produit: La Copie a échouée';
+							require (File::build_path(array("view","view.php")));
+						
+						}else{
+							$pic = new ModelProduitImage($_POST['id'],"src/$name");
+							
+							if(ModelProduitImage::save($pic) == true){
+								$pId = htmlspecialchars($p->get('id'));
+								$path = $pic->get('pathImgProduit');
+								$view='imguploaded'; $pagetitle='Uploaded Img Produit';
+								require (File::build_path(array("view","view.php")));
+							}else{
+								$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'addedimg Produit: ce produit a déjà une image';
+								require (File::build_path(array("view","view.php")));
+							}
+
+						}
+
+					}else{
+						$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'addedimg Produit: Problème de paramètre fichier';
+						require (File::build_path(array("view","view.php")));
+					}
+
+				}
+
+			}else{
+				$view='error'; $pagetitle='Erreur MAJ'; $errorType = "addedimg Produit: Problème de paramètre d'id";
+				require (File::build_path(array("view","view.php")));
+			}
+		}
+
+
+
+		public static function imgdelete(){
+			if (isset($_GET['id'])){
+				$p = ModelProduit::select($_GET['id']);
+
+				if($p == false){
+					$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'imgdelete Produit: id fourni non existant';
+					require (File::build_path(array("view","view.php")));
+				}
+				else{
+					$pic = ModelProduitImage::select($p->get('id'));
+					ModelProduitImage::delete($p->get('id'));
+					unlink($pic->get('pathImgProduit'));
+					$path=false;
+					$view='imgdelete'; $pagetitle='Upload Img Produit';
+					require (File::build_path(array("view","view.php")));
+				}
+
+			}else{
+				$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'imgdelete Produit: Problème de paramètres';
+					require (File::build_path(array("view","view.php")));
+			}
+		}
+
+
+
 	}
 
 
