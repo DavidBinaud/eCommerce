@@ -186,20 +186,26 @@
 						$name = $_FILES['nom-du-fichier']['name'];
 						$pic_path =  File::build_path(array("src",$name));
 
-						if (!move_uploaded_file($_FILES['nom-du-fichier']['tmp_name'], $pic_path)) {
-						  	$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'imguploaded Produit: La Copie a échouée';
+						$allowed_ext = array("jpg", "jpeg", "png");
+						$explode = explode('.',$_FILES['nom-du-fichier']['name']);
+						if (!in_array(end($explode), $allowed_ext)) {
+ 						 	$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'addedimg Produit: Mauvais type de fichier';
 						}else{
-							$pic = new ModelProduitImage($_POST['id'],"src/$name");
-							
-							if(ModelProduitImage::save($pic) == true){
-								$pId = htmlspecialchars($p->get('id'));
-								$path = $pic->get('pathImgProduit');
-								$view='imguploaded'; $pagetitle='Uploaded Img Produit';
-			
+							if (!move_uploaded_file($_FILES['nom-du-fichier']['tmp_name'], $pic_path)) {
+							  	$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'imguploaded Produit: La Copie a échouée';
 							}else{
-								$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'addedimg Produit: ce produit a déjà une image';
+								$pic = new ModelProduitImage($_POST['id'],"src/$name");
+								
+								if(ModelProduitImage::save($pic) == true){
+									$pId = htmlspecialchars($p->get('id'));
+									$path = $pic->get('pathImgProduit');
+									$view='imguploaded'; $pagetitle='Uploaded Img Produit';
+				
+									}else{
+										$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'addedimg Produit: ce produit a déjà une image';
+									}
+	
 							}
-
 						}
 
 					}else{
