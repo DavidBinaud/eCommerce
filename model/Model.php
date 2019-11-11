@@ -148,8 +148,12 @@
 
         	$req_prep = Model::$pdo->prepare($sql);
       
-      
-        	$req_prep->execute($data);
+      		try{
+        		$req_prep->execute($data);
+        	}catch(PDOException $e){
+        		return false;
+        	}
+        	return true;
 	     }
 	}
 	Model::Init();
