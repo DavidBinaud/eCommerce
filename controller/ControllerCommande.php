@@ -23,18 +23,16 @@
 			if(isset($_GET['id'])){
 				$c = ModelCommande::select($_GET['id']);
 				if($c == false){
-					
 					$view='error'; $pagetitle='ErreurCommande'; $errorType = "Read d'une Commande: id fourni non existant";
-					require (File::build_path(array("view","view.php")));
 				}else
 				{
 					$view='detail'; $pagetitle='Detail Commande';
-					require (File::build_path(array("view","view.php")));
 				}
 			}else{
 				$view='error'; $pagetitle='ErreurCommande'; $errorType = "Read d'une Commande: Pas d'id fourni";
-				require (File::build_path(array("view","view.php")));
+				
 			}
+			require (File::build_path(array("view","view.php")));
 		}
 		
 
