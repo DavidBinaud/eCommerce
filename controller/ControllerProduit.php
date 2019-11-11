@@ -226,10 +226,15 @@
 				}
 				else{
 					$pic = ModelProduitImage::select($p->get('id'));
-					ModelProduitImage::delete($p->get('id'));
-					unlink($pic->get('pathImgProduit'));
-					$path=false;
-					$view='imgdelete'; $pagetitle='Upload Img Produit';
+					if ($pic != false) {
+						ModelProduitImage::delete($p->get('id'));
+						unlink($pic->get('pathImgProduit'));
+						$path=false;
+						$view='imgdelete'; $pagetitle='Upload Img Produit';
+					}
+					else{
+						$view='error'; $pagetitle='Erreur MAJ'; $errorType = "imgdelete Produit:Le produit n'a pas d'image";
+					}
 				}
 
 			}else{

@@ -13,7 +13,7 @@
 	
 		<p>
 			 	<label for="nom-du-fichier">Fichier</label> :
-				<input type="file" name="nom-du-fichier">
+				<input type="file" name="nom-du-fichier" accept=".jpg,.png,.jpeg">
 		</p>
 	
 	
