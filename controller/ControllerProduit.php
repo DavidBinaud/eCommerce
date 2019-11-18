@@ -1,7 +1,6 @@
 <?php
 
 	require_once (File::build_path(array("model","ModelProduit.php")));
-	require_once (File::build_path(array("model","ModelProduitImage.php")));
 
 	class ControllerProduit{
 		protected static $object = 'produit';
@@ -23,19 +22,14 @@
 
 
 		public static function read(){
-			if(isset($_GET['id'])){
-				$p = ModelProduit::select($_GET['id']);
+			if(!is_null(myGet('id'))){
+				$p = ModelProduit::select(myGet('id'));
 				if($p == false){
 					
 					$view='error'; $pagetitle='ErreurProduit'; $errorType = "Read d'un Produit: id fourni non existant";
 				}
 				else{
-					$pic = ModelProduitImage::select($_GET['id']);
-					if($pic != false){
-						$path = $pic->get('pathImgProduit');
-					}else{
-						$path=false;
-					}
+					$path = $p->get('pathImgProduit');
 					$view='detail'; $pagetitle='Detail Produit';
 				}
 			}else{
@@ -47,12 +41,12 @@
 
 
 		public static function delete(){
-			if(isset($_GET['id'])){
-				$p = ModelProduit::select($_GET['id']);
+			if(!is_null(myGet('id'))){
+				$p = ModelProduit::select(myGet('id'));
 				if($p == false){
 					$view='error'; $pagetitle='ErreurProduit'; $errorType = "Delete d'un Produit: id fourni non existant";
 				}else{
-					ModelProduit::delete($_GET['id']);
+					ModelProduit::delete(myGet('id'));
 					$tab_p = ModelProduit::selectAll();
 
 					$view='delete'; $pagetitle='Suppresion Produit';
@@ -80,9 +74,9 @@
 
 
 		public static function created(){
-			if (isset($_GET['id']) && isset($_GET['nom']) && isset($_GET['description']) && isset($_GET['prix']) && isset($_GET['nationalite'])){
+			if (!is_null(myGet('id')) && !is_null(myGet('nom')) && !is_null(myGet('description')) && !is_null(myGet('prix')) && !is_null(myGet('nationalite'))){
 
-				$p = new ModelProduit($_GET);
+				$p = new ModelProduit(array(myGet('id'),myGet('nom'),myGet('description'),myGet('prix'),myGet('nationalite'),myGet('pathImgProduit')));
 				if(ModelProduit::save($p) == false){
 					$view='error'; $pagetitle='Erreur de Création'; $errorType = 'Created Produit: id fourni déjà existant';
 					
@@ -100,8 +94,8 @@
 
 
 		public static function update(){
-			if (isset($_GET['id'])){
-				$p = ModelProduit::select($_GET['id']);
+			if (!is_null(myGet('id'))){
+				$p = ModelProduit::select(myGet('id'));
 
 				if($p == false){
 					$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'update Produit: id fourni non existant';
@@ -113,6 +107,7 @@
     				$pDescription = htmlspecialchars($p->get('description'));
     				$pPrix = htmlspecialchars($p->get('prix'));
     				$pNationalite = htmlspecialchars($p->get('nationalite'));
+    				$pathImgProduit = $p->get('pathImgProduit');
     				$pAction = "update";
 
 					$view='update'; $pagetitle='Mise A Jour';
@@ -127,13 +122,14 @@
 
 
 		public static function updated(){
-			if (isset($_GET['id']) && isset($_GET['nom']) && isset($_GET['description']) && isset($_GET['prix']) && isset($_GET['nationalite'])){
+			if (!is_null(myGet('id')) && !is_null(myGet('nom')) && !is_null(myGet('description')) && !is_null(myGet('prix')) && !is_null(myGet('nationalite'))){
 				$data = array(
-					"id" => $_GET['id'],
-					"nom" => $_GET['nom'],
-					"description" => $_GET['description'],
-					"prix" => $_GET['prix'],
-					"nationalite" => $_GET['nationalite']
+					"id" => myGet('id'),
+					"nom" => myGet('nom'),
+					"description" => myGet('description'),
+					"prix" => myGet('prix'),
+					"nationalite" => myGet('nationalite'),
+					"pathImgProduit" => myGet('pathImgProduit'),
 				);
 				if (ModelProduit::select($_GET['id']) != false) {
 					if(ModelProduit::update($data)){
@@ -154,8 +150,8 @@
 
 
 		public static function imgupload(){
-			if (isset($_GET['id'])){
-				$p = ModelProduit::select($_GET['id']);
+			if (!is_null(myGet('id'))){
+				$p = ModelProduit::select(myGet('id'));
 
 				if($p == false){
 					$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'imgupload Produit: id fourni non existant';
@@ -175,8 +171,8 @@
 
 
 		public static function imguploaded(){
-			if (isset($_POST['id'])){
-				$p = ModelProduit::select($_POST['id']);
+			if (!is_null(myGet('id'))){
+				$p = ModelProduit::select(myGet('id'));
 				if($p == false){
 					$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'imguploaded Produit: id fourni non existant';
 					
@@ -194,11 +190,11 @@
 							if (!move_uploaded_file($_FILES['nom-du-fichier']['tmp_name'], $pic_path)) {
 							  	$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'imguploaded Produit: La Copie a échouée';
 							}else{
-								$pic = new ModelProduitImage($_POST['id'],"src/$name");
+								$p->set("pathImgProduit","src/$name");
 								
-								if(ModelProduitImage::save($pic) == true){
+								if(ModelProduit::update($p->get_object_vars()) == true){
 									$pId = htmlspecialchars($p->get('id'));
-									$path = $pic->get('pathImgProduit');
+									$path = $p->get('pathImgProduit');
 									$view='imguploaded'; $pagetitle='Uploaded Img Produit';
 				
 									}else{
@@ -223,18 +219,19 @@
 
 
 		public static function imgdelete(){
-			if (isset($_GET['id'])){
-				$p = ModelProduit::select($_GET['id']);
+			if (!is_null(myGet('id'))){
+				$p = ModelProduit::select(myGet('id'));
 
 				if($p == false){
 					$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'imgdelete Produit: id fourni non existant';
 					
 				}
 				else{
-					$pic = ModelProduitImage::select($p->get('id'));
-					if ($pic != false) {
-						ModelProduitImage::delete($p->get('id'));
-						unlink($pic->get('pathImgProduit'));
+					$pic = $p->get('pathImgProduit');
+					if ($pic != NULL) {
+						$p->set('pathImgProduit',NULL);
+						ModelProduit::update($p->get_object_vars());
+						unlink($pic);
 						$path=false;
 						$view='imgdelete'; $pagetitle='Upload Img Produit';
 					}

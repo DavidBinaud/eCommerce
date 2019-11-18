@@ -2,7 +2,7 @@
 
   require_once File::build_path(array("model", "Model.php"));
 
-  class ModelClient extends Model{
+  class ModelUtilisateur extends Model{
            
     private $id;
     private $nom;
@@ -11,7 +11,9 @@
     private $pays;
     private $adresse;
     private $dateDeNaissance;
-    protected static $object = 'client';
+    private $is_admin;
+    private $nonce;
+    protected static $object = 'utilisateur';
     protected static $primary='id';
               
     //getter générique
@@ -29,7 +31,7 @@
     // Si un argument optionnel n'est pas fourni,
     //   alors il prend la valeur par défaut, NULL dans notre cas
     public function __construct($data = NULL) {
-      if (!is_null($data['id']) && !is_null($data['nom']) && !is_null($data['prenom']) && !is_null($data['ville']) && !is_null($data['pays']) && !is_null($data['adresse']) && !is_null($data['dateDeNaissance'])) {
+      if (!is_null($data['id']) && !is_null($data['nom']) && !is_null($data['prenom']) && !is_null($data['ville']) && !is_null($data['pays']) && !is_null($data['adresse']) && !is_null($data['dateDeNaissance']) && !is_null($data['is_admin']) && !is_null($data['nonce'])) {
         // Si aucun de $m, $c et $i sont nuls,
         // c'est forcement qu'on les a fournis
         // donc on retombe sur le constructeur à 3 arguments
@@ -40,6 +42,8 @@
         $this->pays = $data['pays'];
         $this->adresse = $data['adresse'];
         $this->dateDeNaissance = $data['dateDeNaissance'];
+        $this->is_admin = $data['is_admin'];
+        $this->nonce = $data['dateDeNaissance'];
       }
     }
 

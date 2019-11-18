@@ -9,6 +9,7 @@
     private $description;
     private $prix;
     private $nationalite;
+    private $pathImgProduit;
     protected static $object = 'produit';
     protected static $primary='id';
               
@@ -27,7 +28,7 @@
     // Si un argument optionnel n'est pas fourni,
     //   alors il prend la valeur par défaut, NULL dans notre cas
     public function __construct($data = NULL) {
-      if (!is_null($data['id']) && !is_null($data['nom']) && !is_null($data['description']) && !is_null($data['prix']) && !is_null($data['nationalite'])) {
+      if (!is_null($data['id']) && !is_null($data['nom']) && !is_null($data['description']) && !is_null($data['prix']) && !is_null($data['nationalite']) && !is_null($data['pathImgProduit'])) {
         // Si aucun de $m, $c et $i sont nuls,
         // c'est forcement qu'on les a fournis
         // donc on retombe sur le constructeur à 3 arguments
@@ -36,6 +37,7 @@
         $this->description = $data['description'];
         $this->prix = $data['prix'];
         $this->nationalite = $data['nationalite'];
+        $this->pathImgProduit = $data['pathImgProduit'];
       }
     }
 
