@@ -114,7 +114,7 @@
 						}else{
 							// On prépare le mail a envoyer pour que l'utilisateur valide son adresse mail
 							$login = rawurlencode($_GET['login']);
-							$mail = "<a href=localhost/PHP/TD8/index.php?controller=utilisateur&action=validate&login=$login&nonce=$nonce>cliquer sur le lien pour valider l'adresse email</a>";
+							$mail = "<a href=http://webinfo.iutmontp.univ-montp2.fr/~binaudd/eCommerce/index.php?controller=utilisateur&action=validate&login=$login&nonce=$nonce>cliquer sur le lien pour valider l'adresse email</a>";
 							var_dump($mail);
 							mail($_GET['email'],"Le sujet",$mail);
 
@@ -216,6 +216,7 @@
 
 		public static function connected(){
 			if(!is_null(myGet('login')) && !is_null(myGet('mdp'))){
+				var_dump(Security::chiffrer(myGet('mdp')));
 				if(ModelUtilisateur::checkPassword(myGet('login'),Security::chiffrer(myGet('mdp')))){
 					$u = ModelUtilisateur::select(myGet('login'));
 					if ($u->get('nonce') == NULL) {

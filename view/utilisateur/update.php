@@ -3,7 +3,7 @@
 	$loginParam = "";
 	if($uAction == "create"){
 		$loginParam = "required";
-		$loginParam = "required";
+		$mdpParam = "required";
 		$actionAfter = "created";
 		$titreForm = "Création de " . ucfirst(static::$object);
 	}else {

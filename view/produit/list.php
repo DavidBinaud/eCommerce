@@ -11,6 +11,7 @@
 			echo "(<a href=index.php?controller=produit&action=delete&id=$pidURL>Supprimer</a>)
 		 </p>";
 		}
+		echo "(<a href=index.php?action=addpanier&controller=produit&id=$pidURL >Ajouter au Panier</a>)</p>";
 	}
 
 	if(Session::is_admin()){

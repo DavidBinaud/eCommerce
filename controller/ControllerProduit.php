@@ -294,6 +294,62 @@
 
 
 
+
+
+		public static function addpanier(){
+			if(!is_null(myGet('id'))){
+				$p = ModelProduit::select(myGet('id'));
+				if ($p == true) {
+					if(isset($_SESSION) && isset($_SESSION['panier'])){
+						$panier = $_SESSION['panier'];
+						$id = myGet('id');
+
+						// foreach ($panier as $lignepanier) {
+						// 	if($lignepanier['immatriculation'] == $immat){
+						// 		$lignepanier['qté']++;
+						// 	}
+						// }
+
+						$index = array_search($id, array_column($panier, 'id'));
+
+						//on doit faire une comparaison stricte dans le cas ou l'index 0 serait celui trouvé car 0 != false renvoie false
+						if($index !== false){
+							$_SESSION['panier'][$index]['quantité'] = $_SESSION['panier'][$index]['quantité'] + 1;
+						}else{
+							$_SESSION['panier'][] = array('id' => $p->get('id'), 'quantité' => 1);
+						}
+					}else{
+						$_SESSION['panier'][] = array('id' => $p->get('id'), 'quantité' => 1);
+					}
+					
+					$view='addedpanier'; $pagetitle='Ajouté au panier';
+				}else{
+					$view='error'; $pagetitle='Erreur';$errorType = 'add panier, id produit inexistant';
+				}
+			}else{
+				$view='error'; $pagetitle='Erreur';$errorType = 'add panier, probleme parametre';
+			}
+			require (File::build_path(array("view","view.php")));
+		}
+
+
+
+
+
+		public static function getpanier(){
+
+			if(isset($_SESSION) && isset($_SESSION['panier'])){
+				$panier = $_SESSION['panier'];
+			}
+			$view='panier'; $pagetitle='panier';
+			// else{
+			// 	$view='error'; $pagetitle='Error'; $errorType = "Pas de session";
+			// }
+			require (File::build_path(array("view","view.php")));
+		}
+
+
+
 	}
 
 
