@@ -113,9 +113,8 @@
 							$view='error'; $pagetitle='Erreur de Création'; $errorType = 'Created Utilisateur: login fourni déjà existant';
 						}else{
 							// On prépare le mail a envoyer pour que l'utilisateur valide son adresse mail
-							$login = rawurlencode($_GET['login']);
+							$login = rawurlencode(myGet('login'));
 							$mail = "<a href=http://webinfo.iutmontp.univ-montp2.fr/~binaudd/eCommerce/index.php?controller=utilisateur&action=validate&login=$login&nonce=$nonce>cliquer sur le lien pour valider l'adresse email</a>";
-							var_dump($mail);
 							mail($_GET['email'],"Le sujet",$mail);
 
 							$tab_u = ModelUtilisateur::selectAll();
@@ -269,8 +268,99 @@
 			}
 			require (File::build_path(array("view","view.php")));
 		}
+
+
+
+		public static function askresetpass(){
+			if (is_null(myGet('login')) && !Session::is_user(myGet('login'))) {
+				$login = "";
+				$view='askresetpass'; $pagetitle='Reset Password';
+			}else{
+				$view='error'; $pagetitle='Erreur Connexion'; $errorType = 'Vous êtes connectés, impossible de reset le mot de passe';
+			}
+			
+			require (File::build_path(array("view","view.php")));
+		}
 	
 
+
+		public static function sendresetpass(){
+			if (!is_null(myGet('login'))) {
+				$u = ModelUtilisateur::select(myGet('login'));
+				if($u != false){
+					$resetpass = Security::generateRandomHex();
+					$login = rawurlencode(myGet('login'));
+
+					$data = array(
+						'login' => $login,
+						'resetpass' => $resetpass,
+					);
+
+					if (ModelUtilisateur::update($data)) {
+						$mail = "<a href=http://webinfo.iutmontp.univ-montp2.fr/~binaudd/eCommerce/index.php?controller=utilisateur&action=inputnewpass&login=$login&resetpass=$resetpass>cliquer sur le lien pour modifier votre mot de passe</a>";
+						mail($u->get('email'),"Restoration du MDP",$mail);
+						$view='resetsent'; $pagetitle='Sent Reset Password';
+					}else{
+						$view='error'; $pagetitle='Erreur Connexion'; $errorType = 'Erreur sendresetpass: Probleme durant l envoi du mail de restoration, veuillez réessayer ultérieurement';
+					}
+				}else{
+					$login = myGet('login');
+					$view='askresetpass'; $pagetitle='Reset Password';
+				}
+				
+			}else{
+				$view='error'; $pagetitle='Erreur Connexion'; $errorType = 'Erreur sendresetpass: probleme de paramètres';
+			}
+			
+			require (File::build_path(array("view","view.php")));
+		}
+
+
+
+		public static function inputnewpass(){
+			if(!is_null(myGet('resetpass')) && !is_null(myGet('login'))){
+				$resetpass = myGet('resetpass');
+				$login = myGet('login');
+				$view='resetpass'; $pagetitle='Reset Password';
+			}else{
+				$view='error'; $pagetitle='Erreur inputnewpass'; $errorType = 'Erreur inputnewpass: probleme de paramètres';
+			}
+			require (File::build_path(array("view","view.php")));
+		}
+
+
+		public static function resetpass(){
+			if(!is_null(myGet('resetpass')) && !is_null(myGet('login')) && !is_null(myGet('mdp')) && !is_null(myGet('confirmmdp'))){
+				if (myGet('mdp') == myGet('confirmmdp')){
+					$u = ModelUtilisateur::select(myGet('login'));
+					if($u != false){
+						if($u->get('resetpass') == myGet('resetpass')){
+							$data = array(
+								'login' => myGet('login'), 
+								'mdp' => Security::chiffrer(myGet('mdp')), 
+								'resetpass' => myGet('resetpass'), 
+							);
+							ModelUtilisateur::update($data);
+							$view='resetpassconfirm'; $pagetitle='Reset Password';
+						}else{
+							$view='error'; $pagetitle='Erreur ResetPass'; $errorType = 'Erreur resetpass: la clé de restoration du mdp est invalide';
+						}
+
+					}else{
+						$view='error'; $pagetitle='Erreur ResetPass'; $errorType = "Erreur resetpass: le Login fourni n'existe pas";
+					}
+
+
+				}else{
+					$view='error'; $pagetitle='Erreur ResetPass'; $errorType = 'Erreur resetpass: les deux mdp sont différents';
+				}
+			}else{
+				$view='error'; $pagetitle='Erreur ResetPass'; $errorType = 'Erreur resetpass: probleme de paramètres';
+			}
+			require (File::build_path(array("view","view.php")));
+		}
+
+	
 
 	}
 

@@ -17,5 +17,8 @@
 	      <input type='hidden' name='controller' value='utilisateur'>
 	      <input type="submit" value="Envoyer" />
 	    </p>
-	  </fieldset> 
+	    <a href="index.php?action=create&controller=utilisateur">S'inscrire</a>
+	    <a href="index.php?action=askresetpass&controller=utilisateur">Mot de passe oublié?</a>
+	  </fieldset>
+
 	</form>

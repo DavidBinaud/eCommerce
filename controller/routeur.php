@@ -41,7 +41,6 @@
 			//Verifie que l'action passée en paramètre est bien une action existante dans l'array des noms de méthodes ; si n'existe pas on fait l'action error du ControllerVoiture
 			if(!in_array($action, $ControllerClassMethods)){
 				//Si la méthode n'existe pas
-				$controller_class= 'ControllerVoiture';
 				$action = 'error';
 			}
 		}

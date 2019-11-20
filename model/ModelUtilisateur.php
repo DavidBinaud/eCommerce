@@ -15,6 +15,7 @@
     private $dateDeNaissance;
     private $is_admin;
     private $nonce;
+    private $resetpass;
     protected static $object = 'utilisateur';
     protected static $primary='login';
               
@@ -48,6 +49,10 @@
         $this->dateDeNaissance = $data['dateDeNaissance'];
         $this->is_admin = $data['is_admin'];
         $this->nonce = $data['nonce'];
+
+        if (!is_null($data['resetpass'])) {
+          $this->resetpass = $data['resetpass'];
+        }
       }
     }
 
