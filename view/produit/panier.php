@@ -8,7 +8,8 @@
 			}
 			echo "<br>";
 		}
-		echo "Prix Panier {$_SESSION['prixpanier']} </p>";
+		echo "Prix Panier {$_SESSION['prixpanier']} 
+				<a href='index.php?action=viderpanier&controller=produit'>Vider Panier</a></p>";
 	}else{
 		echo "panier vide";
 	}

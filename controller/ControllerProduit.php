@@ -300,10 +300,11 @@
 			if(!is_null(myGet('id'))){
 				$p = ModelProduit::select(myGet('id'));
 				if ($p == true) {
+					$id = $p->get('id');
+					$path = $p->get('pathImgProduit');
 					if(isset($_SESSION) && isset($_SESSION['panier'])){
 						$panier = $_SESSION['panier'];
-						$id = myGet('id');
-						$path = myGet('pathImgProduit');
+						
 						// foreach ($panier as $lignepanier) {
 						// 	if($lignepanier['immatriculation'] == $immat){
 						// 		$lignepanier['qté']++;
@@ -347,6 +348,21 @@
 			if(isset($_SESSION) && isset($_SESSION['panier'])){
 				$panier = $_SESSION['panier'];
 			}
+			$view='panier'; $pagetitle='panier';
+			// else{
+			// 	$view='error'; $pagetitle='Error'; $errorType = "Pas de session";
+			// }
+			require (File::build_path(array("view","view.php")));
+		}
+
+
+
+		public static function viderpanier(){
+			if (isset($_SESSION['panier'])) {
+				unset($_SESSION['panier']);
+			}
+			
+			
 			$view='panier'; $pagetitle='panier';
 			// else{
 			// 	$view='error'; $pagetitle='Error'; $errorType = "Pas de session";
