@@ -6,10 +6,14 @@
 
 		echo "<p> Produit d'id
 		<a href=index.php?controller=produit&action=read&id=$pidURL>{$pid}</a>
-		 et de nom $pnom 
-		(<a href=index.php?controller=produit&action=delete&id=$pidURL>Supprimer</a>)
+		 et de nom $pnom ";
+		if(Session::is_admin()){
+			echo "(<a href=index.php?controller=produit&action=delete&id=$pidURL>Supprimer</a>)
 		 </p>";
+		}
 	}
 
-	echo "<a href=index.php?action=create&controller=produit>Creer un Produit</a>";
+	if(Session::is_admin()){
+		echo "<a href=index.php?action=create&controller=produit>Creer un Produit</a>";
+	}
 ?>
