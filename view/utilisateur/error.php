@@ -1,3 +1,3 @@
 <?php
-	echo "NEIN ! Mauvaise action Client! $errorType";
+	echo "Erreur: $errorType";
 ?>

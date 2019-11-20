@@ -1,17 +1,18 @@
 <?php
-	foreach ($tab_c as $c) {
-		$cid = htmlspecialchars($c->get("id"));
-		$cidURL = rawurlencode($c->get("id"));
-		$cnom = htmlspecialchars($c->get("nom"));
-		$cprenom = htmlspecialchars($c->get("prenom"));
+	foreach ($tab_u as $u) {
+		$ulogin = htmlspecialchars($u->get("login"));
+		$uloginURL = rawurlencode($u->get("login"));
+		$unom = htmlspecialchars($u->get("nom"));
+		$uprenom = htmlspecialchars($u->get("prenom"));
 		
 
-		echo "<p> Client d'id 
-		<a href=index.php?action=read&controller=client&id=$cidURL>{$cid}</a> 
-		de nom $cnom et prenom $cprenom
-		(<a href=index.php?controller=client&action=delete&id=$cidURL>Supprimer</a>)
+		echo "<p> Utilisateur de login 
+		<a href=index.php?action=read&controller=Utilisateur&login=$uloginURL>{$ulogin}</a> 
+		de nom $unom et prenom $uprenom
+		(<a href=index.php?controller=Utilisateur&action=delete&login=$uloginURL>Supprimer</a>)
 		</p>";
 	}
+	
+	echo "<a href=index.php?action=create&controller=Utilisateur>Creer un Client</a>";
 
-	echo "<a href=index.php?action=create&controller=client>Creer un Client</a>";
 ?>

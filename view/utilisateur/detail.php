@@ -1,16 +1,17 @@
 <?php
-	$cid = htmlspecialchars($c->get("id"));
-	$cidURL = rawurlencode($c->get("id"));
-	$cnom = htmlspecialchars($c->get("nom"));
-	$cprenom = htmlspecialchars($c->get("prenom"));
-	$cville = htmlspecialchars($c->get("ville"));
-	$cpays = htmlspecialchars($c->get("pays"));
-	$cadresse = htmlspecialchars($c->get("adresse"));
-	$cdateDeNaissance = htmlspecialchars($c->get("dateDeNaissance"));
+	$ulogin = htmlspecialchars($u->get("login"));
+	$uloginURL = rawurlencode($u->get("login"));
+	$uemail = htmlspecialchars($u->get("email"));
+	$unom = htmlspecialchars($u->get("nom"));
+	$uprenom = htmlspecialchars($u->get("prenom"));
+	$uville = htmlspecialchars($u->get("ville"));
+	$upays = htmlspecialchars($u->get("pays"));
+	$uadresse = htmlspecialchars($u->get("adresse"));
+	$udateDeNaissance = htmlspecialchars($u->get("dateDeNaissance"));
 
 	
-	echo "<p> Client d'id $cid, de nom $cnom de prénom $cprenom née le $cdateDeNaissance vit à $cville en $cpays à l'adresse $cadresse 
-	(<a href=index.php?action=update&controller=client&id=$cidURL>MAJ</a>)
+	echo "<p> Client de login $ulogin,d'email $uemail de nom $unom de prénom $uprenom née le $udateDeNaissance vit à $uville en $upays à l'adresse $uadresse 
+	(<a href=index.php?action=update&controller=utilisateur&login=$uloginURL>MAJ</a>)
 	</p>";
 
 
