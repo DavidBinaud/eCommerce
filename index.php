@@ -25,7 +25,7 @@
 
 	 	if (isset($_SESSION['panier'])) {
 	 		foreach ($_SESSION['panier'] as $key => $produit) {
-	 			$_SESSION['prixpanier'] += $produit['quantité'];
+	 			$_SESSION['prixpanier'] += $produit['prix'] * $produit['quantité'];
 	 		}
 	 	}
 

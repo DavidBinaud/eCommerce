@@ -303,7 +303,7 @@
 					if(isset($_SESSION) && isset($_SESSION['panier'])){
 						$panier = $_SESSION['panier'];
 						$id = myGet('id');
-
+						$path = myGet('pathImgProduit');
 						// foreach ($panier as $lignepanier) {
 						// 	if($lignepanier['immatriculation'] == $immat){
 						// 		$lignepanier['qté']++;
@@ -316,10 +316,16 @@
 						if($index !== false){
 							$_SESSION['panier'][$index]['quantité'] = $_SESSION['panier'][$index]['quantité'] + 1;
 						}else{
-							$_SESSION['panier'][] = array('id' => $p->get('id'), 'quantité' => 1);
+							$_SESSION['panier'][] = array(
+													'id' => $p->get('id'),
+													'prix' => $p->get('prix'),
+													'quantité' => 1);
 						}
 					}else{
-						$_SESSION['panier'][] = array('id' => $p->get('id'), 'quantité' => 1);
+						$_SESSION['panier'][] = array(
+													'id' => $p->get('id'),
+													'prix' => $p->get('prix'),
+													'quantité' => 1);
 					}
 					
 					$view='addedpanier'; $pagetitle='Ajouté au panier';
