@@ -76,7 +76,21 @@
 		public static function created(){
 			if (!is_null(myGet('id')) && !is_null(myGet('nom')) && !is_null(myGet('description')) && !is_null(myGet('prix')) && !is_null(myGet('nationalite'))){
 
-				$p = new ModelProduit(array(myGet('id'),myGet('nom'),myGet('description'),myGet('prix'),myGet('nationalite'),myGet('pathImgProduit')));
+				$data = array(
+					"id" => myGet('id'),
+					"nom" => myGet('nom'),
+					"description" => myGet('description'),
+					"prix" => myGet('prix'),
+					"nationalite" => myGet('nationalite')
+				);
+
+				if(!is_null(myGet('pathImgProduit'))){
+					$data["pathImgProduit"] = myGet('pathImgProduit');
+				}else{
+					$data["pathImgProduit"] = "src/placeholder.jpg";
+				}
+				$p = new ModelProduit($data);
+				var_dump($p->get_object_vars());	
 				if(ModelProduit::save($p) == false){
 					$view='error'; $pagetitle='Erreur de Création'; $errorType = 'Created Produit: id fourni déjà existant';
 					
