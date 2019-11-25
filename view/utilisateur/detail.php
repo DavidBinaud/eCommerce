@@ -10,7 +10,7 @@
 	$udateDeNaissance = htmlspecialchars($u->get("dateDeNaissance"));
 
 	
-	echo "<p> Client de login $ulogin,d'email $uemail de nom $unom de prénom $uprenom née le $udateDeNaissance vit à $uville en $upays à l'adresse $uadresse 
+	echo "<p> Client de login $ulogin,d'email $uemail de nom $unom de prénom $uprenom né(e) le $udateDeNaissance vit à $uville en $upays à l'adresse $uadresse 
 	(<a href=index.php?action=update&controller=utilisateur&login=$uloginURL>MAJ</a>)
 	</p>";
 
