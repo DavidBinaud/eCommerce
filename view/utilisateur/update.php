@@ -14,6 +14,8 @@
 	}
 ?>
 
+
+
 <form method="get" action="index.php">
 	<fieldset>
 		<legend>Mon formulaire de <?php echo $titreForm;?>:</legend>
@@ -35,7 +37,7 @@
 
 		<p>
 	      <label for="confimpass_id">Email</label>
-	      <input type="email" name="email" id="email_id" required/>
+	      <input type="email" value="<?php echo $uEmail;?>" name="email" id="email_id" required/>
 	    </p>
 
 		<p>

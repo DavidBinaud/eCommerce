@@ -62,6 +62,7 @@
 		public static function create(){
     		$ulogin = "\"\"";
     		$uNom = "\"\"";
+    		$uEmail = "\"\"";
     		$uPrenom = "\"\"";
     		$uVille = "\"\"";
     		$uPays = "\"\"";
@@ -77,10 +78,9 @@
 
 
 		public static function created(){
-			var_dump($_GET);
 			if (!is_null(myGet('login')) && !is_null(myGet('mdp')) && !is_null(myGet('confirmmdp')) && !is_null(myGet('email')) && !is_null(myGet('nom')) && !is_null(myGet('prenom')) && !is_null(myGet('ville')) && !is_null(myGet('pays')) && !is_null(myGet('adresse')) && !is_null(myGet('dateDeNaissance'))){
 				if ($_GET['mdp'] == $_GET['confirmmdp']) {
-					var_dump(filter_var (myGet('email'),FILTER_VALIDATE_EMAIL));
+					
 					if (filter_var (myGet('email'),FILTER_VALIDATE_EMAIL)) {
 						//nonce pour la verification par mail
 						$nonce = Security::generateRandomHex();
@@ -112,6 +112,7 @@
 						
 						if(ModelUtilisateur::save($u) == false){
 							$view='error'; $pagetitle='Erreur de Création'; $errorType = 'Created Utilisateur: login fourni déjà existant';
+							$redirect ='update';
 						}else{
 							// On prépare le mail a envoyer pour que l'utilisateur valide son adresse mail
 							$login = rawurlencode(myGet('login'));
@@ -121,16 +122,28 @@
 							$tab_u = ModelUtilisateur::selectAll();
 							$view='created'; $pagetitle='Création Reussie';
 						}
-					}
-					else{
-						$view='error'; $pagetitle='ErreurUtilisateur'; $errorType = "Create d'un Utilisateur: mdp !=";
+					
+					}else{
+						$view='error'; $pagetitle='ErreurUtilisateur'; $errorType = "Create d'un Utilisateur: Problème d'email";
+						$redirect ='update';
 					}
 				}else{
-					$view='error'; $pagetitle='ErreurUtilisateur'; $errorType = "Create d'un Utilisateur: Problème d'email";
+					$view='error'; $pagetitle='ErreurUtilisateur'; $errorType = "Create d'un Utilisateur: Confirmation du mot de passse invalide";
+					$redirect ='update';
 				}
+				$ulogin = htmlspecialchars(myGet('login'));
+				$uEmail = htmlspecialchars(myGet('email'));
+	    		$uNom = htmlspecialchars(myGet('nom'));
+	    		$uPrenom = htmlspecialchars(myGet('prenom'));
+	    		$uVille = htmlspecialchars(myGet('ville'));
+	    		$uPays = htmlspecialchars(myGet('pays'));
+	    		$uAdresse = htmlspecialchars(myGet('adresse'));
+	    		$uDateDeNaissance = htmlspecialchars(myGet('dateDeNaissance'));
 			}else{
 				$view='error'; $pagetitle='ErreurUtilisateur'; $errorType = "Create d'un Utilisateur: Problème de paramètres";
 			}
+
+    		$uAction = "create";
 			require (File::build_path(array("view","view.php")));
 		}
 
@@ -146,7 +159,7 @@
 				}
 				else{
     				$ulogin = htmlspecialchars($u->get("login"));
-    				$uemail = htmlspecialchars($u->get("email"));
+    				$uEmail = htmlspecialchars($u->get("email"));
 					$uNom = htmlspecialchars($u->get("nom"));
 					$uPrenom = htmlspecialchars($u->get("prenom"));
 					$uVille = htmlspecialchars($u->get("ville"));
