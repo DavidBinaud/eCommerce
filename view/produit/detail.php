@@ -8,7 +8,7 @@
 
 	if ($path != false) {
 		echo "<p>";
-		echo "<img class="tank" src='$path' alt='img-Char'>";
+		echo "<img class='tank' src='$path' alt='img-Char'>";
 		echo "(<a href=index.php?action=imgdelete&controller=produit&id=$pidURL>Supprimer image</a>)";
 		echo "</p>";
 	}
