@@ -103,7 +103,8 @@
 							"adresse" => myGet('adresse'),
 							"dateDeNaissance" => myGet('dateDeNaissance'),
 							"is_admin" => $is_admin,
-							"nonce" => $nonce
+							"nonce" => $nonce,
+							"resetpass" => NULL
 						);
 
 						//on crée l'utilisateur objet en php
