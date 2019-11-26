@@ -2,11 +2,9 @@
 	$controller = static::$object;
 	$loginParam = "";
 	if($pAction == "create"){
-		$loginParam = "required";
 		$actionAfter = "created";
 		$titreForm = "Création de " . ucfirst(static::$object);
 	}else {
-		$loginParam = "readonly";
 		$actionAfter = "updated";
 		$titreForm = "Mise à Jour de " . ucfirst(static::$object);
 	}
@@ -15,11 +13,15 @@
 <form method="get" action="index.php">
 	<fieldset>
 		<legend>Mon formulaire de <?php echo $titreForm;?>:</legend>
-	    
-		<p>
-	 	 	<label for="id_id">Id</label> :
-			<input type="text" value="<?php echo $pId;?>" name="id" id="id_id" <?php echo $loginParam;?>/>
-		</p>
+
+	    <?php
+	    	if ($pAction == "update") {
+	    		echo "<p>
+				 	 	<label for='id_id'>Id</label> :
+						<input type='text' value='$pId' name='id' id='id_id' readonly/>
+					</p>";
+	    	}
+	    ?>
 
 		<p>
 	  		<label for="nom_id">Nom</label> :

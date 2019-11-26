@@ -83,10 +83,10 @@
 
 		public static function created(){
 			if(Session::is_admin()){
-				if (!is_null(myGet('id')) && !is_null(myGet('nom')) && !is_null(myGet('description')) && !is_null(myGet('prix')) && !is_null(myGet('nationalite'))){
+				if (!is_null(myGet('nom')) && !is_null(myGet('description')) && !is_null(myGet('prix')) && !is_null(myGet('nationalite'))){
 
 					$data = array(
-						"id" => myGet('id'),
+						"id" => "",
 						"nom" => myGet('nom'),
 						"description" => myGet('description'),
 						"prix" => myGet('prix'),
