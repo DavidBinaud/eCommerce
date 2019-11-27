@@ -1,0 +1,13 @@
+html{
+
+background-image: url("../src/overlord.jpg");
+background-position: 50% 22%;
+background-attachment: scroll;
+}
+
+.boxed{
+	background: white;
+	margin: 5%;
+	padding :2%;
+	opacity: 0.85;
+}

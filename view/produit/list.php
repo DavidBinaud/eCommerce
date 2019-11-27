@@ -20,4 +20,5 @@
 	if(Session::is_admin()){
 		echo "<a href=index.php?action=create&controller=produit>Creer un Produit</a>";
 	}
+	
 ?>

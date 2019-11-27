@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" type="text/css" href="css/styles.css">
         <meta charset="UTF-8">
         <title><?php echo $pagetitle; ?></title>
     </head>
     <body>
+        
     <?php
 
     if(Session::is_admin()){
@@ -35,11 +37,12 @@
 
         echo    '</div>
         </header>';
-    }
+    } echo '<div class ="boxed">';
 	
 
 		$filepath = File::build_path(array("view",static::$object, "$view.php"));
 		require $filepath;
+        echo '</div>';
 	?>
 
     </body>

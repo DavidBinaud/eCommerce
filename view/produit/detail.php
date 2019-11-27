@@ -5,6 +5,7 @@
 	$pdescription = htmlspecialchars($p->get("description"));
 	$pprix = htmlspecialchars($p->get("prix"));
 	$pnationalite = htmlspecialchars($p->get("nationalite"));
+	$ptype = htmlspecialchars($p->get("type"));
 
 	if ($path != false) {
 		echo "<p>";
@@ -12,7 +13,7 @@
 		echo "(<a href=index.php?action=imgdelete&controller=produit&id=$pidURL>Supprimer image</a>)";
 		echo "</p>";
 	}
-	echo "<p> Le Produit d'id {$pid}, nommé $pnom vendu au prix de $pprix € et de nationalite $pnationalite est décrit par: <br>$pdescription";
+	echo "<p> Le $ptype de nationalité $pnationalite <b> $pnom </b> est vendu au prix de $pprix €.<br> Description: <br>$pdescription";
 
 	if(Session::is_admin()){
 		echo "(<a href=index.php?action=update&controller=produit&id=$pidURL>MAJ</a>)
