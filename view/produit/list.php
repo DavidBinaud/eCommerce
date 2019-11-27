@@ -11,7 +11,7 @@ echo "<div class='row'>";
 
 		echo "			
 		    <div class='col s12 m6'>
-		      <div class='card'>
+		      <div class='card large'>
 		        <div class='card-image'>
 		          <img src='{$path}' alt='$pnom'>
 		          <span class='card-title'>$pnom</span>
