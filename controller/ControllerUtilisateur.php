@@ -251,9 +251,16 @@
 
 
 		public static function deconnect(){
-			session_unset();
-			session_destroy();
-			setcookie(session_name(),'',-1);
+			//Pour tout destroy de la session
+			//session_unset();
+			//session_destroy();
+			//setcookie(session_name(),'',-1);
+
+
+			//On unset seulement ce qui existe lors de la connexion pour garder le panier après déconnexion
+			unset($_SESSION['login']);
+			unset($_SESSION['admin']);
+
 			$pagetitle='Deconnection';
 			header('Location: index.php');
 			exit(); 
@@ -313,6 +320,7 @@
 					if (ModelUtilisateur::update($data)) {
 						$mail = "<a href=http://webinfo.iutmontp.univ-montp2.fr/~binaudd/eCommerce/index.php?controller=utilisateur&action=inputnewpass&login=$login&resetpass=$resetpass>cliquer sur le lien pour modifier votre mot de passe</a>";
 						mail($u->get('email'),"Restoration du MDP",$mail);
+						var_dump($mail);
 						$view='resetsent'; $pagetitle='Sent Reset Password';
 					}else{
 						$view='error'; $pagetitle='Erreur Connexion'; $errorType = 'Erreur sendresetpass: Probleme durant l envoi du mail de restoration, veuillez réessayer ultérieurement';
