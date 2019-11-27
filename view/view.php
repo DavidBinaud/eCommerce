@@ -2,6 +2,10 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="css/styles.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet"> 
         <meta charset="UTF-8">
         <title><?php echo $pagetitle; ?></title>
     </head>
@@ -24,10 +28,10 @@
         echo '
         <header>
             <div class="nav">
-              <a href="index.php?action=readAll&controller=produit">Produits</a>';
+              <a class="waves-effect waves-light btn fspaced" href="index.php?action=readAll&controller=produit">Produits</a>';
         if(!isset($_SESSION['login'])){
-            echo '<a href="index.php?action=getpanier&controller=produit">Panier</a>';
-            echo '<a href="index.php?action=connect&controller=utilisateur">Connexion</a>';
+            echo '<a class="waves-effect waves-light btn sspaced" href="index.php?action=getpanier&controller=produit">Panier</a>';
+            echo '<a class="waves-effect waves-light btn sspaced" href="index.php?action=connect&controller=utilisateur">Connexion</a>';
         }else{
             $loginURL = rawurlencode($_SESSION['login']);
             echo "<a href='index.php?action=read&controller=utilisateur&login=$loginURL'>Compte</a>";
