@@ -28,10 +28,10 @@
         echo '
         <header>
             <div class="nav">
-              <a class="waves-effect waves-light btn fspaced" href="index.php?action=readAll&controller=produit">Produits</a>';
+              <a class="waves-effect waves-light btn grey darken-1 fspaced" href="index.php?action=readAll&controller=produit">Produits</a>';
         if(!isset($_SESSION['login'])){
-            echo '<a class="waves-effect waves-light btn sspaced" href="index.php?action=getpanier&controller=produit">Panier</a>';
-            echo '<a class="waves-effect waves-light btn sspaced" href="index.php?action=connect&controller=utilisateur">Connexion</a>';
+            echo '<a class="waves-effect waves-light btn grey darken-1 sspaced" href="index.php?action=getpanier&controller=produit">Panier</a>';
+            echo '<a class="waves-effect waves-light btn grey darken-1 sspaced" href="index.php?action=connect&controller=utilisateur">Connexion</a>';
         }else{
             $loginURL = rawurlencode($_SESSION['login']);
             echo "<a href='index.php?action=read&controller=utilisateur&login=$loginURL'>Compte</a>";
@@ -51,7 +51,7 @@
 
     </body>
     <footer>
-    		<p style="border: 1px solid black;text-align:right;padding-right:1em;">
+    		<p class="white-text">
   				Site d'eCommerce de Binaud - Manelphe - Sarlin
 			</p>
     </footer>
