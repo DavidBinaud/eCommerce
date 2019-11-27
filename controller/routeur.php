@@ -1,6 +1,5 @@
 <?php
 
-
 	function myGet($nomvar){
 		if (isset($_GET[$nomvar])) {
 			return $_GET[$nomvar];
@@ -16,13 +15,11 @@
 	require_once (File::build_path(array("controller","ControllerProduit.php")));
 	require_once (File::build_path(array("controller","ControllerUtilisateur.php")));
 	require_once (File::build_path(array("controller","ControllerCommande.php")));
+	require_once (File::build_path(array("controller","ControllerPanier.php")));
 	// On recupère l'action passée dans l'URL
 
 	$controller_default = "produit";
 
-	if(isset($_COOKIE) && isset($_COOKIE['preference']) && in_array($_COOKIE['preference'], array("voiture","utilisateur","trajet"))){
-		$controller_default = $_COOKIE['preference'];
-	}
 
 	//Verifie qu'une action est passée dans l'url ; Si aucune action on fait l'action de base readALL
 	if(!is_null(myGet('action')) && !is_null(myGet('controller'))){
