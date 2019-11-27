@@ -10,12 +10,12 @@
 	if ($path != false) {
 		echo "<p>";
 		echo "<img class='tank' src='$path' alt='img-Char'>";
-		echo "(<a href=index.php?action=imgdelete&controller=produit&id=$pidURL>Supprimer image</a>)";
+		
 		echo "</p>";
 	}
 	echo "<p> Le $ptype de nationalité $pnationalite <b> $pnom </b> est vendu au prix de $pprix €.<br> Description: <br>$pdescription";
 
-	if(Session::is_admin()){
+	if(Session::is_admin()){	
 		echo "(<a href=index.php?action=update&controller=produit&id=$pidURL>MAJ</a>)
 		</p>";
 	}

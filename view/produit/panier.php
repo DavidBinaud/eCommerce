@@ -8,10 +8,11 @@
 			}
 			echo "<br>";
 		}
-		echo "Prix Panier {$_SESSION['prixpanier']} 
-				<a href='index.php?action=viderpanier&controller=produit'>Vider Panier</a></p>";
+		echo "Montant total du panier : {$_SESSION['prixpanier']} € <br> 
+
+				<div class='waves-effect waves-light btn grey darken-1 '  href='index.php?action=viderpanier&controller=produit'>Vider Panier</div></p>";
 	}else{
-		echo "panier vide";
+		echo "Panier vide";
 	}
 
 
