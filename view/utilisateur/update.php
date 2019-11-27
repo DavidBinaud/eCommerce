@@ -67,7 +67,7 @@
 
 		<p>
 			<label for="dateDeNaissance_id">Date de Naissance:</label> 
-			<input type="text" value="<?php echo $uDateDeNaissance;?>" name="dateDeNaissance" id="dateDeNaissance_id"/>
+			<input type="date" value="<?php echo $uDateDeNaissance;?>" name="dateDeNaissance" id="dateDeNaissance_id"/>
 		</p>
 
 		<p>
