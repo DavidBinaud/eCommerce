@@ -10,6 +10,7 @@
     private $prix;
     private $nationalite;
     private $pathImgProduit;
+    private $type;
     protected static $object = 'produit';
     protected static $primary='id';
               

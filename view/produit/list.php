@@ -3,10 +3,14 @@
 		$pid = htmlspecialchars($p->get("id"));
 		$pidURL = rawurlencode($p->get("id"));
 		$pnom = htmlspecialchars($p->get("nom"));
+		$pimg = htmlspecialchars($p->get("pathImgProduit"));
+		$nationalite = htmlspecialchars($p->get("nationalite"));
+		$type = htmlspecialchars($p->get("type"));
+		
 
-		echo "<p> Produit d'id
-		<a href=index.php?controller=produit&action=read&id=$pidURL>{$pid}</a>
-		 et de nom $pnom ";
+		echo "<p> $type de nationnalité $nationalite, le
+		<a href=index.php?controller=produit&action=read&id=$pidURL>{$pnom}</a>
+		 ";
 		if(Session::is_admin()){
 			echo "(<a href=index.php?controller=produit&action=delete&id=$pidURL>Supprimer</a>)";
 		}
