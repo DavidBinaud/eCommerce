@@ -9,9 +9,7 @@ echo "<div class='row'>";
 		$path = htmlspecialchars($p->get("pathImgProduit"));
 		
 
-		echo "
-		
-			
+		echo "			
 		    <div class='col s12 m6'>
 		      <div class='card'>
 		        <div class='card-image'>
@@ -19,18 +17,15 @@ echo "<div class='row'>";
 		          <span class='card-title'>$pnom</span>
 		        </div>
 		        <div class='card-action'>
-		          <a href='index.php?controller=produit&action=read&id=$pidURL'>Plus de détail :</a>
-		          <a href=index.php?action=addpanier&controller=produit&id=$pidURL >Ajouter au Panier</a>
-		        </div>
+		          <a href='index.php?controller=produit&action=read&id=$pidURL'>Plus de détails :</a>
+		          <a href=index.php?action=addpanier&controller=produit&id=$pidURL >Ajouter au Panier</a>";
+		          if(Session::is_admin()){
+						echo "<a href=index.php?controller=produit&action=delete&id=$pidURL>Supprimer</a>";
+					}
+		        echo "</div>
 		      </div>
 		    </div>
 		  ";
-
-		
-
-		if(Session::is_admin()){
-			echo "(<a href=index.php?controller=produit&action=delete&id=$pidURL>Supprimer</a>)";
-		}
 	}
 	echo "</div>";
 
