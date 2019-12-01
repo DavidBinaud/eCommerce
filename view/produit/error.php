@@ -1,3 +1,7 @@
 <?php
-	echo "NEIN ! Mauvaise action Produit! $errorType";
+	if(isset($errorType)){
+		echo "Erreur: $errorType";
+	}else{
+		echo "Erreur Inconnue";
+	}
 ?>
