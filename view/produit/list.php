@@ -30,7 +30,7 @@ echo "<div class='row'>";
 	echo "</div>";
 
 	if(Session::is_admin()){
-		echo "<a href=index.php?action=create&controller=produit>Creer un Produit</a>";
+		echo "<a href=index.php?action=create&controller=produit class='waves-effect waves-light btn grey darken-1 sspaced'><i class='material-icons left'>add_shopping_cart</i>Creer un Produit</a>";
 	}
 	
 ?>
