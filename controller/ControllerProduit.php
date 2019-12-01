@@ -5,8 +5,16 @@
 	class ControllerProduit{
 		protected static $object = 'produit';
 
-		public static function error($errorType=NULL){
-			$view='error'; $pagetitle='ErreurProduit';
+		public static function error($errorType = NULL,$redirect = NULL,$parametres = NULL){
+
+			if(!is_null($parametres)){
+				foreach ($parametres as $key => $value) {
+					${$key} = $value;
+				}
+			}
+			$hasRedirect = !is_null($redirect); // Used to check in error view if a redirection exists
+
+			$view='error'; $pagetitle='tilisateur';;
 			require (File::build_path(array("view","view.php")));
 			die();
 		}

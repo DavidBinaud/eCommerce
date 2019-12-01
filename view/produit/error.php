@@ -1,7 +1,11 @@
 <?php
 	if(isset($errorType)){
-		echo "Erreur: $errorType";
+		echo "<p class='ErrorNotice'>Erreur: $errorType</p>";
 	}else{
-		echo "Erreur Inconnue";
+		echo "<p class='ErrorNotice'>Erreur Inconnue</p>";
+	}
+
+	if($hasRedirect){
+		require(File::build_path(array("view","utilisateur","$redirect.php")));
 	}
 ?>
