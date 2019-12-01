@@ -7,9 +7,12 @@
 	class ControllerUtilisateur{
 		protected static $object = 'utilisateur';
 
+		// $parametres doit être un array
+		// function error([string $errorType[,string $redirect[,array $parametres]]])..
 		public static function error($errorType = NULL,$redirect = NULL,$parametres = NULL){
 
-			if(!is_null($parametres)){
+			//pour chaque element dans $parametre on va créer une variable nommé avec le nom de la clé et contenant comme valeur la valeur associée à cette clé
+			if(!is_null($parametres) && is_array($parametres)){
 				foreach ($parametres as $key => $value) {
 					${$key} = $value;
 				}
@@ -24,6 +27,7 @@
 
 
 		public static function readAll(){
+			if(!Session::is_admin())self::error("ReadAll Utilisateur: Acces Restreint<i class='material-icons left'>lock</i>");
 			$tab_u = ModelUtilisateur::selectAll(); 
 
 			$view='list'; $pagetitle='Liste des Utilisateurs';
@@ -35,7 +39,7 @@
 		public static function read(){
 			if(is_null(myGet('login')))self::error("Read d'un Utilisateur: Pas de login fourni");
 
-			if(!Session::is_user(myGet('login')) && !Session::is_admin())self::error("Read d'un Utilisateur: Acces Restreint");
+			if(!Session::is_user(myGet('login')) && !Session::is_admin())self::error("Read d'un Utilisateur: Acces Restreint<i class='material-icons left'>lock</i>");
 
 			$u = ModelUtilisateur::select(myGet('login'));
 			if($u == false)self::error("Read d'un Utilisateur: login fourni non existant");
@@ -49,7 +53,7 @@
 		public static function delete(){
 			if(is_null(myGet('login')))self::error("Delete d'un Utilisateur: Pas de login fourni");
 
-			if(!Session::is_user(myGet('login')) && !Session::is_admin())self::error("Delete d'un Utilisateur: Acces Restreint");
+			if(!Session::is_user(myGet('login')) && !Session::is_admin())self::error("Delete d'un Utilisateur: Acces Restreint<i class='material-icons left'>lock</i>");
 
 			$u = ModelUtilisateur::select(myGet('login'));
 			if($u == false)self::error("Delete d'un Utilisateur: login fourni non existant");
@@ -82,7 +86,7 @@
 
 
 		public static function created(){
-			if (!is_null(myGet('login')) && !is_null(myGet('mdp')) && !is_null(myGet('confirmmdp')) && !is_null(myGet('email')) && !is_null(myGet('nom')) && !is_null(myGet('prenom')) && !is_null(myGet('ville')) && !is_null(myGet('pays')) && !is_null(myGet('adresse')) && !is_null(myGet('dateDeNaissance'))){
+			if (is_null(myGet('login')) || is_null(myGet('mdp')) || is_null(myGet('confirmmdp')) || is_null(myGet('email')) || is_null(myGet('nom')) || is_null(myGet('prenom')) || is_null(myGet('ville')) || is_null(myGet('pays')) || is_null(myGet('adresse')) || is_null(myGet('dateDeNaissance')))self::error("Create d'un Utilisateur: Problème de paramètres");
 				if (myGet('mdp') == myGet('confirmmdp')) {
 					
 					if (filter_var (myGet('email'),FILTER_VALIDATE_EMAIL)) {
@@ -143,9 +147,7 @@
 	    		$uPays = htmlspecialchars(myGet('pays'));
 	    		$uAdresse = htmlspecialchars(myGet('adresse'));
 	    		$uDateDeNaissance = htmlspecialchars(myGet('dateDeNaissance'));
-			}else{
-				$view='error'; $pagetitle='tilisateur'; $errorType = "Create d'un Utilisateur: Problème de paramètres";
-			}
+
 
     		$uAction = "create";
 			require (File::build_path(array("view","view.php")));
@@ -156,7 +158,7 @@
 		public static function update(){
 			if (is_null(myGet('login')))self::error('update Utilisateur: Problème de paramètres');
 
-			if(!Session::is_user(myGet('login')) && !Session::is_admin())self::error("Update d'un Utilisateur: Acces Restreint");
+			if(!Session::is_user(myGet('login')) || !Session::is_admin())self::error("Update d'un Utilisateur: Acces Restreint<i class='material-icons left'>lock</i>");
 
 			$u = ModelUtilisateur::select(myGet('login'));
 			if($u == false)self::error('update Utilisateur: login fourni non existant');
@@ -180,9 +182,9 @@
 		public static function updated(){
 
 
-			if (is_null(myGet('login')) && is_null(myGet('mdp')) && is_null(myGet('nom')) && is_null(myGet('prenom')) && is_null(myGet('ville')) && is_null(myGet('pays')) && is_null(myGet('adresse')) && is_null(myGet('dateDeNaissance')))self::error('updated Utilisateur: Problème de paramètres');
+			if (is_null(myGet('login')) || is_null(myGet('mdp')) || is_null(myGet('nom')) || is_null(myGet('prenom')) || is_null(myGet('ville')) || is_null(myGet('pays')) || is_null(myGet('adresse')) || is_null(myGet('dateDeNaissance')))self::error('updated Utilisateur: Problème de paramètres');
 			
-			if(!Session::is_user(myGet('login')) && !Session::is_admin())self::error("Updated d'un Utilisateur: Acces Restreint");
+			if(!Session::is_user(myGet('login')) || !Session::is_admin())self::error("Updated d'un Utilisateur: Acces Restreint<i class='material-icons left'>lock</i>");
 
 			$u = ModelUtilisateur::select(myGet('login'));
 			if($u == false) self::error('update Utilisateur: login fourni non existant');

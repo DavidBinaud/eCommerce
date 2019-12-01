@@ -48,7 +48,7 @@
 
 
 		public static function delete(){
-			if(!Session::is_admin())self::error("Delete d'un Produit: Acces Restreint");
+			if(!Session::is_admin())self::error("Delete d'un Produit: Acces Restreint<i class='material-icons left'>lock</i>");
 
 			if(is_null(myGet('id')))self::error("Delete d'un Produit: Pas d'id fourni");
 
@@ -66,7 +66,7 @@
 
 
 		public static function create(){
-			if(!Session::is_admin())self::error("Create d'un Produit: Acces Restreint");
+			if(!Session::is_admin())self::error("Create d'un Produit: Acces Restreint<i class='material-icons left'>lock</i>");
 
 			$pId = "\"\"";
 			$pNom = "\"\"";
@@ -82,9 +82,9 @@
 
 
 		public static function created(){
-			if(!Session::is_admin())self::error("Created d'un Produit: Acces Restreint");
-
-			if (is_null(myGet('nom')) && is_null(myGet('description')) && is_null(myGet('prix')) && is_null(myGet('nationalite')))self::error("Create d'un Produit: Problème de paramètres");
+			if(!Session::is_admin())self::error("Created d'un Produit: Acces Restreint<i class='material-icons left'>lock</i>");
+			
+			if (is_null(myGet('nom')) || is_null(myGet('description')) || is_null(myGet('prix')) || is_null(myGet('nationalite')))self::error("Create d'un Produit: Problème de paramètres");
 
 			$data = array(
 				"id" => "",
@@ -113,7 +113,7 @@
 
 
 		public static function update(){
-			if(!Session::is_admin())self::error('update Produit: Acces Restreint');
+			if(!Session::is_admin())self::error("update Produit: Acces Restreint<i class='material-icons left'>lock</i>");
 			
 			if (is_null(myGet('id')))self::error('update Produit: Problème de paramètres');
 			
@@ -137,9 +137,9 @@
 
 
 		public static function updated(){
-			if(!Session::is_admin())self::error('updated Produit: Acces Restreint');
+			if(!Session::is_admin())self::error("updated Produit: Acces Restreint<i class='material-icons left'>lock</i>");
 			
-			if (is_null(myGet('id')) && is_null(myGet('nom')) && is_null(myGet('description')) && is_null(myGet('prix')) && is_null(myGet('nationalite')))self::error('updated Produit: Problème de paramètres');
+			if (is_null(myGet('id')) || is_null(myGet('nom')) || is_null(myGet('description')) || is_null(myGet('prix')) || is_null(myGet('nationalite')))self::error('updated Produit: Problème de paramètres');
 			
 			if (ModelProduit::select(myGet('id')) == false)self::error('updated Produit: id Produit non existant');
 
@@ -164,7 +164,7 @@
 
 
 		public static function imgupload(){
-			if(!Session::is_admin())self::error('imgupload Produit: Acces Restreint');
+			if(!Session::is_admin())self::error("imgupload Produit: Acces Restreint<i class='material-icons left'>lock</i>");
 
 
 			if (is_null(myGet('id')))self::error('imgupload Produit: Problème de paramètres');
@@ -181,7 +181,7 @@
 
 
 		public static function imguploaded(){
-			if(!Session::is_admin())self::error("addedimg Produit: Acces Restreint");
+			if(!Session::is_admin())self::error("addedimg Produit: Acces Restreint<i class='material-icons left'>lock</i>");
 			
 			if (is_null(myGet('id')))self::error("addedimg Produit: Problème de paramètre d'id");
 			
@@ -238,7 +238,7 @@
 
 
 		public static function imgdelete(){
-			if(!Session::is_admin())self::error('imgdelete Produit: Acces Restreint');
+			if(!Session::is_admin())self::error("imgdelete Produit: Acces Restreint<i class='material-icons left'>lock</i>");
 
 			if (is_null(myGet('id')))self::error('imgdelete Produit: Problème de paramètres');
 
