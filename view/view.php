@@ -15,36 +15,36 @@
         <?php
 
         if(Session::is_admin()){
-            echo '
+            echo "
         	<header>
-        		<div class="nav">
-    			  <a class="waves-effect waves-light btn grey darken-1 fspaced" href="index.php?action=readAll&controller=produit">Gestion Produits</a>
-    			  <a class="waves-effect waves-light btn grey darken-1 sspaced" href="index.php?action=readAll&controller=utilisateur">Gestion Utilisateurs</a>
-    			  <a class="waves-effect waves-light btn grey darken-1 sspaced" href="index.php?action=readAll&controller=commande">Gestion Commandes</a>
-                  <a class="waves-effect waves-light btn grey darken-1 sspaced" href="index.php?action=getpanier&controller=produit">Panier</a>
-                  <a class="waves-effect waves-light btn grey darken-1 sspaced" href="index.php?action=deconnect&controller=utilisateur">Deconnexion</a>
+        		<div class='nav'>
+    			  <a class='waves-effect waves-light btn grey darken-1 fspaced' href='index.php?action=readAll&controller=produit'>Gestion Produits</a>
+    			  <a class='waves-effect waves-light btn grey darken-1 sspaced' href='index.php?action=readAll&controller=utilisateur'>Gestion Utilisateurs</a>
+    			  <a class='waves-effect waves-light btn grey darken-1 sspaced' href='index.php?action=readAll&controller=commande'>Gestion Commandes</a>
+                  <a class='waves-effect waves-light btn grey darken-1 sspaced' href='index.php?action=getpanier&controller=produit'>Panier</a>
+                  <a class='waves-effect waves-light btn grey darken-1 sspaced' href='index.php?action=deconnect&controller=utilisateur'>Deconnexion</a>
     			</div>
-        	</header>';
+        	</header>";
         }else{
-            echo '
+            echo "
             <header>
-                <div class="nav">
-                  <a class="waves-effect waves-light btn grey darken-1 fspaced" href="index.php?action=readAll&controller=produit">Produits</a>';
+                <div class='nav'>
+                  <a class='waves-effect waves-light btn grey darken-1 fspaced' href='index.php?action=readAll&controller=produit'>Produits</a>";
             if(!isset($_SESSION['login'])){
-                echo '<a class="waves-effect waves-light btn grey darken-1 sspaced" href="index.php?action=getpanier&controller=produit">Panier</a>';
-                echo '<a class="waves-effect waves-light btn grey darken-1 sspaced" href="index.php?action=connect&controller=utilisateur">Connexion</a>';
+                echo "<a class='waves-effect waves-light btn grey darken-1 sspaced' href='index.php?action=getpanier&controller=produit'>Panier</a>";
+                echo "<a class='waves-effect waves-light btn grey darken-1 sspaced' href='index.php?action=connect&controller=utilisateur'>Connexion</a>";
             }else{
                 $loginURL = rawurlencode($_SESSION['login']);
-                echo '<a class="waves-effect waves-light btn grey darken-1 fspaced"  
-                    href="index.php?action=read&controller=utilisateur&login=$loginURL">Compte</a>';
-                echo '<a class="waves-effect waves-light btn grey darken-1 sspaced" 
-                    href="index.php?action=getpanier&controller=produit">Panier</a>';
-                echo '<a class="waves-effect waves-light btn grey darken-1 sspaced" href="index.php?action=deconnect&controller=utilisateur">Deconnexion</a>';
+                echo "<a class='waves-effect waves-light btn grey darken-1 fspaced'  
+                    href='index.php?action=read&controller=utilisateur&login=$loginURL'>Compte</a>";
+                echo "<a class='waves-effect waves-light btn grey darken-1 sspaced' 
+                    href='index.php?action=getpanier&controller=produit'>Panier</a>";
+                echo "<a class='waves-effect waves-light btn grey darken-1 sspaced' href='index.php?action=deconnect&controller=utilisateur'>Deconnexion</a>";
             }
 
             echo    '</div>
             </header>';
-        } echo '<div class ="boxed">';
+        } echo "<div class ='boxed'>";
     	
 
     		$filepath = File::build_path(array("view",static::$object, "$view.php"));
