@@ -83,7 +83,7 @@
 
 		public static function created(){
 			if (!is_null(myGet('login')) && !is_null(myGet('mdp')) && !is_null(myGet('confirmmdp')) && !is_null(myGet('email')) && !is_null(myGet('nom')) && !is_null(myGet('prenom')) && !is_null(myGet('ville')) && !is_null(myGet('pays')) && !is_null(myGet('adresse')) && !is_null(myGet('dateDeNaissance'))){
-				if ($_GET['mdp'] == $_GET['confirmmdp']) {
+				if (myGet('mdp') == myGet('confirmmdp')) {
 					
 					if (filter_var (myGet('email'),FILTER_VALIDATE_EMAIL)) {
 						//nonce pour la verification par mail
@@ -121,7 +121,7 @@
 							// On prépare le mail a envoyer pour que l'utilisateur valide son adresse mail
 							$login = rawurlencode(myGet('login'));
 							$mail = "<a href=http://webinfo.iutmontp.univ-montp2.fr/~binaudd/eCommerce/index.php?controller=utilisateur&action=validate&login=$login&nonce=$nonce>cliquer sur le lien pour valider l'adresse email</a>";
-							mail($_GET['email'],"Le sujet",$mail);
+							mail(myGet('email'),"Le sujet",$mail);
 
 							$tab_u = ModelUtilisateur::selectAll();
 							$view='created'; $pagetitle='Création Reussie';
