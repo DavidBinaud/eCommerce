@@ -229,7 +229,6 @@
 
 		public static function connected(){
 			if(!is_null(myGet('login')) && !is_null(myGet('mdp'))){
-				var_dump(Security::chiffrer(myGet('mdp')));
 				if(ModelUtilisateur::checkPassword(myGet('login'),Security::chiffrer(myGet('mdp')))){
 					$u = ModelUtilisateur::select(myGet('login'));
 					if ($u->get('nonce') == NULL) {
