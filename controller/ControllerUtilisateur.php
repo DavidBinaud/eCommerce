@@ -7,9 +7,18 @@
 	class ControllerUtilisateur{
 		protected static $object = 'utilisateur';
 
-		public static function error(){
-			$view='error'; $pagetitle='ErreurUtilisateur'; $errorType = "Erreur Générale";
+		public static function error($errorType = NULL,$redirect = NULL,$parametres = NULL){
+
+			if(!is_null($parametres)){
+				foreach ($parametres as $key => $value) {
+					${$key} = $value;
+				}
+			}
+			$hasRedirect = !is_null($redirect); // Used to check in error view if a redirection exists
+
+			$view='error'; $pagetitle='tilisateur';;
 			require (File::build_path(array("view","view.php")));
+			die();
 		}
 
 
@@ -24,36 +33,31 @@
 
 
 		public static function read(){
-			if(!is_null(myGet('login'))){
-				$u = ModelUtilisateur::select(myGet('login'));
-				if($u == false){
-					$view='error'; $pagetitle='ErreurUtilisateur'; $errorType = "Read d'un Utilisateur: login fourni non existant";
-				}else
-				{
-					$view='detail'; $pagetitle='Detail Utilisateur';
-				}
-			}else{
-				$view='error'; $pagetitle='ErreurUtilisateur'; $errorType = "Read d'un Utilisateur: Pas d'login fourni";	
-			}
+			if(is_null(myGet('login')))self::error("Read d'un Utilisateur: Pas de login fourni");
+
+			if(!Session::is_user(myGet('login')) && !Session::is_admin())self::error("Read d'un Utilisateur: Acces Restreint");
+
+			$u = ModelUtilisateur::select(myGet('login'));
+			if($u == false)self::error("Read d'un Utilisateur: login fourni non existant");
+				
+			$view='detail'; $pagetitle='Detail Utilisateur';
 			require (File::build_path(array("view","view.php")));
 		}
 
 
 
 		public static function delete(){
-			if(!is_null(myGet('login'))){
-				$u = ModelUtilisateur::select(myGet('login'));
-				if($u == false){
-					$view='error'; $pagetitle='ErreurProduit'; $errorType = "Delete d'un Utilisateur: login fourni non existant";
-				}else{
-					ModelUtilisateur::delete(myGet('login'));
-					$tab_u = ModelUtilisateur::selectAll();
+			if(is_null(myGet('login')))self::error("Delete d'un Utilisateur: Pas de login fourni");
 
-					$view='delete'; $pagetitle='Suppresion Utilisateurs';
-				}
-			}else{
-				$view='error'; $pagetitle='ErreurUtilisateurs'; $errorType = "Delete d'un Utilisateurs: Pas d'login fourni";
-			}
+			if(!Session::is_user(myGet('login')) && !Session::is_admin())self::error("Delete d'un Utilisateur: Acces Restreint");
+
+			$u = ModelUtilisateur::select(myGet('login'));
+			if($u == false)self::error("Delete d'un Utilisateur: login fourni non existant");
+			
+			ModelUtilisateur::delete(myGet('login'));
+			$tab_u = ModelUtilisateur::selectAll();
+
+			$view='delete'; $pagetitle='Suppresion Utilisateurs';
 			require (File::build_path(array("view","view.php")));
 		}
 
@@ -111,7 +115,7 @@
 						$u = new ModelUtilisateur($data);
 						
 						if(ModelUtilisateur::save($u) == false){
-							$view='error'; $pagetitle='Erreur de Création'; $errorType = 'Created Utilisateur: login fourni déjà existant';
+							$view='error'; $pagetitle='de Création'; $errorType = 'Created Utilisateur: login fourni déjà existant';
 							$redirect ='update';
 						}else{
 							// On prépare le mail a envoyer pour que l'utilisateur valide son adresse mail
@@ -124,11 +128,11 @@
 						}
 					
 					}else{
-						$view='error'; $pagetitle='ErreurUtilisateur'; $errorType = "Create d'un Utilisateur: Problème d'email";
+						$view='error'; $pagetitle='tilisateur'; $errorType = "Create d'un Utilisateur: Problème d'email";
 						$redirect ='update';
 					}
 				}else{
-					$view='error'; $pagetitle='ErreurUtilisateur'; $errorType = "Create d'un Utilisateur: Confirmation du mot de passse invalide";
+					$view='error'; $pagetitle='tilisateur'; $errorType = "Create d'un Utilisateur: Confirmation du mot de passse invalide";
 					$redirect ='update';
 				}
 				$ulogin = htmlspecialchars(myGet('login'));
@@ -140,7 +144,7 @@
 	    		$uAdresse = htmlspecialchars(myGet('adresse'));
 	    		$uDateDeNaissance = htmlspecialchars(myGet('dateDeNaissance'));
 			}else{
-				$view='error'; $pagetitle='ErreurUtilisateur'; $errorType = "Create d'un Utilisateur: Problème de paramètres";
+				$view='error'; $pagetitle='tilisateur'; $errorType = "Create d'un Utilisateur: Problème de paramètres";
 			}
 
     		$uAction = "create";
@@ -150,71 +154,60 @@
 
 
 		public static function update(){
-			if (!is_null(myGet('login'))){
-				$u = ModelUtilisateur::select(myGet('login'));
+			if (is_null(myGet('login')))self::error('update Utilisateur: Problème de paramètres');
 
-				if($u == false){
-					$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'update Utilisateur: login fourni non existant';
-					
-				}
-				else{
-    				$ulogin = htmlspecialchars($u->get("login"));
-    				$uEmail = htmlspecialchars($u->get("email"));
-					$uNom = htmlspecialchars($u->get("nom"));
-					$uPrenom = htmlspecialchars($u->get("prenom"));
-					$uVille = htmlspecialchars($u->get("ville"));
-					$uPays = htmlspecialchars($u->get("pays"));
-					$uAdresse = htmlspecialchars($u->get("adresse"));
-					$uDateDeNaissance = htmlspecialchars($u->get("dateDeNaissance"));
-    				$uAction = "update";
+			if(!Session::is_user(myGet('login')) && !Session::is_admin())self::error("Update d'un Utilisateur: Acces Restreint");
 
-					$view='update'; $pagetitle='Mise A Jour';
-				}
-			}
-			else{
-				$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'update Utilisateur: Problème de paramètres';
-			}
+			$u = ModelUtilisateur::select(myGet('login'));
+			if($u == false)self::error('update Utilisateur: login fourni non existant');
+
+			$ulogin = htmlspecialchars($u->get("login"));
+			$uEmail = htmlspecialchars($u->get("email"));
+			$uNom = htmlspecialchars($u->get("nom"));
+			$uPrenom = htmlspecialchars($u->get("prenom"));
+			$uVille = htmlspecialchars($u->get("ville"));
+			$uPays = htmlspecialchars($u->get("pays"));
+			$uAdresse = htmlspecialchars($u->get("adresse"));
+			$uDateDeNaissance = htmlspecialchars($u->get("dateDeNaissance"));
+			$uAction = "update";
+
+			$view='update'; $pagetitle='Mise A Jour';
 			require (File::build_path(array("view","view.php")));
 		}
 
 
 
 		public static function updated(){
-			if (!is_null(myGet('login')) && !is_null(myGet('mdp')) && !is_null(myGet('nom')) && !is_null(myGet('prenom')) && !is_null(myGet('ville')) && !is_null(myGet('pays')) && !is_null(myGet('adresse')) && !is_null(myGet('dateDeNaissance'))){
-				
-				$u = ModelUtilisateur::select(myGet('login'));
-				if($u == false){
-					$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'update Utilisateur: login fourni non existant';
-					
-				}
-				else{
-					$data = array(
-						"login" => myGet('login'),
-						"mdp" => myGet('mdp'),
-						"email" => myGet('email'),
-						"nom" => myGet('nom'),
-						"prenom" => myGet('prenom'),
-						"ville" => myGet('ville'),
-						"pays" => myGet('pays'),
-						"adresse" => myGet('adresse'),
-						"dateDeNaissance" => myGet('dateDeNaissance'),
-					);
 
-					if(!is_null(myGet('is_admin'))){
-						$data[] = myGet('is_admin');
-					}
 
-					if (ModelUtilisateur::update($data)) {
-						$tab_u = ModelUtilisateur::selectAll();
-						$view='updated'; $pagetitle='Mise A Jour';
-					}else{
-						$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'updated Utilisateur: Problème de maj rencontré';
-					}
-				}
+			if (is_null(myGet('login')) && is_null(myGet('mdp')) && is_null(myGet('nom')) && is_null(myGet('prenom')) && is_null(myGet('ville')) && is_null(myGet('pays')) && is_null(myGet('adresse')) && is_null(myGet('dateDeNaissance')))self::error('updated Utilisateur: Problème de paramètres');
+			
+			if(!Session::is_user(myGet('login')) && !Session::is_admin())self::error("Updated d'un Utilisateur: Acces Restreint");
+
+			$u = ModelUtilisateur::select(myGet('login'));
+			if($u == false) self::error('update Utilisateur: login fourni non existant');
+
+
+			$data = array(
+				"login" => myGet('login'),
+				"mdp" => myGet('mdp'),
+				"email" => myGet('email'),
+				"nom" => myGet('nom'),
+				"prenom" => myGet('prenom'),
+				"ville" => myGet('ville'),
+				"pays" => myGet('pays'),
+				"adresse" => myGet('adresse'),
+				"dateDeNaissance" => myGet('dateDeNaissance'),
+			);
+
+			if(!is_null(myGet('is_admin'))){
+				$data[] = myGet('is_admin');
 			}
-			else{
-				$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'updated Utilisateur: Problème de paramètres';
-			}
+
+			if (!ModelUtilisateur::update($data)) self::error('updated Utilisateur: Problème de maj rencontré');
+			$tab_u = ModelUtilisateur::selectAll();
+
+			$view='updated'; $pagetitle='Mise A Jour';
 			require (File::build_path(array("view","view.php")));
 			
 		}
@@ -222,29 +215,26 @@
 
 
 		public static function connect(){
+			$login = '';
 			$view='connect'; $pagetitle='Connexion';
 			require (File::build_path(array("view","view.php")));
 		}
 
 
 		public static function connected(){
-			if(!is_null(myGet('login')) && !is_null(myGet('mdp'))){
-				if(ModelUtilisateur::checkPassword(myGet('login'),Security::chiffrer(myGet('mdp')))){
-					$u = ModelUtilisateur::select(myGet('login'));
-					if ($u->get('nonce') == NULL) {
-						$_SESSION['admin'] = $u->get('is_admin');
-						$_SESSION['login'] = myGet('login');
+			if(is_null(myGet('login')) && is_null(myGet('mdp')))self::error('connected: Login et/ou Mot de passe non renseigné');
+			
+			$u = ModelUtilisateur::select(myGet('login'));
+			if($u == false)self::error('connected: Login inconnu','connect',array('login' => myGet('login')));
 
-						$view='detail'; $pagetitle='Accueil';
-					}else{
-						$view='error'; $pagetitle='Erreur Connexion'; $errorType = 'Erreur connected: adresse email non validée';
-					}
-				}else{
-					$view='error'; $pagetitle='Erreur Connexion'; $errorType = 'Erreur connected: Login et Mot de passe incorrect';
-				}
-			}else{
-				$view='error'; $pagetitle='Erreur Connexion'; $errorType = 'Erreur connected: Login et/ou Mot de passe non renseigné';
-			}
+			if(!ModelUtilisateur::checkPassword(myGet('login'),Security::chiffrer(myGet('mdp'))))self::error('connected: Mot de passe incorrect','connect',array('login' => myGet('login')));
+					
+			if ($u->get('nonce') != NULL) self::error('connected: adresse email non validée');
+			
+			$_SESSION['admin'] = $u->get('is_admin');
+			$_SESSION['login'] = myGet('login');
+
+			$view='detail'; $pagetitle='Accueil';
 			require (File::build_path(array("view","view.php")));
 		}
 
@@ -267,117 +257,90 @@
 
 
 		public static function validate(){
-			if (!is_null(myGet('login')) && !is_null(myGet('nonce'))) {
-				$u = ModelUtilisateur::select(myGet('login'));
-				if ($u != false) {
-					if ($u->get('nonce') == myGet('nonce')) {
-						$data = $u->get_object_vars();
-						var_dump($data);
-						$data['nonce'] = NULL;
-						var_dump($data);
-						ModelUtilisateur::update($data);
-						$view='validate'; $pagetitle='Validation Email';
-					}else{
-						$view='error'; $pagetitle='Erreur Connexion'; $errorType = 'Erreur validate: nonce non valide';
-					}
-				}else{
-					$view='error'; $pagetitle='Erreur Connexion'; $errorType = 'Erreur validate: Login inexistant';
-				}
-			}else{
-				$view='error'; $pagetitle='Erreur Connexion'; $errorType = 'Erreur validate: Probleme de paramètres';
-			}
+			if (is_null(myGet('login')) && is_null(myGet('nonce'))) self::error('validate: Probleme de paramètres');
+
+			$u = ModelUtilisateur::select(myGet('login'));
+			if ($u == false) self::error('validate: Login inexistant');
+			
+			if ($u->get('nonce') != myGet('nonce'))self::error('validate: nonce non valide');
+			$u->set('nonce',NULL);
+			
+			if(!ModelUtilisateur::update($u->get_object_vars()))self::error('validate: erreur Serveur');
+
+			$view='validate'; $pagetitle='Validation Email';
 			require (File::build_path(array("view","view.php")));
 		}
 
 
 
 		public static function askresetpass(){
-			if (is_null(myGet('login')) && !Session::is_user(myGet('login'))) {
-				$login = "";
-				$view='askresetpass'; $pagetitle='Reset Password';
-			}else{
-				$view='error'; $pagetitle='Erreur Connexion'; $errorType = 'Vous êtes connectés, impossible de reset le mot de passe';
-			}
+			if (isset($_SESSION['login']))self::error('Vous êtes connectés, impossible de reset le mot de passe');
 			
+			$login = ''; // Utilisation Future, vide ici
+			$view='askresetpass'; $pagetitle='Reset Password';
 			require (File::build_path(array("view","view.php")));
 		}
 	
 
 
 		public static function sendresetpass(){
-			if (!is_null(myGet('login'))) {
-				$u = ModelUtilisateur::select(myGet('login'));
-				if($u != false){
-					$resetpass = Security::generateRandomHex();
-					$login = rawurlencode(myGet('login'));
-
-					$data = array(
-						'login' => $login,
-						'resetpass' => $resetpass,
-					);
-
-					if (ModelUtilisateur::update($data)) {
-						$mail = "<a href=http://webinfo.iutmontp.univ-montp2.fr/~binaudd/eCommerce/index.php?controller=utilisateur&action=inputnewpass&login=$login&resetpass=$resetpass>cliquer sur le lien pour modifier votre mot de passe</a>";
-						mail($u->get('email'),"Restoration du MDP",$mail);
-						var_dump($mail);
-						$view='resetsent'; $pagetitle='Sent Reset Password';
-					}else{
-						$view='error'; $pagetitle='Erreur Connexion'; $errorType = 'Erreur sendresetpass: Probleme durant l envoi du mail de restoration, veuillez réessayer ultérieurement';
-					}
-				}else{
-					$login = myGet('login');
-					$view='askresetpass'; $pagetitle='Reset Password';
-				}
-				
-			}else{
-				$view='error'; $pagetitle='Erreur Connexion'; $errorType = 'Erreur sendresetpass: probleme de paramètres';
-			}
+			if (is_null(myGet('login'))) self::error('sendresetpass: probleme de paramètres');
 			
+			$u = ModelUtilisateur::select(myGet('login'));
+			//Erreur avec redirection vers le formulaire de demande de reset; parametres pour le préremplissage
+			if($u == false) self::error("SendResetPass: Login incorrect","askresetpass",array("login" => myGet('login')));
+			
+			$resetpass = Security::generateRandomHex();
+			$login = rawurlencode(myGet('login'));
+
+			$data = array(
+				'login' => $login,
+				'resetpass' => $resetpass,
+			);
+
+			if (!ModelUtilisateur::update($data)) self::error('sendresetpass: Erreur Serveur');
+
+			$mail = "<a href=http://webinfo.iutmontp.univ-montp2.fr/~binaudd/eCommerce/index.php?controller=utilisateur&action=inputnewpass&login=$login&resetpass=$resetpass>cliquer sur le lien pour modifier votre mot de passe</a>";
+			var_dump($mail);
+
+			if(!mail($u->get('email'),"Restoration du MDP",$mail))self::error("SendResetPass: Erreur lors de l'envoi du mail");
+
+			$view='resetsent'; $pagetitle='Sent Reset Password';
 			require (File::build_path(array("view","view.php")));
 		}
 
 
 
 		public static function inputnewpass(){
-			if(!is_null(myGet('resetpass')) && !is_null(myGet('login'))){
-				$resetpass = myGet('resetpass');
-				$login = myGet('login');
-				$view='resetpass'; $pagetitle='Reset Password';
-			}else{
-				$view='error'; $pagetitle='Erreur inputnewpass'; $errorType = 'Erreur inputnewpass: probleme de paramètres';
-			}
+			if(is_null(myGet('resetpass')) && is_null(myGet('login'))) self::error('inputnewpass: probleme de paramètres');
+			$resetpass = myGet('resetpass');
+			$login = myGet('login');
+
+			$view='resetpass'; $pagetitle='Reset Password';
 			require (File::build_path(array("view","view.php")));
 		}
 
 
 		public static function resetpass(){
-			if(!is_null(myGet('resetpass')) && !is_null(myGet('login')) && !is_null(myGet('mdp')) && !is_null(myGet('confirmmdp'))){
-				if (myGet('mdp') == myGet('confirmmdp')){
-					$u = ModelUtilisateur::select(myGet('login'));
-					if($u != false){
-						if($u->get('resetpass') == myGet('resetpass')){
-							$data = array(
-								'login' => myGet('login'), 
-								'mdp' => Security::chiffrer(myGet('mdp')), 
-								'resetpass' => myGet('resetpass'), 
-							);
-							ModelUtilisateur::update($data);
-							$view='resetpassconfirm'; $pagetitle='Reset Password';
-						}else{
-							$view='error'; $pagetitle='Erreur ResetPass'; $errorType = 'Erreur resetpass: la clé de restoration du mdp est invalide';
-						}
-
-					}else{
-						$view='error'; $pagetitle='Erreur ResetPass'; $errorType = "Erreur resetpass: le Login fourni n'existe pas";
-					}
-
-
-				}else{
-					$view='error'; $pagetitle='Erreur ResetPass'; $errorType = 'Erreur resetpass: les deux mdp sont différents';
-				}
-			}else{
-				$view='error'; $pagetitle='Erreur ResetPass'; $errorType = 'Erreur resetpass: probleme de paramètres';
-			}
+			if(is_null(myGet('resetpass')) && is_null(myGet('login')) && is_null(myGet('mdp')) && is_null(myGet('confirmmdp'))) self::error('resetpass: probleme de paramètres');
+			
+			if (myGet('mdp') != myGet('confirmmdp'))self::error('resetpass: les deux mdp sont différents',"resetpass",array('resetpass' => myGet('resetpass'), 'login' => myGet('login')));
+			
+			$u = ModelUtilisateur::select(myGet('login'));
+			
+			if($u == false) self::error("resetpass: le Login fourni n'existe pas");
+			
+			if($u->get('resetpass') != myGet('resetpass'))self::error("resetpass: la clé de restoration du mdp est invalide");
+			
+			$data = array(
+				'login' => myGet('login'), 
+				'mdp' => Security::chiffrer(myGet('mdp')), 
+				'resetpass' => myGet('resetpass'), 
+			);
+			
+			if(!ModelUtilisateur::update($data)) self::error("Ereur ResetPass: Erreur de communication avec le serveur");
+			
+			$view='resetpassconfirm'; $pagetitle='Reset Password';
 			require (File::build_path(array("view","view.php")));
 		}
 

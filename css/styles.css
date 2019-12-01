@@ -29,21 +29,32 @@ img {
 }
 
 .nav{
-
-border: solid;
-border-color: white;
-padding:0.5%;
-margin: 2% 8% 0% 8%;
+	border: solid;
+	border-color: white;
+	padding:0.5%;
+	margin: 2% 8% 0% 8%;
 }
 
 footer{
-
 	border: solid;
-border-color: white;
-padding:0.1%;
-padding-right: 5%;
-text-align: right;
-margin: 0% 8% 2% 8%;
-font-size: x-large;
-font-weight: bolder;
+	border-color: white;
+	padding:0.1%;
+	padding-right: 5%;
+	text-align: right;
+	margin: 0% 8% 2% 8%;
+	font-size: x-large;
+	font-weight: bolder;
+}
+
+.ErrorNotice{
+	border: 1px solid red;
+	background-color: orange;
+}
+
+.ValidNotice{
+	border: 1px solid green;
+	background-color: lime;
+}
+
+
 
