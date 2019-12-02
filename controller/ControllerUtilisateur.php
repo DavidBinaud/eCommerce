@@ -59,6 +59,7 @@
 			if($u == false)self::error("Delete d'un Utilisateur: login fourni non existant");
 			
 			ModelUtilisateur::delete(myGet('login'));
+			$cid = htmlspecialchars(myGet('login'));
 			$tab_u = ModelUtilisateur::selectAll();
 
 			$view='delete'; $pagetitle='Suppresion Utilisateurs';
@@ -76,7 +77,7 @@
     		$uPays = "\"\"";
     		$uAdresse = "\"\"";
     		$uDateDeNaissance = "\"\"";
-    		$uAction = "create";
+    		$is_create = "create";
 		
 			$view='update'; $pagetitle='Creation Utilisateur';
 			require (File::build_path(array("view","view.php")));
@@ -86,70 +87,77 @@
 
 
 		public static function created(){
-			if (is_null(myGet('login')) || is_null(myGet('mdp')) || is_null(myGet('confirmmdp')) || is_null(myGet('email')) || is_null(myGet('nom')) || is_null(myGet('prenom')) || is_null(myGet('ville')) || is_null(myGet('pays')) || is_null(myGet('adresse')) || is_null(myGet('dateDeNaissance')))self::error("Create d'un Utilisateur: Problème de paramètres");
-				if (myGet('mdp') == myGet('confirmmdp')) {
-					
-					if (filter_var (myGet('email'),FILTER_VALIDATE_EMAIL)) {
-						//nonce pour la verification par mail
-						$nonce = Security::generateRandomHex();
-
-						//on verifie si on nous a passé le parametre d'admin
-						if(!is_null(myGet('is_admin'))){
-							$is_admin = myGet('is_admin');
-						}else{
-							$is_admin = 0;
-						}
-
-						$data = array(
-							"login" => myGet('login'),
-							"mdp" => Security::chiffrer(myGet('mdp')),
-							"email" => myGet('email'),
-							"nom" => myGet('nom'),
-							"prenom" => myGet('prenom'),
-							"ville" => myGet('ville'),
-							"pays" => myGet('pays'),
-							"adresse" => myGet('adresse'),
-							"dateDeNaissance" => myGet('dateDeNaissance'),
-							"is_admin" => $is_admin,
-							"nonce" => $nonce,
-							"resetpass" => NULL
+			$redirectParametres = array(
+							"login" => htmlspecialchars(myGet('login')),
+							"email" => htmlspecialchars(myGet('email')),
+							"nom" => htmlspecialchars(myGet('nom')),
+							"prenom" => htmlspecialchars(myGet('prenom')),
+							"ville" => htmlspecialchars(myGet('ville')),
+							"pays" => htmlspecialchars(myGet('pays')),
+							"adresse" => htmlspecialchars(myGet('adresse')),
+							"dateDeNaissance" => htmlspecialchars(myGet('dateDeNaissance')),
+							"is_admin" => htmlspecialchars(myGet('is_admin')),
+							"is_create" => true
 						);
+			if (is_null(myGet('login')) || is_null(myGet('mdp')) || is_null(myGet('confirmmdp')) || is_null(myGet('email')) || is_null(myGet('nom')) || is_null(myGet('prenom')) || is_null(myGet('ville')) || is_null(myGet('pays')) || is_null(myGet('adresse')) || is_null(myGet('dateDeNaissance')))self::error("Create d'un Utilisateur: Problème de paramètres","update", $redirectParametres);
 
-						//on crée l'utilisateur objet en php
-						$u = new ModelUtilisateur($data);
-						
-						if(ModelUtilisateur::save($u) == false){
-							$view='error'; $pagetitle='de Création'; $errorType = 'Created Utilisateur: login fourni déjà existant';
-							$redirect ='update';
-						}else{
-							// On prépare le mail a envoyer pour que l'utilisateur valide son adresse mail
-							$login = rawurlencode(myGet('login'));
-							$mail = "<a href=http://webinfo.iutmontp.univ-montp2.fr/~binaudd/eCommerce/index.php?controller=utilisateur&action=validate&login=$login&nonce=$nonce>cliquer sur le lien pour valider l'adresse email</a>";
-							mail(myGet('email'),"Le sujet",$mail);
 
-							$tab_u = ModelUtilisateur::selectAll();
-							$view='created'; $pagetitle='Création Reussie';
-						}
+
+			if (myGet('mdp') != myGet('confirmmdp'))self::error("Create d'un Utilisateur: Confirmation du mot de passse invalide","update", $redirectParametres);
 					
-					}else{
-						$view='error'; $pagetitle='tilisateur'; $errorType = "Create d'un Utilisateur: Problème d'email";
-						$redirect ='update';
-					}
-				}else{
-					$view='error'; $pagetitle='tilisateur'; $errorType = "Create d'un Utilisateur: Confirmation du mot de passse invalide";
-					$redirect ='update';
-				}
-				$ulogin = htmlspecialchars(myGet('login'));
-				$uEmail = htmlspecialchars(myGet('email'));
-	    		$uNom = htmlspecialchars(myGet('nom'));
-	    		$uPrenom = htmlspecialchars(myGet('prenom'));
-	    		$uVille = htmlspecialchars(myGet('ville'));
-	    		$uPays = htmlspecialchars(myGet('pays'));
-	    		$uAdresse = htmlspecialchars(myGet('adresse'));
-	    		$uDateDeNaissance = htmlspecialchars(myGet('dateDeNaissance'));
+			if (!filter_var (myGet('email'),FILTER_VALIDATE_EMAIL))self::error("Create d'un Utilisateur: Problème d'email","update", $redirectParametres);
+			
+			//nonce pour la verification par mail
+			$nonce = Security::generateRandomHex();
+
+			//on verifie si on nous a passé le parametre d'admin
+			if(!is_null(myGet('is_admin'))){
+				$is_admin = myGet('is_admin');
+			}else{
+				$is_admin = 0;
+			}
+
+			$data = array(
+				"login" => myGet('login'),
+				"mdp" => Security::chiffrer(myGet('mdp')),
+				"email" => myGet('email'),
+				"nom" => myGet('nom'),
+				"prenom" => myGet('prenom'),
+				"ville" => myGet('ville'),
+				"pays" => myGet('pays'),
+				"adresse" => myGet('adresse'),
+				"dateDeNaissance" => myGet('dateDeNaissance'),
+				"is_admin" => $is_admin,
+				"nonce" => $nonce,
+				"resetpass" => NULL
+			);
+
+			//on crée l'utilisateur objet en php
+			$u = new ModelUtilisateur($data);
+			
+			if(ModelUtilisateur::save($u) == false)self::error('Created Utilisateur: login fourni déjà existant','update',$redirectParametres);
+			// On prépare le mail a envoyer pour que l'utilisateur valide son adresse mail
+			$login = rawurlencode(myGet('login'));
+			$mail = "<a href=http://webinfo.iutmontp.univ-montp2.fr/~binaudd/eCommerce/index.php?controller=utilisateur&action=validate&login=$login&nonce=$nonce>cliquer sur le lien pour valider l'adresse email</a>";
+			mail(myGet('email'),"Le sujet",$mail);
+
+				
+				
+			
+					
+			$login = htmlspecialchars(myGet('login'));
+			$email = htmlspecialchars(myGet('email'));
+    		$nom = htmlspecialchars(myGet('nom'));
+    		$prenom = htmlspecialchars(myGet('prenom'));
+    		$ville = htmlspecialchars(myGet('ville'));
+    		$pays = htmlspecialchars(myGet('pays'));
+    		$adresse = htmlspecialchars(myGet('adresse'));
+    		$dateDeNaissance = htmlspecialchars(myGet('dateDeNaissance'));
 
 
-    		$uAction = "create";
+    		$is_create = true;
+    		$tab_u = ModelUtilisateur::selectAll();
+    		$view='created'; $pagetitle='Création Reussie';
 			require (File::build_path(array("view","view.php")));
 		}
 
