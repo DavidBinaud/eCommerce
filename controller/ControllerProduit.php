@@ -5,9 +5,12 @@
 	class ControllerProduit{
 		protected static $object = 'produit';
 
+		// $parametres doit être un array
+		// function error([string $errorType[,string $redirect[,array $parametres]]])..
 		public static function error($errorType = NULL,$redirect = NULL,$parametres = NULL){
 
-			if(!is_null($parametres)){
+			//pour chaque element dans $parametre on va créer une variable nommé avec le nom de la clé et contenant comme valeur la valeur associée à cette clé
+			if(!is_null($parametres) && is_array($parametres)){
 				foreach ($parametres as $key => $value) {
 					${$key} = $value;
 				}
