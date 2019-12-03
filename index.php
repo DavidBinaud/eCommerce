@@ -1,22 +1,21 @@
 <?php
 	// session_set_cookie_params(30*60,"/~binaudd");
 	// pour faire en sorte que nos cookies sessions ne s'appliquent que sur notre site perso
-	session_set_cookie_params(30*60);
+	session_set_cookie_params(1800);
 	session_start();
-		
-		if (isset($_SESSION['LAST_ACTIVITY']) && time() - $_SESSION['LAST_ACTIVITY'] > (10*60)) {
-	     	// if last request was more than 30 minutes ago
-	     	unset($_SESSION['panier']);     // unset $_SESSION variable for the run-time
-	 	}
+	
+	//On charge la librairie de création de chemin relatif
+	$DS = DIRECTORY_SEPARATOR;
+	$ROOT_FOLDER = __DIR__;
+	require_once "{$ROOT_FOLDER}{$DS}lib{$DS}File.php";
 
-		if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > (30*60))) {
+	//On charge la librairie de Session
+	require_once (File::build_path(array("lib","Session.php")));
 
-	     	// if last request was more than 30 minutes ago
-	     	session_unset();     // unset $_SESSION variable for the run-time 
-	     	session_destroy();   // destroy session data in storage
-	 	} else {
-	     	$_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
-	 	}
+	//On reset le panier si la derniere activité remonte a plus de 30 minutes
+	Session::time_reset_panier(1800);
+
+	Session::check_last_activity(1800);
 
 
 
@@ -29,9 +28,6 @@
 	 		}
 	 	}
 
-		$DS = DIRECTORY_SEPARATOR;
-		$ROOT_FOLDER = __DIR__;
-		require_once "{$ROOT_FOLDER}{$DS}lib{$DS}File.php";
-		require_once (File::build_path(array("controller","routeur.php")));
-	
+	//On charge le routeur qui renvois vers le controller voulu
+	require_once (File::build_path(array("controller","routeur.php")));
 ?>
