@@ -19,7 +19,7 @@
 			}
 			$hasRedirect = !is_null($redirect); // Used to check in error view if a redirection exists
 
-			$view='error'; $pagetitle='tilisateur';;
+			$view='error'; $pagetitle='Utilisateur';;
 			require (File::build_path(array("view","view.php")));
 			die();
 		}
@@ -37,13 +37,25 @@
 
 
 		public static function read(){
+
 			if(is_null(myGet('login')))self::error("Read d'un Utilisateur: Pas de login fourni");
+
 
 			if(!Session::is_user(myGet('login')) && !Session::is_admin())self::error("Read d'un Utilisateur: Acces Restreint<i class='material-icons left'>lock</i>");
 
 			$u = ModelUtilisateur::select(myGet('login'));
 			if($u == false)self::error("Read d'un Utilisateur: login fourni non existant");
 				
+			$ulogin = htmlspecialchars($u->get("login"));
+			$uloginURL = rawurlencode($u->get("login"));
+			$uemail = htmlspecialchars($u->get("email"));
+			$unom = htmlspecialchars($u->get("nom"));
+			$uprenom = htmlspecialchars($u->get("prenom"));
+			$uville = htmlspecialchars($u->get("ville"));
+			$upays = htmlspecialchars($u->get("pays"));
+			$uadresse = htmlspecialchars($u->get("adresse"));
+			$udateDeNaissance = htmlspecialchars($u->get("dateDeNaissance"));
+
 			$view='detail'; $pagetitle='Detail Utilisateur';
 			require (File::build_path(array("view","view.php")));
 		}
@@ -62,7 +74,13 @@
 			$cid = htmlspecialchars(myGet('login'));
 			$tab_u = ModelUtilisateur::selectAll();
 
-			$view='delete'; $pagetitle='Suppresion Utilisateurs';
+			if(Session::is_user(myGet('login'))){
+				self::deconnect();
+				die();
+			}else{
+				$view='delete';
+			}
+			$pagetitle='Suppresion Utilisateurs';
 			require (File::build_path(array("view","view.php")));
 		}
 
@@ -164,12 +182,14 @@
 
 
 		public static function update(){
+
 			if (is_null(myGet('login')))self::error('update Utilisateur: Problème de paramètres');
 
-			if(!Session::is_user(myGet('login')) || !Session::is_admin())self::error("Update d'un Utilisateur: Acces Restreint<i class='material-icons left'>lock</i>");
+			if(!Session::is_user(myGet('login')) && !Session::is_admin())self::error("Update d'un Utilisateur: Acces Restreint<i class='material-icons left'>lock</i>");
 
 			$u = ModelUtilisateur::select(myGet('login'));
 			if($u == false)self::error('update Utilisateur: login fourni non existant');
+
 
 			$ulogin = htmlspecialchars($u->get("login"));
 			$uEmail = htmlspecialchars($u->get("email"));
@@ -179,8 +199,8 @@
 			$uPays = htmlspecialchars($u->get("pays"));
 			$uAdresse = htmlspecialchars($u->get("adresse"));
 			$uDateDeNaissance = htmlspecialchars($u->get("dateDeNaissance"));
-			$uAction = "update";
 
+			$is_create = false;
 			$view='update'; $pagetitle='Mise A Jour';
 			require (File::build_path(array("view","view.php")));
 		}
@@ -188,14 +208,25 @@
 
 
 		public static function updated(){
+			$redirectParametres = array(
+				"login" => htmlspecialchars(myGet('login')),
+				"email" => htmlspecialchars(myGet('email')),
+				"nom" => htmlspecialchars(myGet('nom')),
+				"prenom" => htmlspecialchars(myGet('prenom')),
+				"ville" => htmlspecialchars(myGet('ville')),
+				"pays" => htmlspecialchars(myGet('pays')),
+				"adresse" => htmlspecialchars(myGet('adresse')),
+				"dateDeNaissance" => htmlspecialchars(myGet('dateDeNaissance')),
+				"is_admin" => htmlspecialchars(myGet('is_admin')),
+				"is_create" => false
+			);
 
-
-			if (is_null(myGet('login')) || is_null(myGet('mdp')) || is_null(myGet('nom')) || is_null(myGet('prenom')) || is_null(myGet('ville')) || is_null(myGet('pays')) || is_null(myGet('adresse')) || is_null(myGet('dateDeNaissance')))self::error('updated Utilisateur: Problème de paramètres');
+			if (is_null(myGet('login')) || is_null(myGet('mdp')) || is_null(myGet('nom')) || is_null(myGet('prenom')) || is_null(myGet('ville')) || is_null(myGet('pays')) || is_null(myGet('adresse')) || is_null(myGet('dateDeNaissance')))self::error('updated Utilisateur: Problème de paramètres'	,"update",$redirectParametres);
 			
-			if(!Session::is_user(myGet('login')) || !Session::is_admin())self::error("Updated d'un Utilisateur: Acces Restreint<i class='material-icons left'>lock</i>");
+			if(!Session::is_user(myGet('login')) && !Session::is_admin())self::error("Updated d'un Utilisateur: Acces Restreint<i class='material-icons left'>lock</i>","update",$redirectParametres);
 
 			$u = ModelUtilisateur::select(myGet('login'));
-			if($u == false) self::error('update Utilisateur: login fourni non existant');
+			if($u == false) self::error('update Utilisateur: login fourni non existant',"update",$redirectParametres);
 
 
 			$data = array(
@@ -214,8 +245,10 @@
 				$data[] = myGet('is_admin');
 			}
 
-			if (!ModelUtilisateur::update($data)) self::error('updated Utilisateur: Problème de maj rencontré');
+			if (!ModelUtilisateur::update($data)) self::error('updated Utilisateur: Problème de maj rencontré',"update",$redirectParametres);
+
 			$tab_u = ModelUtilisateur::selectAll();
+			$login = htmlspecialchars(myGet('login'));
 
 			$view='updated'; $pagetitle='Mise A Jour';
 			require (File::build_path(array("view","view.php")));
@@ -244,8 +277,7 @@
 			$_SESSION['admin'] = $u->get('is_admin');
 			$_SESSION['login'] = myGet('login');
 
-			$view='detail'; $pagetitle='Accueil';
-			require (File::build_path(array("view","view.php")));
+			self::read();
 		}
 
 
@@ -259,8 +291,6 @@
 			//On unset seulement ce qui existe lors de la connexion pour garder le panier après déconnexion
 			unset($_SESSION['login']);
 			unset($_SESSION['admin']);
-
-			$pagetitle='Deconnection';
 			header('Location: index.php');
 			exit(); 
 		}

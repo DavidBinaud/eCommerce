@@ -17,7 +17,7 @@
 			}
 			$hasRedirect = !is_null($redirect); // Used to check in error view if a redirection exists
 
-			$view='error'; $pagetitle='tilisateur';;
+			$view='error'; $pagetitle='Produit';;
 			require (File::build_path(array("view","view.php")));
 			die();
 		}
