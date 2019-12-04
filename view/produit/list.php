@@ -11,14 +11,14 @@ echo "<div class='row'>";
 
 		echo "			
 		    <div class='col s12 m6'>
-		      <div class='card large'>
+		      <div class='card medium'>
 		        <div class='card-image'>
 		          <a href='index.php?controller=produit&action=read&id=$pidURL'><img src='{$path}' alt='$pnom'></a>
 		          <span class='card-title'>$pnom</span>
 		        </div>
 		        <div class='card-action'>
-		          <a href='index.php?controller=produit&action=read&id=$pidURL'>Plus de détails :</a>
-		          <a href=index.php?action=addpanier&controller=produit&id=$pidURL >Ajouter au Panier</a>";
+		          <a href='index.php?controller=produit&action=read&id=$pidURL'>Plus de détails </a>
+		          ";
 		          if(Session::is_admin()){
 						echo "<a href=index.php?controller=produit&action=delete&id=$pidURL>Supprimer</a>";
 					}
