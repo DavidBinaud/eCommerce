@@ -17,13 +17,17 @@
         if(Session::is_admin()){
             echo "
         	<header>
-        		<div class='nav'>
-    			  <a class='waves-effect waves-light btn grey darken-1 fspaced' href='index.php?action=readAll&controller=produit'>Gestion Produits</a>
-    			  <a class='waves-effect waves-light btn grey darken-1 sspaced' href='index.php?action=readAll&controller=utilisateur'>Gestion Utilisateurs</a>
-    			  <a class='waves-effect waves-light btn grey darken-1 sspaced' href='index.php?action=readAll&controller=commande'>Gestion Commandes</a>
-                  <a class='waves-effect waves-light btn grey darken-1 sspaced' href='index.php?action=getpanier&controller=produit'>Panier</a>
-                  <a class='waves-effect waves-light btn grey darken-1 sspaced' href='index.php?action=deconnect&controller=utilisateur'>Deconnexion</a>
-    			</div>
+                <nav>
+            		<div class='nav-wrapper grey darken-1'>
+                        <ul id='nav-mobile' class='left hide-on-med-and-down'>
+                			<li><a href='index.php?action=readAll&controller=produit'>Gestion Produits</a></li>
+                			<li><a href='index.php?action=readAll&controller=utilisateur'>Gestion Utilisateurs</a></li>
+                			<li><a href='index.php?action=readAll&controller=commande'>Gestion Commandes</a></li>
+                            <li><a href='index.php?action=getpanier&controller=produit'>Panier</a></li>
+                            <li><a href='index.php?action=deconnect&controller=utilisateur'>Deconnexion</a></li>
+                        </ul>
+        			</div>
+                </nav>
         	</header>";
         }else{
             echo "

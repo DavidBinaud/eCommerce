@@ -13,7 +13,7 @@ echo "<div class='row'>";
 		    <div class='col s12 m6'>
 		      <div class='card large'>
 		        <div class='card-image'>
-		          <img src='{$path}' alt='$pnom'>
+		          <a href='index.php?controller=produit&action=read&id=$pidURL'><img src='{$path}' alt='$pnom'></a>
 		          <span class='card-title'>$pnom</span>
 		        </div>
 		        <div class='card-action'>
