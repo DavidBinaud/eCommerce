@@ -57,7 +57,9 @@
 				self::error("Created d'une Commande: Acces Restreint<i class='material-icons left'>lock</i>");
 			}
 			
-			if (is_null(myGet('prixTotal')) || is_null(myGet('dateDeCommande')) || is_null(myGet('loginClient')))self::error("Create d'une Commande: Problème de paramètres");
+			if (is_null(myGet('prixTotal')) || is_null(myGet('dateDeCommande')) || is_null(myGet('loginClient'))) {
+				self::error("Create d'une Commande: Problème de paramètres");
+			}
 
 			$data = array(
 				"id" => "",
