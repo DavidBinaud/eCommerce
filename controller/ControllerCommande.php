@@ -5,9 +5,24 @@
 	class ControllerCommande{
 		protected static $object = 'commande';
 
-		public static function error(){
-			$view='error'; $pagetitle='ErreurCommande'; $errorType = "Erreur Générale";
+		public static function error($errorType = NULL,$object=NULL,$redirect = NULL,$parametres = NULL){
+
+			if (!is_null($object)) {
+				$object = self::$object;
+			}
+
+
+			//pour chaque element dans $parametre on va créer une variable nommé avec le nom de la clé et contenant comme valeur la valeur associée à cette clé
+			if(!is_null($parametres) && is_array($parametres)){
+				foreach ($parametres as $key => $value) {
+					${$key} = $value;
+				}
+			}
+			$hasRedirect = !is_null($redirect); // Used to check in error view if a redirection exists
+
+			$view='error'; $pagetitle='Produit';;
 			require (File::build_path(array("view","view.php")));
+			die();
 		}
 
 		public static function readAll(){
@@ -57,19 +72,20 @@
 				self::error("Created d'une Commande: Acces Restreint<i class='material-icons left'>lock</i>");
 			}
 			
-			if (is_null(myGet('prixTotal')) || is_null(myGet('dateDeCommande')) || is_null(myGet('loginClient'))) {
-				self::error("Create d'une Commande: Problème de paramètres");
+			if (!isset($_SESSION['panier']) && empty($_SESSION['panier'])) {
+				self::error("Create d'une Commande: Panier Vide","produit","panier");
 			}
 
 			$data = array(
-				"id" => "",
-				"prixTotal" => myGet('prixTotal'),
-				"dateDeCommande" => myGet('dateDeCommande'),
-				"loginClient" => myGet('loginClient')
+				"prixTotal" => 0,
+				"dateDeCommande" => time(),
+				"loginClient" => $_SESSION['login']
 			);
+			var_dump($data);
 			
 			$c = new ModelCommande($data);
 
+			var_dump($c);
 			if(ModelCommande::save($c) == false) {
 				self::error('Created Commande: id fourni déjà existant');
 			}
