@@ -36,7 +36,9 @@
 		}
 
 		public static function create(){
-			if(!Session::is_admin())self::error("Create d'une Commande: Acces Restreint<i class='material-icons left'>lock</i>");
+			if(!Session::is_admin()) {
+				self::error("Create d'une Commande: Acces Restreint<i class='material-icons left'>lock</i>");
+			}
 
 			$cId = "\"\"";
 			$cPrixTotal = "\"\"";
@@ -51,9 +53,11 @@
 
 
 		public static function created(){
-			if(!Session::is_admin())self::error("Created d'une Commande: Acces Restreint<i class='material-icons left'>lock</i>");
+			if(!Session::is_admin()) {
+				self::error("Created d'une Commande: Acces Restreint<i class='material-icons left'>lock</i>");
+			}
 			
-			if (is_null(myGet('prixTotal')) || is_null(myGet('dateDeCommande')) || is_null(myGet('loginClient')))self::error("Create d'un Commande: Problème de paramètres");
+			if (is_null(myGet('prixTotal')) || is_null(myGet('dateDeCommande')) || is_null(myGet('loginClient')))self::error("Create d'une Commande: Problème de paramètres");
 
 			$data = array(
 				"id" => "",
@@ -64,18 +68,92 @@
 			
 			$c = new ModelCommande($data);
 
-			if(ModelCommande::save($c) == false)self::error('Created Produit: id fourni déjà existant');
-			
+			if(ModelCommande::save($c) == false) {
+				self::error('Created Commande: id fourni déjà existant');
+			}
 			
 			$tab_c = ModelCommande::selectAll();
 
 			$view='created'; $pagetitle='Création Reussie';
 			require (File::build_path(array("view","view.php")));
 		}
-		
 
+		public static function delete(){
+			if(!Session::is_admin()) {
+				self::error("Delete d'une Commande: Acces Restreint<i class='material-icons left'>lock</i>");
+			}
+
+			if(is_null(myGet('id'))) {
+				self::error("Delete d'une Commande: Pas d'id fourni");
+			}
+
+			$c = ModelCommande::select(myGet('id'));
+			if($c == false) {
+				self::error("Delete d'un Commande: id fourni non existant");
+			}
+
+
+			ModelCommande::delete(myGet('id'));
+			$tab_c = ModelCommande::selectAll();
+
+			$view='delete'; $pagetitle='Suppresion Commande';
+			require (File::build_path(array("view","view.php")));
+		}
+
+		public static function update(){
+			if(!Session::is_admin()) {
+				self::error("update Commande: Acces Restreint<i class='material-icons left'>lock</i>");
+			}
+			
+			if (is_null(myGet('id'))) {
+				self::error('update Commande: Problème de paramètres');
+			}
+			
+			$c = ModelCommande::select(myGet('id'));
+			if($c == false) {
+				self::error('update Commande: id fourni non existant');
+			}
+
+			$cId = htmlspecialchars($c->get('id'));
+			$cPrixTotal = htmlspecialchars($c->get('prixTotal'));
+			$cDateDeCommande = htmlspecialchars($c->get('dateDeCommande'));
+			$cLoginClient = htmlspecialchars($c->get('loginClient'));
+			$cAction = "update";
+
+			$view='update'; $pagetitle='Mise A Jour';
+			require (File::build_path(array("view","view.php")));
+		}
+
+
+
+		public static function updated(){
+			if(!Session::is_admin()) {
+				self::error("updated Commande: Acces Restreint<i class='material-icons left'>lock</i>");
+			}
+			
+			if (is_null(myGet('id')) || is_null(myGet('prixTotal')) || is_null(myGet('dateDeCommande')) || is_null(myGet('loginClient')))self::error('updated Commande: Problème de paramètres');
+			
+			if (ModelCommande::select(myGet('id')) == false) {
+				self::error('updated Commande: id Commande non existant');
+			}
+
+			$data = array(
+				"id" => myGet('id'),
+				"prixTotal" => myGet('prixTotal'),
+				"dateDeCommande" => myGet('dateDeCommande'),
+				"loginClient" => myGet('loginClient')
+			);
+			
+			
+			if(!ModelCommande::update($data)) {
+				self::error('updated Commande: Probleme rencontré lors de la maj');
+			}
+			
+			$tab_c = ModelCommande::selectAll();
+
+
+			$view='updated'; $pagetitle='Mise A Jour';
+			require (File::build_path(array("view","view.php")));
+		}
 	}
-
-
-
 ?>
