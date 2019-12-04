@@ -9,6 +9,7 @@
         <meta charset="UTF-8">
         <title><?php echo $pagetitle; ?></title>
     </head>
+    <main>
     <body>
         <div class='container'>
 
@@ -33,7 +34,7 @@
             echo "
             <header>
             <nav>
-                <div class='nav-wrapper grey darken-1'>
+                <div class='nav-wrapper grey darkenx-1'>
                 <ul id='nav-mobile' class='left hide-on-med-and-down'>
                   <li><a href='index.php?action=readAll&controller=produit'>Produits</a></li>"
                   ;
@@ -62,9 +63,10 @@
 
         </div>
     </body>
-    <footer>
+    <footer class='page-footer transparent'>
     		<p class="white-text">
   				Site d'eCommerce de Binaud - Manelphe - Sarlin
 			</p>
     </footer>
+</main>
 </html>
