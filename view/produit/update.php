@@ -44,10 +44,17 @@
 		</p>
 
 		<p>
+			<label for="img_id">Image</label> :
+			<input type="text" value="<?php echo htmlspecialchars($pathImgProduit)?>" name="pathImgProduit" id="img_id"/>
+		</p> 
+
+		<p>
 			<input type='hidden' name='action' value=<?php echo $actionAfter;?>>
 			<input type='hidden' name='controller' value=<?php echo $controller;?>>
-			<input type="submit" value="Envoyer" />
+			<input type="submit" value="Envoyer" />	
 		</p>
+
+		
 	</fieldset> 
 </form>
 

@@ -76,6 +76,7 @@
 			$pDescription = "\"\"";
 			$pPrix = "\"\"";
 			$pNationalite = "\"\"";
+			$pathImgProduit = "\"\"";
 			$pAction = "create";
 			
 			$view='update'; $pagetitle='Creation Produit';
@@ -94,7 +95,8 @@
 				"nom" => myGet('nom'),
 				"description" => myGet('description'),
 				"prix" => myGet('prix'),
-				"nationalite" => myGet('nationalite')
+				"nationalite" => myGet('nationalite'),
+				"pathImgProduit" => myGet('pathImgProduit')
 			);
 
 			if(is_null(myGet('pathImgProduit'))){
@@ -140,11 +142,13 @@
 
 
 		public static function updated(){
-			if(!Session::is_admin())self::error("updated Produit: Acces Restreint<i class='material-icons left'>lock</i>");
+			if(!Session::is_admin())
+				self::error("updated Produit: Acces Restreint<i class='material-icons left'>lock</i>");
 			
 			if (is_null(myGet('id')) || is_null(myGet('nom')) || is_null(myGet('description')) || is_null(myGet('prix')) || is_null(myGet('nationalite')))self::error('updated Produit: Problème de paramètres');
 			
-			if (ModelProduit::select(myGet('id')) == false)self::error('updated Produit: id Produit non existant');
+			if (ModelProduit::select(myGet('id')) == false)
+				self::error('updated Produit: id Produit non existant');
 
 			$data = array(
 				"id" => myGet('id'),
