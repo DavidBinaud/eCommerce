@@ -18,7 +18,7 @@
 	    	if ($cAction == "update") {
 	    		echo "<p>
 				 	 	<label for='id_id'>Id</label> :
-						<input type='text' value='$pId' name='id' id='id_id' readonly/>
+						<input type='text' value='$cId' name='id' id='id_id' readonly/>
 					</p>";
 	    	}
 	    ?>
