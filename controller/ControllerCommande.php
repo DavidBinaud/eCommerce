@@ -34,6 +34,44 @@
 			}
 			require (File::build_path(array("view","view.php")));
 		}
+
+		public static function create(){
+			if(!Session::is_admin())self::error("Create d'une Commande: Acces Restreint<i class='material-icons left'>lock</i>");
+
+			$cId = "\"\"";
+			$cPrixTotal = "\"\"";
+			$cDateDeCommande = "\"\"";
+			$cLoginClient = "\"\"";
+			$cAction = "create";
+			
+			$view='update'; $pagetitle='Creation Commande';
+			require (File::build_path(array("view","view.php")));
+		}
+
+
+
+		public static function created(){
+			if(!Session::is_admin())self::error("Created d'une Commande: Acces Restreint<i class='material-icons left'>lock</i>");
+			
+			if (is_null(myGet('prixTotal')) || is_null(myGet('dateDeCommande')) || is_null(myGet('loginClient')))self::error("Create d'un Commande: Problème de paramètres");
+
+			$data = array(
+				"id" => "",
+				"prixTotal" => myGet('prixTotal'),
+				"dateDeCommande" => myGet('dateDeCommande'),
+				"loginClient" => myGet('loginClient')
+			);
+			
+			$c = new ModelCommande($data);
+
+			if(ModelCommande::save($c) == false)self::error('Created Produit: id fourni déjà existant');
+			
+			
+			$tab_c = ModelCommande::selectAll();
+
+			$view='created'; $pagetitle='Création Reussie';
+			require (File::build_path(array("view","view.php")));
+		}
 		
 
 	}
