@@ -34,11 +34,15 @@
 
 
 		public static function read(){
-			if(is_null(myGet('id')))self::error("Read d'un Produit: Pas d'id fourni");
+			if(is_null(myGet('id'))){
+				self::error("Read d'un Produit: Pas d'id fourni");
+			}
 
 			$p = ModelProduit::select(myGet('id'));
 
-			if($p == false)self::error("Read d'un Produit: id fourni non existant");
+			if($p == false){
+				self::error("Read d'un Produit: id fourni non existant");
+			}
 
 
 			$path = $p->get('pathImgProduit');
@@ -51,12 +55,18 @@
 
 
 		public static function delete(){
-			if(!Session::is_admin())self::error("Delete d'un Produit: Acces Restreint<i class='material-icons left'>lock</i>");
+			if(!Session::is_admin()){
+				self::error("Delete d'un Produit: Acces Restreint<i class='material-icons left'>lock</i>");
+			}
 
-			if(is_null(myGet('id')))self::error("Delete d'un Produit: Pas d'id fourni");
+			if(is_null(myGet('id'))){
+				self::error("Delete d'un Produit: Pas d'id fourni");
+			}
 
 			$p = ModelProduit::select(myGet('id'));
-			if($p == false)self::error("Delete d'un Produit: id fourni non existant");
+			if($p == false){
+				self::error("Delete d'un Produit: id fourni non existant");
+			}
 
 
 			ModelProduit::delete(myGet('id'));
@@ -69,7 +79,9 @@
 
 
 		public static function create(){
-			if(!Session::is_admin())self::error("Create d'un Produit: Acces Restreint<i class='material-icons left'>lock</i>");
+			if(!Session::is_admin()){
+				self::error("Create d'un Produit: Acces Restreint<i class='material-icons left'>lock</i>");
+			}
 
 			$pId = "\"\"";
 			$pNom = "\"\"";
@@ -86,9 +98,13 @@
 
 
 		public static function created(){
-			if(!Session::is_admin())self::error("Created d'un Produit: Acces Restreint<i class='material-icons left'>lock</i>");
+			if(!Session::is_admin()){
+				self::error("Created d'un Produit: Acces Restreint<i class='material-icons left'>lock</i>");
+			}
 			
-			if (is_null(myGet('nom')) || is_null(myGet('description')) || is_null(myGet('prix')) || is_null(myGet('nationalite')))self::error("Create d'un Produit: Problème de paramètres");
+			if (is_null(myGet('nom')) || is_null(myGet('description')) || is_null(myGet('prix')) || is_null(myGet('nationalite'))){
+				self::error("Create d'un Produit: Problème de paramètres");
+			}
 
 			$data = array(
 				"id" => "",
@@ -105,7 +121,9 @@
 			
 			$p = new ModelProduit($data);
 
-			if(ModelProduit::save($p) == false)self::error('Created Produit: id fourni déjà existant');
+			if(ModelProduit::save($p) == false){
+				self::error('Created Produit: id fourni déjà existant');
+			}
 			
 			
 			$tab_p = ModelProduit::selectAll();
@@ -118,13 +136,18 @@
 
 
 		public static function update(){
-			if(!Session::is_admin())self::error("update Produit: Acces Restreint<i class='material-icons left'>lock</i>");
+			if(!Session::is_admin()){
+				self::error("update Produit: Acces Restreint<i class='material-icons left'>lock</i>");
+			}
 			
-			if (is_null(myGet('id')))self::error('update Produit: Problème de paramètres');
-			
+			if (is_null(myGet('id'))){
+				self::error('update Produit: Problème de paramètres');
+			}
 
 			$p = ModelProduit::select(myGet('id'));
-			if($p == false)self::error('update Produit: id fourni non existant');
+			if($p == false){
+				self::error('update Produit: id fourni non existant');
+			}
 
 
 			$pId = htmlspecialchars($p->get('id'));
@@ -142,13 +165,17 @@
 
 
 		public static function updated(){
-			if(!Session::is_admin())
+			if(!Session::is_admin()){
 				self::error("updated Produit: Acces Restreint<i class='material-icons left'>lock</i>");
+			}
 			
-			if (is_null(myGet('id')) || is_null(myGet('nom')) || is_null(myGet('description')) || is_null(myGet('prix')) || is_null(myGet('nationalite')))self::error('updated Produit: Problème de paramètres');
+			if (is_null(myGet('id')) || is_null(myGet('nom')) || is_null(myGet('description')) || is_null(myGet('prix')) || is_null(myGet('nationalite'))){
+				self::error('updated Produit: Problème de paramètres');
+			}
 			
-			if (ModelProduit::select(myGet('id')) == false)
+			if (ModelProduit::select(myGet('id')) == false){
 				self::error('updated Produit: id Produit non existant');
+			}
 
 			$data = array(
 				"id" => myGet('id'),
@@ -160,7 +187,9 @@
 			);
 			
 			
-			if(!ModelProduit::update($data))self::error('updated Produit: Probleme rencontré lors de la maj');
+			if(!ModelProduit::update($data)){
+				self::error('updated Produit: Probleme rencontré lors de la maj');
+			}
 			
 			$tab_p = ModelProduit::selectAll();
 
@@ -171,13 +200,19 @@
 
 
 		public static function imgupload(){
-			if(!Session::is_admin())self::error("imgupload Produit: Acces Restreint<i class='material-icons left'>lock</i>");
+			if(!Session::is_admin()){
+				self::error("imgupload Produit: Acces Restreint<i class='material-icons left'>lock</i>");
+			}
 
 
-			if (is_null(myGet('id')))self::error('imgupload Produit: Problème de paramètres');
+			if (is_null(myGet('id'))){
+				self::error('imgupload Produit: Problème de paramètres');
+			}
 			
 			$p = ModelProduit::select(myGet('id'));
-			if($p == false)self::error('imgupload Produit: id fourni non existant');
+			if($p == false){
+				self::error('imgupload Produit: id fourni non existant');
+			}
 
 			$pId = htmlspecialchars($p->get('id'));
 
@@ -188,13 +223,19 @@
 
 
 		public static function imguploaded(){
-			if(!Session::is_admin())self::error("addedimg Produit: Acces Restreint<i class='material-icons left'>lock</i>");
+			if(!Session::is_admin()){
+				self::error("addedimg Produit: Acces Restreint<i class='material-icons left'>lock</i>");
+			}
 			
-			if (is_null(myGet('id')))self::error("addedimg Produit: Problème de paramètre d'id");
+			if (is_null(myGet('id'))){
+				self::error("addedimg Produit: Problème de paramètre d'id");
+			}
 			
 
 			$p = ModelProduit::select(myGet('id'));
-			if($p == false)self::error('imguploaded Produit: id fourni non existant');
+			if($p == false){
+				self::error('imguploaded Produit: id fourni non existant');
+			}
 
 
 
@@ -245,15 +286,23 @@
 
 
 		public static function imgdelete(){
-			if(!Session::is_admin())self::error("imgdelete Produit: Acces Restreint<i class='material-icons left'>lock</i>");
+			if(!Session::is_admin()){
+				self::error("imgdelete Produit: Acces Restreint<i class='material-icons left'>lock</i>");
+			}
 
-			if (is_null(myGet('id')))self::error('imgdelete Produit: Problème de paramètres');
+			if (is_null(myGet('id'))){
+				self::error('imgdelete Produit: Problème de paramètres');
+			}
 
 			$p = ModelProduit::select(myGet('id'));
-			if($p == false)self::error('imgdelete Produit: id fourni non existant');
+			if($p == false){
+				self::error('imgdelete Produit: id fourni non existant');
+			}
 
 			$pic = $p->get('pathImgProduit');
-			if ($pic == NULL)self::error("imgdelete Produit:Le produit n'a pas d'image");
+			if ($pic == NULL){
+				self::error("imgdelete Produit:Le produit n'a pas d'image");
+			}
 
 			$p->set('pathImgProduit',NULL);
 			ModelProduit::update($p->get_object_vars());
@@ -269,10 +318,14 @@
 
 
 		public static function addpanier(){
-			if(is_null(myGet('id')))self::error('add panier, probleme parametre');
+			if(is_null(myGet('id'))){
+				self::error('add panier, probleme parametre');
+			}
 			
 			$p = ModelProduit::select(myGet('id'));
-			if ($p == false)self::error('add panier, id produit inexistant');
+			if ($p == false){
+				self::error('add panier, id produit inexistant');
+			}
 
 
 			$id = $p->get('id');
