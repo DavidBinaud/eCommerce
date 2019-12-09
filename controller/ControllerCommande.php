@@ -85,7 +85,6 @@
 			
 			$c = new ModelCommande($data);
 
-			var_dump($c);
 			if(ModelCommande::save($c) == false) {
 				self::error('Created Commande: id fourni déjà existant');
 			}
