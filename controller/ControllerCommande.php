@@ -77,8 +77,9 @@
 			}
 
 			$data = array(
-				"prixTotal" => 0,
-				"dateDeCommande" => time(),
+				"id" => '',
+				"prixTotal" => $_SESSION['prixpanier'],
+				"dateDeCommande" => date('Y-m-d'),
 				"loginClient" => $_SESSION['login']
 			);
 			var_dump($data);
