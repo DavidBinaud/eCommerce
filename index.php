@@ -19,7 +19,6 @@
 
 
 
-
 	 	$_SESSION['prixpanier'] = 0;
 
 	 	if (isset($_SESSION['panier'])) {
