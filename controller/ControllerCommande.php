@@ -82,7 +82,6 @@
 				"dateDeCommande" => date('Y-m-d'),
 				"loginClient" => $_SESSION['login']
 			);
-			var_dump($data);
 			
 			$c = new ModelCommande($data);
 
