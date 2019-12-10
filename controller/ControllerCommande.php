@@ -39,11 +39,11 @@
 
 
 		public static function read(){
-			if(is_null(myGet('id')){
+			if(is_null(myGet('id'))){
 				self::error("Read d'une Commande: Pas d'id fourni");
 			}
 			
-			$c = ModelCommande::select($_GET['id']);
+			$c = ModelCommande::select(myGet('id'));
 			
 			if($c == false){
 				self::error("Read d'une Commande: id fourni non existant");
@@ -152,8 +152,10 @@
 				self::error("updated Commande: Acces Restreint<i class='material-icons left'>lock</i>");
 			}
 			
-			if (is_null(myGet('id')) || is_null(myGet('prixTotal')) || is_null(myGet('dateDeCommande')) || is_null(myGet('loginClient')))self::error('updated Commande: Problème de paramètres');
-			
+			if (is_null(myGet('id')) || is_null(myGet('prixTotal')) || is_null(myGet('dateDeCommande')) || is_null(myGet('loginClient'))){
+				self::error('updated Commande: Problème de paramètres');
+			}
+
 			if (ModelCommande::select(myGet('id')) == false) {
 				self::error('updated Commande: id Commande non existant');
 			}
