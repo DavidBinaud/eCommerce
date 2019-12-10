@@ -102,14 +102,14 @@
 
 
 		public static function create(){
-    		$ulogin = "\"\"";
-    		$uNom = "\"\"";
-    		$uEmail = "\"\"";
-    		$uPrenom = "\"\"";
-    		$uVille = "\"\"";
-    		$uPays = "\"\"";
-    		$uAdresse = "\"\"";
-    		$uDateDeNaissance = "\"\"";
+    		$login = "";
+    		$nom = "";
+    		$email = "";
+    		$prenom = "";
+    		$ville = "";
+    		$pays = "";
+    		$adresse = "";
+    		$dateDeNaissance = "";
     		$is_create = "create";
 		
 			$view='update'; $pagetitle='Creation Utilisateur';
