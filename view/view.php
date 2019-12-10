@@ -36,7 +36,7 @@
                 echo "
                 <header>
                 <nav>
-                    <div class='nav-wrapper grey darkenx-1'>
+                    <div class='nav-wrapper grey darken-1'>
                     <ul id='nav-mobile' class='left hide-on-med-and-down'>
                       <li><a href='index.php?action=readAll&controller=produit'>Produits</a></li>
                       ";
