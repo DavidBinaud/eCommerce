@@ -18,7 +18,7 @@
 		</p>
 
 		<p>
-	      <label for="confimpass_id">Email</label>
+	      <label for="email">Email</label>
 	      <input type="email" value="<?php echo $email;?>" name="email" id="email_id" <?php echo $is_create?'required':'';?>/>
 	    </p>
 
