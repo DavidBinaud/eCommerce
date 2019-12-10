@@ -17,9 +17,9 @@
 
 	Session::check_last_activity(1800);
 
-	require_once (File::build_path(array("model","modelPanier.php")));
+	require_once (File::build_path(array("model","ModelPanier.php")));
 
-	modelPanier::updatePanier();
+	ModelPanier::updatePanier();
 
 
 	//On charge le routeur qui renvois vers le controller voulu
