@@ -9,7 +9,7 @@
 
 		<p>
 	 	 	<label for="mdp_id">Password:</label> 
-			<input type="password"  name="mdp" id="mdp_id" <?php echo $mdpParam;?>/>
+			<input type="password"  name="mdp" id="mdp_id" <?php echo $mdpParam?'required':''?>/>
 		</p>	
 
 		<p>
