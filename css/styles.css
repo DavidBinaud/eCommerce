@@ -26,10 +26,7 @@ html{
 img {
 	height: 50%;
 	width: 50%;
-
-
 }
-
 
 footer{
 	border: solid;
@@ -56,4 +53,12 @@ footer{
 	background-color: lime;
 }
 
+body {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+}
 
+main {
+	flex: 1 0 auto;
+}

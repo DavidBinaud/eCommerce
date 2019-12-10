@@ -62,11 +62,11 @@
     	?>
 
         </div>
-    </body>
+    </main>
     <footer class='page-footer transparent'>
     		<p class="white-text">
   				Site d'eCommerce de Binaud - Manelphe - Sarlin
 			</p>
     </footer>
-</main>
+</body>
 </html>
