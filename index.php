@@ -17,16 +17,11 @@
 
 	Session::check_last_activity(1800);
 
+	require_once (File::build_path(array("model","modelPanier.php")));
+
+	modelPanier::updatePanier();
 
 
-	 	/*$_SESSION['prixpanier'] = 0;
-
-	 	if (isset($_SESSION['panier'])) {
-	 		foreach ($_SESSION['panier'] as $key => $produit) {
-	 			$_SESSION['prixpanier'] += $produit['prix'] * $produit['quantité'];
-	 		}
-	 	}
-*/
 	//On charge le routeur qui renvois vers le controller voulu
 	require_once (File::build_path(array("controller","routeur.php")));
 ?>

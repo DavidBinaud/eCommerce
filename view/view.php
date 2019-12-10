@@ -14,54 +14,54 @@
         <div class='container'>
 
         <?php
-
-        if(Session::is_admin()){
-            echo "
-        	<header>
-                <nav>
-            		<div class='nav-wrapper grey darken-1'>
-                        <ul id='nav-mobile' class='left hide-on-med-and-down'>
-                			<li><a href='index.php?action=readAll&controller=produit'>Gestion Produits</a></li>
-                			<li><a href='index.php?action=readAll&controller=utilisateur'>Gestion Utilisateurs</a></li>
-                			<li><a href='index.php?action=readAll&controller=commande'>Gestion Commandes</a></li>
-                        </ul>
-                        <ul id='nav-mobile' class='right hide-on-med-and-down'>
-                               <li><a href='index.php?action=getpanier&controller=produit'><i class='material-icons left'>shopping_cart</i></a></li>
-                               <li><a href='index.php?action=deconnect&controller=utilisateur'><i class='material-icons left'>power_settings_new</i></a></li>
-                        </ul>
-        			</div>
-                </nav>
-        	</header>";
-        }else{
-            echo "
-            <header>
-            <nav>
-                <div class='nav-wrapper grey darken-1'>
-                <ul id='nav-mobile' class='left hide-on-med-and-down'>
-                  <li><a href='index.php?action=readAll&controller=produit'>Produits</a></li>
-                  ";
-            if(!isset($_SESSION['login'])){
+        $countProduit = ModelPanier::countProduct();
+            if(Session::is_admin()){
                 echo "
-                </ul>
-                    <ul id='nav-mobile' class='right hide-on-med-and-down'>
-                        <li><a href='index.php?action=getpanier&controller=produit'><i class='material-icons left'>shopping_cart</i></a></li>
-                        <li><a href='index.php?action=connect&controller=utilisateur'><i class='material-icons left'>account_circle</i></a></li>
-                    </ul>";
+            	<header>
+                    <nav>
+                		<div class='nav-wrapper grey darken-1'>
+                            <ul id='nav-mobile' class='left hide-on-med-and-down'>
+                    			<li><a href='index.php?action=readAll&controller=produit'>Gestion Produits</a></li>
+                    			<li><a href='index.php?action=readAll&controller=utilisateur'>Gestion Utilisateurs</a></li>
+                    			<li><a href='index.php?action=readAll&controller=commande'>Gestion Commandes</a></li>
+                            </ul>
+                            <ul id='nav-mobile' class='right hide-on-med-and-down'>
+                                   <li><a href='index.php?action=getpanier&controller=produit'><i class='material-icons left'>shopping_cart</i>$countProduit</a></li>
+                                   <li><a href='index.php?action=deconnect&controller=utilisateur'><i class='material-icons left'>power_settings_new</i></a></li>
+                            </ul>
+            			</div>
+                    </nav>
+            	</header>";
             }else{
-                $loginURL = rawurlencode($_SESSION['login']);
                 echo "
-                <li><a href='index.php?action=read&controller=utilisateur&login=$loginURL'>Compte</a></li>
-                </ul>
-                <ul id='nav-mobile' class='right hide-on-med-and-down'>
-                    <li><a href='index.php?action=getpanier&controller=produit'><i class='material-icons left'>shopping_cart</i></a></li>
-                    <li><a href='index.php?action=deconnect&controller=utilisateur'><i class='material-icons left'>power_settings_new</i></a></li>
-                </ul>";
-            }
+                <header>
+                <nav>
+                    <div class='nav-wrapper grey darkenx-1'>
+                    <ul id='nav-mobile' class='left hide-on-med-and-down'>
+                      <li><a href='index.php?action=readAll&controller=produit'>Produits</a></li>
+                      ";
+                if(!isset($_SESSION['login'])){
+                    echo "
+                    </ul>
+                        <ul id='nav-mobile' class='right hide-on-med-and-down'>
+                            <li><a href='index.php?action=getpanier&controller=produit'><i class='material-icons left'>shopping_cart</i>$countProduit</a></li>
+                            <li><a href='index.php?action=connect&controller=utilisateur'><i class='material-icons left'>account_circle</i></a></li>
+                        </ul>";
+                }else{
+                    $loginURL = rawurlencode($_SESSION['login']);
+                    echo "
+                    <li><a href='index.php?action=read&controller=utilisateur&login=$loginURL'>Compte</a></li>
+                    </ul>
+                    <ul id='nav-mobile' class='right hide-on-med-and-down'>
+                        <li><a href='index.php?action=getpanier&controller=produit'><i class='material-icons left'>shopping_cart</i>$countProduit</a></li>
+                        <li><a href='index.php?action=deconnect&controller=utilisateur'><i class='material-icons left'>power_settings_new</i></a></li>
+                    </ul>";
+                }
 
-            echo    '</div></nav>
-            </header>';
+                echo    '</div></nav>
+                </header>';
 
-        } echo "<div class ='boxed'>";
+            } echo "<div class ='boxed'>";
     	
 
     		$filepath = File::build_path(array("view",static::$object, "$view.php"));
