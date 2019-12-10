@@ -73,7 +73,7 @@
 				self::error("Read d'une Commande: id fourni non existant");
 			}
 
-			if($c->get('loginClient') != $_SESSION['login']){
+			if($c->get('loginClient') != $_SESSION['login'] && !Session::is_admin()){
 				self::error("Read d'une Commande: Accès Restreint, ce compte n'est pas le votre");
 			}
 			
