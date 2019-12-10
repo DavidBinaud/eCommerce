@@ -10,5 +10,10 @@
 			</a>
 		</p>";
 
+	echo "	<a href=index.php?action=readByLogin&controller=commande&login=$uloginURL class='waves-effect waves-light btn grey darken-1 sspaced'>
+			Voir vos Commandes
+		</a>
+	</p>";
+
 
 ?>

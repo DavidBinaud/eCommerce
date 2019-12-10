@@ -40,6 +40,47 @@
     public function get_object_vars() {
         return get_object_vars($this);
     }
+
+
+    public static function selectAllByLogin($login){
+        //$sql = "SELECT * FROM eCom_commande C JOIN eCom_ligneCommande LC ON C.id = LC.idCommande WHERE C.loginClient = :login";
+        $sql = "SELECT * FROM eCom_commande C WHERE C.loginClient = :login";
+
+        $req_prep = Model::$pdo->prepare($sql);
+
+        $values = array(
+                "login" => $login,
+            );
+
+        // On donne les valeurs et on exécute la requête   
+        $req_prep->execute($values);
+            
+        // On récupère les résultats comme précédemment
+        $req_prep->setFetchMode(PDO::FETCH_CLASS,"ModelCommande");
+
+        return  $req_prep->fetchAll();
+    }
+
+
+    public static function selectProductCommande($id){
+        $sql = "SELECT * FROM eCom_commande C JOIN eCom_ligneCommande LC ON C.id = LC.idCommande WHERE LC.idCommande = :id";
+
+        $req_prep = Model::$pdo->prepare($sql);
+
+        $values = array(
+                "id" => $id,
+            );
+
+        // On donne les valeurs et on exécute la requête   
+        $req_prep->execute($values);
+            
+        // On récupère les résultats comme précédemment
+        $req_prep->setFetchMode(PDO::FETCH_CLASS,"ModelCommande");
+
+        return  $req_prep->fetchAll();
+    }
+
+
  }
 
 ?>

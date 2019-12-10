@@ -1,13 +1,14 @@
 <?php
 
 	require_once (File::build_path(array("model","ModelCommande.php")));
+	require_once (File::build_path(array("model","ModelPanier.php")));
 
 	class ControllerCommande{
 		protected static $object = 'commande';
 
 		public static function error($errorType = NULL,$object=NULL,$redirect = NULL,$parametres = NULL){
 
-			if (!is_null($object)) {
+			if (is_null($object)) {
 				$object = self::$object;
 			}
 
@@ -37,6 +38,21 @@
 		}
 
 
+		public static function readByLogin(){
+			if(is_null(myGet('login'))){
+				self::error("ReadByLogin d'une Commande: Pas de login fourni");
+			}
+			
+			$tab_c = ModelCommande::selectAllByLogin(myGet('login'));
+			var_dump($tab_c);
+
+			$view='list'; $pagetitle='Liste de Vos Commandes';
+				
+			require (File::build_path(array("view","view.php")));
+		}
+
+
+
 
 		public static function read(){
 			if(is_null(myGet('id'))){
@@ -53,6 +69,8 @@
 				
 			require (File::build_path(array("view","view.php")));
 		}
+
+
 
 		public static function create(){
 			if(!Session::is_admin()) {
@@ -72,8 +90,8 @@
 
 
 		public static function created(){
-			if(!Session::is_admin()) {
-				self::error("Created d'une Commande: Acces Restreint<i class='material-icons left'>lock</i>");
+			if(!Session::is_admin() && !Session::is_user($_SESSION['login'])) {
+				self::error("Created d'une Commande: Acces Restreint, Veuillez vous connecter<i class='material-icons left'>lock</i>","utilisateur","connect");
 			}
 			
 			if (!isset($_SESSION['panier']) && empty($_SESSION['panier'])) {
@@ -93,11 +111,16 @@
 				self::error('Created Commande: id fourni déjà existant');
 			}
 			
-			$tab_c = ModelCommande::selectAll();
+			//ModelPanier::emptyPanier();
+			unset($_SESSION['panier']);
+			$tab_c = ModelCommande::selectAllByLogin($_SESSION['login']);
+			var_dump($tab_c);
 
 			$view='created'; $pagetitle='Création Reussie';
 			require (File::build_path(array("view","view.php")));
 		}
+
+
 
 		public static function delete(){
 			if(!Session::is_admin()) {
@@ -120,6 +143,8 @@
 			$view='delete'; $pagetitle='Suppresion Commande';
 			require (File::build_path(array("view","view.php")));
 		}
+
+
 
 		public static function update(){
 			if(!Session::is_admin()) {

@@ -1,5 +1,5 @@
 <?php
-	
+	var_dump($_SESSION['panier']);
 	if (isset($_SESSION) && isset($_SESSION['panier'])) {
 		echo '<p>';
 		foreach ($panier as $lignepanier) {

@@ -11,5 +11,5 @@
 		</p>";
 	}
 
-	echo "<a href=index.php?action=create&controller=commande>Creer une Commande</a>";
+	//echo "<a href=index.php?action=create&controller=commande>Creer une Commande</a>";
 ?>
