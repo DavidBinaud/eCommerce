@@ -317,7 +317,7 @@
 
 
 
-		public static function addpanier(){
+		public static function addTopanier(){
 			if(is_null(myGet('id'))){
 				self::error('add panier, probleme parametre');
 			}
@@ -331,21 +331,8 @@
 			$id = $p->get('id');
 			$path = $p->get('pathImgProduit');
 
+			ModelPanier::addToPanier($p);
 
-			if(isset($_SESSION) && isset($_SESSION['panier'])){
-				$panier = $_SESSION['panier'];
-
-				//on cherche l'id Produit dans le panier
-				$index = array_search($id, array_column($panier, 'id'));
-				//on doit faire une comparaison stricte dans le cas ou l'index 0 serait celui trouvé car 0 != false renvoie false
-				if($index !== false){
-					$_SESSION['panier'][$index]['quantité'] = $_SESSION['panier'][$index]['quantité'] + 1;
-				}else{
-					$_SESSION['panier'][] = array('id' => $p->get('id'), 'prix' => $p->get('prix'), 'quantité' => 1);
-				}
-			}else{
-				$_SESSION['panier'][] = array('id' => $p->get('id'), 'prix' => $p->get('prix'), 'quantité' => 1);
-			}
 					
 			$view='addedpanier'; $pagetitle='Ajouté au panier';
 			require (File::build_path(array("view","view.php")));
@@ -356,11 +343,9 @@
 
 
 		public static function getpanier(){
-
-			if(isset($_SESSION) && isset($_SESSION['panier'])){
-				$panier = $_SESSION['panier'];
-			}
-
+			$panier = ModelPanier::getPanier();
+			
+			$panier_is_empty = ModelPanier::is_empty();
 			$view='panier'; $pagetitle='panier';
 			require (File::build_path(array("view","view.php")));
 		}
@@ -368,13 +353,8 @@
 
 
 		public static function viderpanier(){
-			if (isset($_SESSION['panier'])) {
-				unset($_SESSION['panier']);
-			}
-			
-			
-			$view='panier'; $pagetitle='panier';
-			require (File::build_path(array("view","view.php")));
+			ModelPanier::emptyPanier();
+			self::getPanier();
 		}
 
 

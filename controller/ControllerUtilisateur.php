@@ -46,7 +46,7 @@
 			}
 
 
-			if(!Session::is_user(myGet('login')) && !Session::is_admin()){
+			if(!Session::is_user(strtolower(myGet('login'))) && !Session::is_admin()){
 				self::error("Read d'un Utilisateur: Acces Restreint<i class='material-icons left'>lock</i>");
 			}
 
@@ -76,7 +76,7 @@
 				self::error("Delete d'un Utilisateur: Pas de login fourni");
 			}
 
-			if(!Session::is_user(myGet('login')) && !Session::is_admin()){
+			if(!Session::is_user(strtolower(myGet('login'))) && !Session::is_admin()){
 				self::error("Delete d'un Utilisateur: Acces Restreint<i class='material-icons left'>lock</i>");
 			}
 
@@ -89,7 +89,7 @@
 			$cid = htmlspecialchars(myGet('login'));
 			$tab_u = ModelUtilisateur::selectAll();
 
-			if(Session::is_user(myGet('login'))){
+			if(Session::is_user(strtolower(myGet('login')))){
 				self::deconnect();
 				die();
 			}else{
@@ -102,15 +102,15 @@
 
 
 		public static function create(){
-    		$login = "\"\"";
-    		$nom = "\"\"";
-    		$email = "\"\"";
-    		$prenom = "\"\"";
-    		$ville = "\"\"";
-    		$pays = "\"\"";
-    		$adresse = "\"\"";
-    		$dateDeNaissance = "\"\"";
-    		$is_create = true;
+    		$login = "";
+    		$nom = "";
+    		$email = "";
+    		$prenom = "";
+    		$ville = "";
+    		$pays = "";
+    		$adresse = "";
+    		$dateDeNaissance = "";
+    		$is_create = "create";
 		
 			$view='update'; $pagetitle='Creation Utilisateur';
 			require (File::build_path(array("view","view.php")));
@@ -157,7 +157,7 @@
 			}
 
 			$data = array(
-				"login" => myGet('login'),
+				"login" => strtolower(myGet('login')),
 				"mdp" => Security::chiffrer(myGet('mdp')),
 				"email" => myGet('email'),
 				"nom" => myGet('nom'),
@@ -210,7 +210,7 @@
 				self::error('update Utilisateur: Problème de paramètres');
 			}
 
-			if(!Session::is_user(myGet('login')) && !Session::is_admin()){
+			if(!Session::is_user(strtolower(myGet('login'))) && !Session::is_admin()){
 				self::error("Update d'un Utilisateur: Acces Restreint<i class='material-icons left'>lock</i>");
 			}
 
@@ -254,7 +254,7 @@
 				self::error('updated Utilisateur: Problème de paramètres'	,"update",$redirectParametres);
 			}
 			
-			if(!Session::is_user(myGet('login')) && !Session::is_admin()){
+			if(!Session::is_user(strtolower(myGet('login'))) && !Session::is_admin()){
 				self::error("Updated d'un Utilisateur: Acces Restreint<i class='material-icons left'>lock</i>","update",$redirectParametres);
 			}
 
@@ -265,7 +265,7 @@
 
 
 			$data = array(
-				"login" => myGet('login'),
+				"login" => strtolower(myGet('login')),
 				"mdp" => myGet('mdp'),
 				"email" => myGet('email'),
 				"nom" => myGet('nom'),
@@ -318,9 +318,9 @@
 			if ($u->get('nonce') != NULL){
 				self::error('connected: adresse email non validée');
 			}
-			
+			var_dump($u);
 			$_SESSION['admin'] = $u->get('is_admin');
-			$_SESSION['login'] = myGet('login');
+			$_SESSION['login'] = $u->get('login');
 
 			self::read();
 		}

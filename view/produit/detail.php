@@ -19,7 +19,7 @@
 		echo "<a href=index.php?action=update&controller=produit&id=$pidURL  class='waves-effect waves-light btn grey darken-1 sspaced'><i class='material-icons left'>edit</i>Mettre à Jour</a>";
 		echo "<a href=index.php?action=delete&controller=produit&id=$pidURL  class='waves-effect waves-light btn grey darken-1 sspaced'><i class='material-icons left'>delete</i>Supprimer</a>";
 	}
-	echo "<a href=index.php?action=addpanier&controller=produit&id=$pidURL class='waves-effect waves-light btn grey darken-1 sspaced'><i class='material-icons left'>add_shopping_cart</i>Ajouter au Panier</a>";
+	echo "<a href=index.php?action=addTopanier&controller=produit&id=$pidURL class='waves-effect waves-light btn grey darken-1 sspaced'><i class='material-icons left'>add_shopping_cart</i>Ajouter au Panier</a>";
 		//unlink($path);
 	if ($path == false) {
 		if(Session::is_admin()){
