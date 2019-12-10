@@ -18,7 +18,7 @@ echo "<div class='row'>";
 		        </div>
 		        <div class='card-action'>
 		          <a href='index.php?controller=produit&action=read&id=$pidURL'>Plus de détails </a>
-		          <a href=index.php?action=addpanier&controller=produit&id=$pidURL>Ajouter au Panier</a>
+		          <a href=index.php?action=addTopanier&controller=produit&id=$pidURL>Ajouter au Panier</a>
 		          ";
 		          if(Session::is_admin()){
 						echo "<a href=index.php?controller=produit&action=delete&id=$pidURL>Supprimer</a>";
