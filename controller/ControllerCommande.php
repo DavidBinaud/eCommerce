@@ -26,6 +26,10 @@
 		}
 
 		public static function readAll(){
+			if(!Session::is_admin()){
+				self::error("ReadAll d'une Commande: Acces Restreint<i class='material-icons left'>lock</i>");
+			}
+
 			$tab_c = ModelCommande::selectAll(); 
 
 			$view='list'; $pagetitle='Liste des Commandes';
@@ -35,18 +39,18 @@
 
 
 		public static function read(){
-			if(isset($_GET['id'])){
-				$c = ModelCommande::select($_GET['id']);
-				if($c == false){
-					$view='error'; $pagetitle='ErreurCommande'; $errorType = "Read d'une Commande: id fourni non existant";
-				}else
-				{
-					$view='detail'; $pagetitle='Detail Commande';
-				}
-			}else{
-				$view='error'; $pagetitle='ErreurCommande'; $errorType = "Read d'une Commande: Pas d'id fourni";
-				
+			if(is_null(myGet('id')){
+				self::error("Read d'une Commande: Pas d'id fourni");
 			}
+			
+			$c = ModelCommande::select($_GET['id']);
+			
+			if($c == false){
+				self::error("Read d'une Commande: id fourni non existant");
+			}
+			
+			$view='detail'; $pagetitle='Detail Commande';
+				
 			require (File::build_path(array("view","view.php")));
 		}
 
