@@ -317,7 +317,7 @@
 
 
 
-		public static function addpanier(){
+		public static function addTopanier(){
 			if(is_null(myGet('id'))){
 				self::error('add panier, probleme parametre');
 			}
@@ -343,11 +343,9 @@
 
 
 		public static function getpanier(){
-
-			if(isset($_SESSION) && isset($_SESSION['panier'])){
-				$panier = $_SESSION['panier'];
-			}
-
+			$panier = ModelPanier::getPanier();
+			
+			$panier_is_empty = ModelPanier::is_empty();
 			$view='panier'; $pagetitle='panier';
 			require (File::build_path(array("view","view.php")));
 		}
@@ -355,13 +353,8 @@
 
 
 		public static function viderpanier(){
-			if (isset($_SESSION['panier'])) {
-				unset($_SESSION['panier']);
-			}
-			
-			
-			$view='panier'; $pagetitle='panier';
-			require (File::build_path(array("view","view.php")));
+			ModelPanier::emptyPanier();
+			self::getPanier();
 		}
 
 

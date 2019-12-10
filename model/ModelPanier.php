@@ -13,6 +13,7 @@
 		if(!isset($_SESSION) || !isset($_SESSION['panier'])){
 				self::InitPanier();
 		}
+		self::updatePanier();
 		return $_SESSION['panier'];
 	}
 
@@ -25,12 +26,25 @@
 	}
 
 
+	private static function countPrice(){
+			if (isset($_SESSION)  && isset($_SESSION['panier'])) {
+				$prix = 0;
+				foreach ($_SESSION['panier']['produits'] as $produit) {
+					$prix = $prix + $produit['prix'] * $produit['quantité'];
+				}
+				return $prix;
+			}else{
+				return 0;
+			}
+	}
+
+
 
 
 	public static function updatePanier(){
 		if (isset($_SESSION)  && isset($_SESSION['panier'])) {
 			$_SESSION['quantiteTotal'] = self::countProduct();
-			$_SESSION['prixTotal'] = self::countProduct();
+			$_SESSION['prixTotal'] = self::countPrice();
 		}else{
 			self::InitPanier();
 		}
@@ -38,6 +52,11 @@
 
 	public static function emptyPanier(){
 		self::InitPanier();
+	}
+
+
+	public static function is_empty(){
+		return self::countProduct() == 0;
 	}
 
 	public static function addToPanier($modelProduit){

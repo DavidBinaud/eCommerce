@@ -42,9 +42,13 @@
 			if(is_null(myGet('login'))){
 				self::error("ReadByLogin d'une Commande: Pas de login fourni");
 			}
+
+			if(!Session::is_user(myGet('login'))){
+				self::error("ReadByLogin d'une Commande: Accès Restreint");
+			}
+
 			
 			$tab_c = ModelCommande::selectAllByLogin(myGet('login'));
-			var_dump($tab_c);
 
 			$view='list'; $pagetitle='Liste de Vos Commandes';
 				
@@ -58,11 +62,19 @@
 			if(is_null(myGet('id'))){
 				self::error("Read d'une Commande: Pas d'id fourni");
 			}
+
+			if(!isset($_SESSION['login'])){
+				self::error("Read d'une Commande: Accès Restreint, Veuillez vous connecter","utilisateur","connect");
+			}
 			
 			$c = ModelCommande::select(myGet('id'));
 			
 			if($c == false){
 				self::error("Read d'une Commande: id fourni non existant");
+			}
+
+			if($c->get('loginClient') != $_SESSION['login']){
+				self::error("Read d'une Commande: Accès Restreint, ce compte n'est pas le votre");
 			}
 			
 			$view='detail'; $pagetitle='Detail Commande';
@@ -90,8 +102,8 @@
 
 
 		public static function created(){
-			if(!Session::is_admin() && !Session::is_user($_SESSION['login'])) {
-				self::error("Created d'une Commande: Acces Restreint, Veuillez vous connecter<i class='material-icons left'>lock</i>","utilisateur","connect");
+			if(!isset($_SESSION['login'])) {
+				self::error("Created d'une Commande: Acces Restreint, Veuillez vous connecter<i class='material-icons left'>lock</i>","utilisateur","connect",array('login' => ""));
 			}
 			
 			if (!isset($_SESSION['panier']) && empty($_SESSION['panier'])) {
@@ -100,7 +112,7 @@
 
 			$data = array(
 				"id" => '',
-				"prixTotal" => $_SESSION['prixpanier'],
+				"prixTotal" => $_SESSION['panier']['prixTotal'],
 				"dateDeCommande" => date('Y-m-d'),
 				"loginClient" => $_SESSION['login']
 			);
