@@ -17,7 +17,7 @@
 		return $_SESSION['panier'];
 	}
 
-    private static function countProduct(){
+    public static function countProduct(){
 			if (isset($_SESSION)  && isset($_SESSION['panier'])) {
 				return array_sum(array_column($_SESSION['panier']['produits'], "quantité"));
 			}else{
