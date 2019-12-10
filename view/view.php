@@ -39,22 +39,23 @@
                 <div class='nav-wrapper grey darkenx-1'>
                 <ul id='nav-mobile' class='left hide-on-med-and-down'>
                   <li><a href='index.php?action=readAll&controller=produit'>Produits</a></li>
-                  </ul>";
+                  ";
             if(!isset($_SESSION['login'])){
                 echo "
+                </ul>
                     <ul id='nav-mobile' class='right hide-on-med-and-down'>
                         <li><a href='index.php?action=getpanier&controller=produit'><i class='material-icons left'>shopping_cart</i></a></li>
                         <li><a href='index.php?action=connect&controller=utilisateur'><i class='material-icons left'>account_circle</i></a></li>
                     </ul>";
             }else{
                 $loginURL = rawurlencode($_SESSION['login']);
-                echo "<li><a   
-                    href='index.php?action=read&controller=utilisateur&login=$loginURL'>Compte</a></li>";
                 echo "
-                    <ul id='nav-mobile' class='right hide-on-med-and-down'>
-                        <li><a href='index.php?action=getpanier&controller=produit'><i class='material-icons left'>shopping_cart</i></a></li>                    
-                        <li><a href='index.php?action=deconnect&controller=utilisateur'><i class='material-icons left'>power_settings_new</i></a></li>
-                    </ul>";
+                <li><a href='index.php?action=read&controller=utilisateur&login=$loginURL'>Compte</a></li>
+                </ul>
+                <ul id='nav-mobile' class='right hide-on-med-and-down'>
+                    <li><a href='index.php?action=getpanier&controller=produit'><i class='material-icons left'>shopping_cart</i></a></li>
+                    <li><a href='index.php?action=deconnect&controller=utilisateur'><i class='material-icons left'>power_settings_new</i></a></li>
+                </ul>";
             }
 
             echo    '</div></nav>
