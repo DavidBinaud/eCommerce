@@ -102,15 +102,15 @@
 
 
 		public static function create(){
-    		$ulogin = "\"\"";
-    		$uNom = "\"\"";
-    		$uEmail = "\"\"";
-    		$uPrenom = "\"\"";
-    		$uVille = "\"\"";
-    		$uPays = "\"\"";
-    		$uAdresse = "\"\"";
-    		$uDateDeNaissance = "\"\"";
-    		$is_create = "create";
+    		$login = "\"\"";
+    		$nom = "\"\"";
+    		$email = "\"\"";
+    		$prenom = "\"\"";
+    		$ville = "\"\"";
+    		$pays = "\"\"";
+    		$adresse = "\"\"";
+    		$dateDeNaissance = "\"\"";
+    		$is_create = true;
 		
 			$view='update'; $pagetitle='Creation Utilisateur';
 			require (File::build_path(array("view","view.php")));
@@ -220,14 +220,14 @@
 			}
 
 
-			$ulogin = htmlspecialchars($u->get("login"));
-			$uEmail = htmlspecialchars($u->get("email"));
-			$uNom = htmlspecialchars($u->get("nom"));
-			$uPrenom = htmlspecialchars($u->get("prenom"));
-			$uVille = htmlspecialchars($u->get("ville"));
-			$uPays = htmlspecialchars($u->get("pays"));
-			$uAdresse = htmlspecialchars($u->get("adresse"));
-			$uDateDeNaissance = htmlspecialchars($u->get("dateDeNaissance"));
+			$login = htmlspecialchars($u->get("login"));
+			$email = htmlspecialchars($u->get("email"));
+			$nom = htmlspecialchars($u->get("nom"));
+			$prenom = htmlspecialchars($u->get("prenom"));
+			$ville = htmlspecialchars($u->get("ville"));
+			$pays = htmlspecialchars($u->get("pays"));
+			$adresse = htmlspecialchars($u->get("adresse"));
+			$dateDeNaissance = htmlspecialchars($u->get("dateDeNaissance"));
 
 			$is_create = false;
 			$view='update'; $pagetitle='Mise A Jour';
