@@ -256,51 +256,42 @@ class ControllerProduit{
 			}
 
 
-
-
-
-			if (!empty($_FILES['nom-du-fichier']) && is_uploaded_file($_FILES['nom-du-fichier']['tmp_name'])) {
-				$name = $_FILES['nom-du-fichier']['name'];
-				$pic_path =  File::build_path(array("src",$name));
-
-				$allowed_ext = array("jpg", "jpeg", "png");
-				$explode = explode('.',$_FILES['nom-du-fichier']['name']);
-				if (!in_array(end($explode), $allowed_ext)) {
-					$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'addedimg Produit: Mauvais type de fichier';
-				}else{
-
-
-
-					if (!move_uploaded_file($_FILES['nom-du-fichier']['tmp_name'], $pic_path)) {
-						$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'imguploaded Produit: La Copie a échouée';
-					}else{
-						$p->set("pathImgProduit","src/$name");
-						
-						if(ModelProduit::update($p->get_object_vars()) == true){
-							$pId = htmlspecialchars($p->get('id'));
-							$path = $p->get('pathImgProduit');
-							$view='imguploaded'; $pagetitle='Uploaded Img Produit';
-
-						}else{
-							$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'addedimg Produit: ce produit a déjà une image';
-						}
-
-					}
-
-
-
-				}
-
-			}else{
-				$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'addedimg Produit: Problème de paramètre fichier';
+			if (empty($_FILES['nom-du-fichier']) || !is_uploaded_file($_FILES['nom-du-fichier']['tmp_name'])) {
+				self::error('addedimg Produit: Problème de paramètre fichier');
 			}
+
+			$name = $_FILES['nom-du-fichier']['name'];
+			$pic_path =  File::build_path(array("src",$name));
+
+			$allowed_ext = array("jpg", "jpeg", "png");
+			$explode = explode('.',$_FILES['nom-du-fichier']['name']);
+
+			if (!in_array(end($explode), $allowed_ext)) {
+				self::error('addedimg Produit: Mauvais type de fichier');
+			}
+
+
+
+			if (!move_uploaded_file($_FILES['nom-du-fichier']['tmp_name'], $pic_path)) {
+				self::error('imguploaded Produit: La Copie a échouée');
+			}
+			
+			$p->set("pathImgProduit","src/$name");
+				
+			if(!ModelProduit::update($p->get_object_vars())){
+				self::error('addedimg Produit: ce produit a déjà une image');
+			}
+
+			$pId = htmlspecialchars($p->get('id'));
+			$path = $p->get('pathImgProduit');
+			$view='imguploaded'; $pagetitle='Uploaded Img Produit';
 
 			require (File::build_path(array("view","view.php")));
 		}
 
 
-
-		public static function imgdelete(){
+/*
+	public static function imgdelete(){
 			if(!Session::is_admin()){
 				self::error("imgdelete Produit: Acces Restreint<i class='material-icons left'>lock</i>");
 			}
@@ -327,7 +318,7 @@ class ControllerProduit{
 			$view='imgdelete'; $pagetitle='Upload Img Produit';
 			require (File::build_path(array("view","view.php")));
 		}
-
+*/
 
 
 ////////////////////////////////////////////PANIER////////////////////////////////////////////////////////////
