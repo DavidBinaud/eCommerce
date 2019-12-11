@@ -42,6 +42,29 @@
     public function get_object_vars() {
         return get_object_vars($this);
     }
+
+
+
+
+    public static function search($chaineRecherchee){
+
+        $sql = "SELECT * FROM eCom_produit WHERE nom LIKE :recherche";
+
+        $req_prep = Model::$pdo->prepare($sql);
+
+        $values = array(
+                "recherche" => "%" . $chaineRecherchee . "%",
+            );
+
+        $req_prep->setFetchMode(PDO::FETCH_CLASS, "ModelProduit");
+        try{
+            $req_prep->execute($values);
+            $tab = $req_prep->fetchAll();
+        }catch(PDOException $e){
+            return array();
+        }
+        return $tab;
+    }
 }
 
 ?>

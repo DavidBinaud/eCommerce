@@ -43,8 +43,8 @@
 
 	public static function updatePanier(){
 		if (isset($_SESSION)  && isset($_SESSION['panier'])) {
-			$_SESSION['quantiteTotal'] = self::countProduct();
-			$_SESSION['prixTotal'] = self::countPrice();
+			$_SESSION['panier']['quantiteTotal'] = self::countProduct();
+			$_SESSION['panier']['prixTotal'] = self::countPrice();
 		}else{
 			self::InitPanier();
 		}
@@ -78,23 +78,22 @@
 		self::updatePanier();
 	}
 
-		public static function deleteOneFromPanier($modelProduit){
-			if(isset($_SESSION) && isset($_SESSION['panier'])){
-					$id = $modelProduit->get('id');
 
-					//on cherche l'id Produit dans le panier
-					$index = array_search($id, array_column($_SESSION['panier'], 'id'));
-					//on doit faire une comparaison stricte dans le cas ou l'index 0 serait celui trouvé car 0 != false renvoie false
-					if($index !== false){
-						$_SESSION['panier'][$index]['quantité'] = $_SESSION['panier'][$index]['quantité'] - 1;
-					}else{
-						//DELETE
-						$_SESSION['panier'][] = array('id' => $modelProduit->get('id'), 'prix' => $modelProduit->get('prix'), 'quantité' => 1);
-					}
-			}
+	public static function deleteOneFromPanier($modelProduit){
+		if(isset($_SESSION) && isset($_SESSION['panier'])){
+				$id = $modelProduit->get('id');
+
+				//on cherche l'id Produit dans le panier
+				$index = array_search($id, array_column($_SESSION['panier'], 'id'));
+				//on doit faire une comparaison stricte dans le cas ou l'index 0 serait celui trouvé car 0 != false renvoie false
+				if($index !== false){
+					$_SESSION['panier'][$index]['quantité'] = $_SESSION['panier'][$index]['quantité'] - 1;
+				}else{
+					//DELETE
+					$_SESSION['panier'][] = array('id' => $modelProduit->get('id'), 'prix' => $modelProduit->get('prix'), 'quantité' => 1);
+				}
 		}
-
-
-  }
+	}
+}
 
 ?>

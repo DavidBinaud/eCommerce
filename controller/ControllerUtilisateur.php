@@ -1,22 +1,22 @@
 <?php
 
-	require_once (File::build_path(array("model","ModelUtilisateur.php")));
-	require_once (File::build_path(array("lib","Security.php")));
-	require_once (File::build_path(array("lib","Session.php")));
+require_once (File::build_path(array("model","ModelUtilisateur.php")));
+require_once (File::build_path(array("lib","Security.php")));
+require_once (File::build_path(array("lib","Session.php")));
 
-	class ControllerUtilisateur{
-		protected static $object = 'utilisateur';
+class ControllerUtilisateur{
+	protected static $object = 'utilisateur';
 
 		// $parametres doit être un array
 		// function error([string $errorType[,string $redirect[,array $parametres]]])..
-		public static function error($errorType = NULL,$redirect = NULL,$parametres = NULL){
+	public static function error($errorType = NULL,$redirect = NULL,$parametres = NULL){
 
 			//pour chaque element dans $parametre on va créer une variable nommé avec le nom de la clé et contenant comme valeur la valeur associée à cette clé
-			if(!is_null($parametres) && is_array($parametres)){
-				foreach ($parametres as $key => $value) {
-					${$key} = $value;
-				}
+		if(!is_null($parametres) && is_array($parametres)){
+			foreach ($parametres as $key => $value) {
+				${$key} = $value;
 			}
+		}
 			$hasRedirect = !is_null($redirect); // Used to check in error view if a redirection exists
 
 			$view='error'; $pagetitle='Utilisateur';;
@@ -54,16 +54,16 @@
 			if($u == false){
 				self::error("Read d'un Utilisateur: login fourni non existant");
 			}
-				
-			$ulogin = htmlspecialchars($u->get("login"));
-			$uloginURL = rawurlencode($u->get("login"));
-			$uemail = htmlspecialchars($u->get("email"));
-			$unom = htmlspecialchars($u->get("nom"));
-			$uprenom = htmlspecialchars($u->get("prenom"));
-			$uville = htmlspecialchars($u->get("ville"));
-			$upays = htmlspecialchars($u->get("pays"));
-			$uadresse = htmlspecialchars($u->get("adresse"));
-			$udateDeNaissance = htmlspecialchars($u->get("dateDeNaissance"));
+			
+			$login = htmlspecialchars($u->get("login"));
+			$loginURL = rawurlencode($u->get("login"));
+			$email = htmlspecialchars($u->get("email"));
+			$nom = htmlspecialchars($u->get("nom"));
+			$prenom = htmlspecialchars($u->get("prenom"));
+			$ville = htmlspecialchars($u->get("ville"));
+			$pays = htmlspecialchars($u->get("pays"));
+			$adresse = htmlspecialchars($u->get("adresse"));
+			$dateDeNaissance = htmlspecialchars($u->get("dateDeNaissance"));
 
 			$view='detail'; $pagetitle='Detail Utilisateur';
 			require (File::build_path(array("view","view.php")));
@@ -102,16 +102,17 @@
 
 
 		public static function create(){
-    		$login = "";
-    		$nom = "";
-    		$email = "";
-    		$prenom = "";
-    		$ville = "";
-    		$pays = "";
-    		$adresse = "";
-    		$dateDeNaissance = "";
-    		$is_create = "create";
-		
+			$login = "";
+			$nom = "";
+			$email = "";
+			$prenom = "";
+			$ville = "";
+			$pays = "";
+			$adresse = "";
+			$dateDeNaissance = "";
+			$is_create = "create";
+			$is_admin = false;
+			
 			$view='update'; $pagetitle='Creation Utilisateur';
 			require (File::build_path(array("view","view.php")));
 		}
@@ -121,17 +122,17 @@
 
 		public static function created(){
 			$redirectParametres = array(
-							"login" => htmlspecialchars(myGet('login')),
-							"email" => htmlspecialchars(myGet('email')),
-							"nom" => htmlspecialchars(myGet('nom')),
-							"prenom" => htmlspecialchars(myGet('prenom')),
-							"ville" => htmlspecialchars(myGet('ville')),
-							"pays" => htmlspecialchars(myGet('pays')),
-							"adresse" => htmlspecialchars(myGet('adresse')),
-							"dateDeNaissance" => htmlspecialchars(myGet('dateDeNaissance')),
-							"is_admin" => htmlspecialchars(myGet('is_admin')),
-							"is_create" => true
-						);
+				"login" => htmlspecialchars(myGet('login')),
+				"email" => htmlspecialchars(myGet('email')),
+				"nom" => htmlspecialchars(myGet('nom')),
+				"prenom" => htmlspecialchars(myGet('prenom')),
+				"ville" => htmlspecialchars(myGet('ville')),
+				"pays" => htmlspecialchars(myGet('pays')),
+				"adresse" => htmlspecialchars(myGet('adresse')),
+				"dateDeNaissance" => htmlspecialchars(myGet('dateDeNaissance')),
+				"is_admin" => htmlspecialchars(myGet('is_admin')),
+				"is_create" => true
+			);
 			if (is_null(myGet('login')) || is_null(myGet('mdp')) || is_null(myGet('confirmmdp')) || is_null(myGet('email')) || is_null(myGet('nom')) || is_null(myGet('prenom')) || is_null(myGet('ville')) || is_null(myGet('pays')) || is_null(myGet('adresse')) || is_null(myGet('dateDeNaissance'))){
 				self::error("Create d'un Utilisateur: Problème de paramètres","update", $redirectParametres);
 			}
@@ -141,7 +142,7 @@
 			if (myGet('mdp') != myGet('confirmmdp')){
 				self::error("Create d'un Utilisateur: Confirmation du mot de passse invalide","update", $redirectParametres);
 			}
-					
+			
 			if (!filter_var (myGet('email'),FILTER_VALIDATE_EMAIL)){
 				self::error("Create d'un Utilisateur: Problème d'email","update", $redirectParametres);
 			}
@@ -182,23 +183,23 @@
 			$mail = "<a href=http://webinfo.iutmontp.univ-montp2.fr/~binaudd/eCommerce/index.php?controller=utilisateur&action=validate&login=$login&nonce=$nonce>cliquer sur le lien pour valider l'adresse email</a>";
 			mail(myGet('email'),"Le sujet",$mail);
 
-				
-				
 			
-					
+			
+			
+			
 			$login = htmlspecialchars(myGet('login'));
 			$email = htmlspecialchars(myGet('email'));
-    		$nom = htmlspecialchars(myGet('nom'));
-    		$prenom = htmlspecialchars(myGet('prenom'));
-    		$ville = htmlspecialchars(myGet('ville'));
-    		$pays = htmlspecialchars(myGet('pays'));
-    		$adresse = htmlspecialchars(myGet('adresse'));
-    		$dateDeNaissance = htmlspecialchars(myGet('dateDeNaissance'));
+			$nom = htmlspecialchars(myGet('nom'));
+			$prenom = htmlspecialchars(myGet('prenom'));
+			$ville = htmlspecialchars(myGet('ville'));
+			$pays = htmlspecialchars(myGet('pays'));
+			$adresse = htmlspecialchars(myGet('adresse'));
+			$dateDeNaissance = htmlspecialchars(myGet('dateDeNaissance'));
 
 
-    		$is_create = true;
-    		$tab_u = ModelUtilisateur::selectAll();
-    		$view='created'; $pagetitle='Création Reussie';
+			$is_create = true;
+			$tab_u = ModelUtilisateur::selectAll();
+			$view='created'; $pagetitle='Création Reussie';
 			require (File::build_path(array("view","view.php")));
 		}
 
@@ -228,6 +229,7 @@
 			$pays = htmlspecialchars($u->get("pays"));
 			$adresse = htmlspecialchars($u->get("adresse"));
 			$dateDeNaissance = htmlspecialchars($u->get("dateDeNaissance"));
+			$is_admin = htmlspecialchars($u->get("is_admin"));
 
 			$is_create = false;
 			$view='update'; $pagetitle='Mise A Jour';
@@ -258,15 +260,24 @@
 				self::error("Updated d'un Utilisateur: Acces Restreint<i class='material-icons left'>lock</i>","update",$redirectParametres);
 			}
 
+
+			if (myGet('mdp') != myGet('confirmmdp')){
+				self::error("Updated d'un Utilisateur: Confirmation du mot de passse invalide","update", $redirectParametres);
+			}
+
+			
+			if (!filter_var (myGet('email'),FILTER_VALIDATE_EMAIL)){
+				self::error("Updated d'un Utilisateur: Problème d'email","update", $redirectParametres);
+			}
+
+
 			$u = ModelUtilisateur::select(myGet('login'));
 			if($u == false){
 				self::error('update Utilisateur: login fourni non existant',"update",$redirectParametres);
 			}
 
-
 			$data = array(
 				"login" => strtolower(myGet('login')),
-				"mdp" => myGet('mdp'),
 				"email" => myGet('email'),
 				"nom" => myGet('nom'),
 				"prenom" => myGet('prenom'),
@@ -276,16 +287,30 @@
 				"dateDeNaissance" => myGet('dateDeNaissance'),
 			);
 
-			if(!is_null(myGet('is_admin'))){
-				$data[] = myGet('is_admin');
+			//On vérifie que l'utilisateur soit admin pour changer les droits d'administration
+			if(Session::is_admin() && !is_null(myGet('is_admin'))){
+				$data['is_admin'] = myGet('is_admin');
+			}
+
+			//On modifie le mot de passe seulement s'il est différent de ''
+			if(strlen(myGet('mdp')) > 0){
+				$data['mdp'] = myGet('mdp');
 			}
 
 			if (!ModelUtilisateur::update($data)){
 				self::error('updated Utilisateur: Problème de maj rencontré',"update",$redirectParametres);
 			}
-
-			$tab_u = ModelUtilisateur::selectAll();
-			$login = htmlspecialchars(myGet('login'));
+			$u = ModelUtilisateur::select(myGet('login'));
+			$login = htmlspecialchars($u->get("login"));
+			$loginURL = rawurlencode($u->get("login"));
+			$email = htmlspecialchars($u->get("email"));
+			$nom = htmlspecialchars($u->get("nom"));
+			$prenom = htmlspecialchars($u->get("prenom"));
+			$ville = htmlspecialchars($u->get("ville"));
+			$pays = htmlspecialchars($u->get("pays"));
+			$adresse = htmlspecialchars($u->get("adresse"));
+			$dateDeNaissance = htmlspecialchars($u->get("dateDeNaissance"));
+			$is_admin = htmlspecialchars($u->get("is_admin"));
 
 			$view='updated'; $pagetitle='Mise A Jour';
 			require (File::build_path(array("view","view.php")));
@@ -314,11 +339,10 @@
 			if(!ModelUtilisateur::checkPassword(myGet('login'),Security::chiffrer(myGet('mdp')))){
 				self::error('connected: Mot de passe incorrect','connect',array('login' => myGet('login')));
 			}
-					
+			
 			if ($u->get('nonce') != NULL){
 				self::error('connected: adresse email non validée');
 			}
-			var_dump($u);
 			$_SESSION['admin'] = $u->get('is_admin');
 			$_SESSION['login'] = $u->get('login');
 
@@ -375,7 +399,7 @@
 			$view='askresetpass'; $pagetitle='Reset Password';
 			require (File::build_path(array("view","view.php")));
 		}
-	
+		
 
 
 		public static function sendresetpass(){
@@ -460,10 +484,10 @@
 			require (File::build_path(array("view","view.php")));
 		}
 
-	
+		
 
 	}
 
 
 
-?>
+	?>

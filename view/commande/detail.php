@@ -1,14 +1,21 @@
 <?php
-	$cid = htmlspecialchars($c->get("id"));
-	$cidURL = rawurlencode($c->get("id"));
-	$cprix = htmlspecialchars($c->get("prixTotal"));
-	$cdateDeCommande = htmlspecialchars($c->get("dateDeCommande"));
-	$cidClient = htmlspecialchars($c->get("loginClient"));
-	$cidClientURL = rawurlencode($c->get("loginClient"));
-	
-	echo "<p> La Commande d'id {$cid}, de montant $cprix € commandée le $cdateDeCommande par le client d'id 
-		<a href=index.php?action=read&controller=client&login=$cidClientURL>{$cidClient}</a>
-	</p>";
+	echo "<div> <h5>La Commande d'id {$cid} réalisée par $cidClient, de montant $cprix € commandée le $cdateDeCommande contient:</h5></div>
+	<div class='row'>";
 
+	foreach ($tab_produitCommande as $produit) {
+		echo"
+		<div class='col center s12'>
+		    <div class='card horizontal center'>
+		      	<div class='card-image'>
+		        	<img src='{$produit['pathImgProduit']}'>
+		      	</div>
+		      	<div class='card-content'>
+		        	<p><b>" . htmlspecialchars($produit['quantite']) . "</b> ". htmlspecialchars($produit['nom']) . " à " . htmlspecialchars($produit['prix']) ." €/unité</p>
+		      	</div>
+		    </div>
+		</div>";
+	}
+
+	echo "</div>";
 
 ?>

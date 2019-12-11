@@ -2,6 +2,7 @@
 
 	require_once (File::build_path(array("model","ModelCommande.php")));
 	require_once (File::build_path(array("model","ModelPanier.php")));
+	require_once (File::build_path(array("lib","Date.php")));
 
 	class ControllerCommande{
 		protected static $object = 'commande';
@@ -51,7 +52,6 @@
 			$tab_c = ModelCommande::selectAllByLogin(myGet('login'));
 
 			$view='list'; $pagetitle='Liste de Vos Commandes';
-				
 			require (File::build_path(array("view","view.php")));
 		}
 
@@ -77,8 +77,15 @@
 				self::error("Read d'une Commande: Accès Restreint, ce compte n'est pas le votre");
 			}
 			
+			$tab_produitCommande = ModelCommande::selectProductCommande(myGet('id'));
+
+			$cid = htmlspecialchars($c->get("id"));
+			$cprix = htmlspecialchars($c->get("prixTotal"));
+			$cdateDeCommande = Date::formate($c->get("dateDeCommande"));
+			$cidClient = htmlspecialchars($c->get("loginClient"));
+
+
 			$view='detail'; $pagetitle='Detail Commande';
-				
 			require (File::build_path(array("view","view.php")));
 		}
 
@@ -106,27 +113,28 @@
 				self::error("Created d'une Commande: Acces Restreint, Veuillez vous connecter<i class='material-icons left'>lock</i>","utilisateur","connect",array('login' => ""));
 			}
 			
-			if (!isset($_SESSION['panier']) && empty($_SESSION['panier'])) {
-				self::error("Create d'une Commande: Panier Vide","produit","panier");
+			if (!isset($_SESSION['panier']) || empty($_SESSION['panier']['produits'])) {
+				self::error("Create d'une Commande: Panier Vide","produit","panier",array('panier_is_empty' => ModelPanier::is_empty()));
 			}
 
 			$data = array(
-				"id" => '',
 				"prixTotal" => $_SESSION['panier']['prixTotal'],
 				"dateDeCommande" => date('Y-m-d'),
 				"loginClient" => $_SESSION['login']
 			);
 			
-			$c = new ModelCommande($data);
-
-			if(ModelCommande::save($c) == false) {
-				self::error('Created Commande: id fourni déjà existant');
+			$cId = ModelCommande::save($data);
+			if($cId == false) {
+			//if(ModelCommande::save($data) == false) {
+				self::error('Created Commande: Problème avec le serveur');
 			}
-			
-			//ModelPanier::emptyPanier();
-			unset($_SESSION['panier']);
+
+			foreach ($_SESSION['panier']['produits'] as $produit) {
+				ModelCommande::saveProduitInCommande($cId,$produit['id'],$produit['quantité']);
+			}
+
+			ModelPanier::emptyPanier();
 			$tab_c = ModelCommande::selectAllByLogin($_SESSION['login']);
-			var_dump($tab_c);
 
 			$view='created'; $pagetitle='Création Reussie';
 			require (File::build_path(array("view","view.php")));

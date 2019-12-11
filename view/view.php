@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <link rel="stylesheet" type="text/css" href="css/styles.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -9,8 +9,8 @@
         <meta charset="UTF-8">
         <title><?php echo $pagetitle; ?></title>
     </head>
-    <main>
     <body>
+        <main>
         <div class='container'>
 
         <?php
@@ -20,12 +20,12 @@
             	<header>
                     <nav>
                 		<div class='nav-wrapper grey darken-1'>
-                            <ul id='nav-mobile' class='left hide-on-med-and-down'>
+                            <ul id='nav-left' class='left '>
                     			<li><a href='index.php?action=readAll&controller=produit'>Gestion Produits</a></li>
                     			<li><a href='index.php?action=readAll&controller=utilisateur'>Gestion Utilisateurs</a></li>
                     			<li><a href='index.php?action=readAll&controller=commande'>Gestion Commandes</a></li>
                             </ul>
-                            <ul id='nav-mobile' class='right hide-on-med-and-down'>
+                            <ul id='nav-right' class='right'>
                                    <li><a href='index.php?action=getpanier&controller=produit'><i class='material-icons left'>shopping_cart</i>$countProduit</a></li>
                                    <li><a href='index.php?action=deconnect&controller=utilisateur'><i class='material-icons left'>power_settings_new</i></a></li>
                             </ul>
@@ -37,13 +37,13 @@
                 <header>
                 <nav>
                     <div class='nav-wrapper grey darken-1'>
-                    <ul id='nav-mobile' class='left hide-on-med-and-down'>
+                    <ul id='nav-left' class='left'>
                       <li><a href='index.php?action=readAll&controller=produit'>Produits</a></li>
                       ";
                 if(!isset($_SESSION['login'])){
                     echo "
                     </ul>
-                        <ul id='nav-mobile' class='right hide-on-med-and-down'>
+                        <ul id='nav-right' class='right'>
                             <li><a href='index.php?action=getpanier&controller=produit'><i class='material-icons left'>shopping_cart</i>$countProduit</a></li>
                             <li><a href='index.php?action=connect&controller=utilisateur'><i class='material-icons left'>account_circle</i></a></li>
                         </ul>";
@@ -52,7 +52,7 @@
                     echo "
                     <li><a href='index.php?action=read&controller=utilisateur&login=$loginURL'>Compte</a></li>
                     </ul>
-                    <ul id='nav-mobile' class='right hide-on-med-and-down'>
+                    <ul id='nav-right' class='right'>
                         <li><a href='index.php?action=getpanier&controller=produit'><i class='material-icons left'>shopping_cart</i>$countProduit</a></li>
                         <li><a href='index.php?action=deconnect&controller=utilisateur'><i class='material-icons left'>power_settings_new</i></a></li>
                     </ul>";

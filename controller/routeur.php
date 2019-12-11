@@ -15,7 +15,6 @@
 	require_once (File::build_path(array("controller","ControllerProduit.php")));
 	require_once (File::build_path(array("controller","ControllerUtilisateur.php")));
 	require_once (File::build_path(array("controller","ControllerCommande.php")));
-	require_once (File::build_path(array("controller","ControllerPanier.php")));
 	// On recupère l'action passée dans l'URL
 
 	$controller_default = "produit";

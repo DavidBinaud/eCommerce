@@ -1,21 +1,22 @@
 <?php
 
-	require_once (File::build_path(array("model","ModelProduit.php")));
+require_once (File::build_path(array("model","ModelProduit.php")));
 
-	class ControllerProduit{
-		protected static $object = 'produit';
+class ControllerProduit{
+	protected static $object = 'produit';
 
-		// $parametres doit être un array
-		// function error([string $errorType[,string $redirect[,array $parametres]]])..
-		public static function error($errorType = NULL,$redirect = NULL,$parametres = NULL){
 
-			//pour chaque element dans $parametre on va créer une variable nommé avec le nom de la clé et contenant comme valeur la valeur associée à cette clé
-			if(!is_null($parametres) && is_array($parametres)){
-				foreach ($parametres as $key => $value) {
-					${$key} = $value;
-				}
+	// $parametres doit être un array
+	// function error([string $errorType[,string $redirect[,array $parametres]]])..
+	public static function error($errorType = NULL,$redirect = NULL,$parametres = NULL){
+
+		//pour chaque element dans $parametre on va créer une variable nommé avec le nom de la clé et contenant comme valeur la valeur associée à cette clé
+		if(!is_null($parametres) && is_array($parametres)){
+			foreach ($parametres as $key => $value) {
+				${$key} = $value;
 			}
-			$hasRedirect = !is_null($redirect); // Used to check in error view if a redirection exists
+		}
+			$hasRedirect = !is_null($redirect); // Utilisé pour vérifier dans la vue error si une redirection existe
 
 			$view='error'; $pagetitle='Produit';;
 			require (File::build_path(array("view","view.php")));
@@ -23,6 +24,7 @@
 		}
 
 
+////////////////////////////////////////////CRUD////////////////////////////////////////////////////////////
 
 		public static function readAll(){
 			$tab_p = ModelProduit::selectAll(); 
@@ -132,7 +134,7 @@
 			require (File::build_path(array("view","view.php")));
 		}
 
-	
+
 
 
 		public static function update(){
@@ -199,6 +201,22 @@
 		}
 
 
+
+
+		public static function search(){
+			if(is_null(myGet('search'))){
+				self::error("Controller Produit: Search aucun terme de recherche");
+			}
+
+			$tab_p = ModelProduit::search(myGet('search'));
+
+			$view = 'list'; $pagetitle = 'Resultat de recherche';
+			require(File::build_path(array("view","view.php")));
+		}
+
+////////////////////////////////////////////IMAGE////////////////////////////////////////////////////////////
+
+
 		public static function imgupload(){
 			if(!Session::is_admin()){
 				self::error("imgupload Produit: Acces Restreint<i class='material-icons left'>lock</i>");
@@ -248,13 +266,13 @@
 				$allowed_ext = array("jpg", "jpeg", "png");
 				$explode = explode('.',$_FILES['nom-du-fichier']['name']);
 				if (!in_array(end($explode), $allowed_ext)) {
-					 	$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'addedimg Produit: Mauvais type de fichier';
+					$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'addedimg Produit: Mauvais type de fichier';
 				}else{
 
 
 
 					if (!move_uploaded_file($_FILES['nom-du-fichier']['tmp_name'], $pic_path)) {
-					  	$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'imguploaded Produit: La Copie a échouée';
+						$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'imguploaded Produit: La Copie a échouée';
 					}else{
 						$p->set("pathImgProduit","src/$name");
 						
@@ -262,10 +280,10 @@
 							$pId = htmlspecialchars($p->get('id'));
 							$path = $p->get('pathImgProduit');
 							$view='imguploaded'; $pagetitle='Uploaded Img Produit';
-		
-							}else{
-								$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'addedimg Produit: ce produit a déjà une image';
-							}
+
+						}else{
+							$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'addedimg Produit: ce produit a déjà une image';
+						}
 
 					}
 
@@ -276,9 +294,6 @@
 			}else{
 				$view='error'; $pagetitle='Erreur MAJ'; $errorType = 'addedimg Produit: Problème de paramètre fichier';
 			}
-
-					
-
 
 			require (File::build_path(array("view","view.php")));
 		}
@@ -315,7 +330,7 @@
 
 
 
-
+////////////////////////////////////////////PANIER////////////////////////////////////////////////////////////
 
 		public static function addTopanier(){
 			if(is_null(myGet('id'))){
@@ -333,7 +348,7 @@
 
 			ModelPanier::addToPanier($p);
 
-					
+
 			$view='addedpanier'; $pagetitle='Ajouté au panier';
 			require (File::build_path(array("view","view.php")));
 		}
@@ -346,6 +361,18 @@
 			$panier = ModelPanier::getPanier();
 			
 			$panier_is_empty = ModelPanier::is_empty();
+
+			//On recupere les produits du panier pour les afficher
+			if (!$panier_is_empty) {
+				$i = 0;
+				foreach ($_SESSION['panier']['produits'] as $produit) {
+					$tab_produitPanier[] = ModelProduit::select($produit['id'])->get_object_vars();
+					$tab_produitPanier[$i]['quantité'] = $_SESSION['panier']['produits'][$i]['quantité'];
+					$i++;
+				}
+			}
+
+
 			$view='panier'; $pagetitle='panier';
 			require (File::build_path(array("view","view.php")));
 		}
@@ -356,11 +383,8 @@
 			ModelPanier::emptyPanier();
 			self::getPanier();
 		}
-
-
-
 	}
 
 
 
-?>
+	?>
