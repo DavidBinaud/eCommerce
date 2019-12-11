@@ -260,7 +260,8 @@ class ControllerProduit{
 				self::error('addedimg Produit: Problème de paramètre fichier');
 			}
 
-			$name = $_FILES['nom-du-fichier']['name'];
+			//On enleve les carateres ' '
+			$name = str_replace(' ', '',$_FILES['nom-du-fichier']['name']);
 			$pic_path =  File::build_path(array("src",$name));
 
 			$allowed_ext = array("jpg", "jpeg", "png");

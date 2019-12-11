@@ -16,15 +16,15 @@
 	echo "<p> Le $ptype de nationalité $pnationalite <b> $pnom </b> est vendu au prix de $pprix €.<br> Description: <br>$pdescription</p>";
 
 	if(Session::is_admin()){	
-		echo "<a href=index.php?action=update&controller=produit&id=$pidURL  class='waves-effect waves-light btn grey darken-1 sspaced'><i class='material-icons left'>edit</i>Mettre à Jour</a>";
-		echo "<a href=index.php?action=delete&controller=produit&id=$pidURL  class='waves-effect waves-light btn grey darken-1 sspaced'><i class='material-icons left'>delete</i>Supprimer</a>";
+		echo "<a href='index.php?action=update&controller=produit&id=$pidURL'  class='waves-effect waves-light btn grey darken-1 sspaced'><i class='material-icons left'>edit</i>Mettre à Jour</a>";
+		echo "<a href='index.php?action=delete&controller=produit&id=$pidURL'  class='waves-effect waves-light btn grey darken-1 sspaced'><i class='material-icons left'>delete</i>Supprimer</a>";
 	}
-	echo "<a href=index.php?action=addTopanier&controller=produit&id=$pidURL class='waves-effect waves-light btn grey darken-1 sspaced'><i class='material-icons left'>add_shopping_cart</i>Ajouter au Panier</a>";
+	echo "<a href='index.php?action=addTopanier&controller=produit&id=$pidURL' class='waves-effect waves-light btn grey darken-1 sspaced'><i class='material-icons left'>add_shopping_cart</i>Ajouter au Panier</a>";
 		//unlink($path);
 	if ($path == false) {
 		if(Session::is_admin()){
 			echo "<p>
-			(<a href=index.php?action=imgupload&controller=produit&id=$pidURL>Ajout d'image</a>)
+			(<a href='index.php?action=imgupload&controller=produit&id=$pidURL'>Ajout d'image</a>)
 			</p>";
 		}
 	}

@@ -7,7 +7,7 @@
 		<div class='col center s12'>
 		    <div class='card horizontal center'>
 		      	<div class='card-image'>
-		        	<img src='{$produit['pathImgProduit']}'>
+		        	<img src='" . $produit['pathImgProduit'] . "' alt='ImageduChar'>
 		      	</div>
 		      	<div class='card-content'>
 		        	<p><b>" . htmlspecialchars($produit['quantite']) . "</b> ". htmlspecialchars($produit['nom']) . " à " . htmlspecialchars($produit['prix']) ." €/unité</p>

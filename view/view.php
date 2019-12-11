@@ -58,7 +58,8 @@
                     </ul>";
                 }
 
-                echo    '</div></nav>
+                echo    '</div>
+                </nav>
                 </header>';
 
             } echo "<div class ='boxed'>";
@@ -66,9 +67,8 @@
 
     		$filepath = File::build_path(array("view",static::$object, "$view.php"));
     		require $filepath;
-            echo '</div>';
     	?>
-
+            </div>
         </div>
     </main>
     <footer class='page-footer transparent'>
