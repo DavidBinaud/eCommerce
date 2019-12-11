@@ -35,7 +35,9 @@
             $this->nationalite = $data['nationalite'];
         }
 
-        if(!is_null($data['pathImgProduit']))$this->pathImgProduit = $data['pathImgProduit'];
+        if(isset($data['pathImgProduit']) && !is_null($data['pathImgProduit'])){
+            $this->pathImgProduit = $data['pathImgProduit'];
+        }
     }
 
 

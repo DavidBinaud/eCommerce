@@ -90,7 +90,6 @@ class ControllerProduit{
 			$pDescription = "\"\"";
 			$pPrix = "\"\"";
 			$pNationalite = "\"\"";
-			$pathImgProduit = "\"\"";
 			$pAction = "create";
 			
 			$view='update'; $pagetitle='Creation Produit';
@@ -114,12 +113,9 @@ class ControllerProduit{
 				"description" => myGet('description'),
 				"prix" => myGet('prix'),
 				"nationalite" => myGet('nationalite'),
-				"pathImgProduit" => myGet('pathImgProduit')
+				"pathImgProduit" => ''
 			);
 
-			if(is_null(myGet('pathImgProduit'))){
-				$data["pathImgProduit"] = "";
-			}
 			
 			$p = new ModelProduit($data);
 
@@ -157,7 +153,6 @@ class ControllerProduit{
 			$pDescription = htmlspecialchars($p->get('description'));
 			$pPrix = htmlspecialchars($p->get('prix'));
 			$pNationalite = htmlspecialchars($p->get('nationalite'));
-			$pathImgProduit = $p->get('pathImgProduit');
 			$pAction = "update";
 
 			$view='update'; $pagetitle='Mise A Jour';
@@ -184,8 +179,7 @@ class ControllerProduit{
 				"nom" => myGet('nom'),
 				"description" => myGet('description'),
 				"prix" => myGet('prix'),
-				"nationalite" => myGet('nationalite'),
-				"pathImgProduit" => myGet('pathImgProduit'),
+				"nationalite" => myGet('nationalite')
 			);
 			
 			
