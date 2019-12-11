@@ -294,7 +294,7 @@ class ControllerUtilisateur{
 
 			//On modifie le mot de passe seulement s'il est différent de ''
 			if(strlen(myGet('mdp')) > 0){
-				$data['mdp'] = myGet('mdp');
+				$data['mdp'] = Security::chiffrer(myGet('mdp'));
 			}
 
 			if (!ModelUtilisateur::update($data)){
